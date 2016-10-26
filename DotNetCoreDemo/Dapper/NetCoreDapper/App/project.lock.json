@@ -2278,20 +2278,21 @@
           "ref/netstandard1.3/System.Text.Encoding.dll": {}
         }
       },
-      "System.Text.Encoding.CodePages/4.0.1-rc2-24027": {
+      "System.Text.Encoding.CodePages/4.0.1": {
         "type": "package",
         "dependencies": {
-          "System.Collections": "4.0.11-rc2-24027",
-          "System.Globalization": "4.0.11-rc2-24027",
-          "System.IO": "4.1.0-rc2-24027",
-          "System.Reflection": "4.1.0-rc2-24027",
-          "System.Resources.ResourceManager": "4.0.1-rc2-24027",
-          "System.Runtime": "4.1.0-rc2-24027",
-          "System.Runtime.Extensions": "4.1.0-rc2-24027",
-          "System.Runtime.Handles": "4.0.1-rc2-24027",
-          "System.Runtime.InteropServices": "4.1.0-rc2-24027",
-          "System.Text.Encoding": "4.0.11-rc2-24027",
-          "System.Threading": "4.0.11-rc2-24027"
+          "Microsoft.NETCore.Platforms": "1.0.1",
+          "System.Collections": "4.0.11",
+          "System.Globalization": "4.0.11",
+          "System.IO": "4.1.0",
+          "System.Reflection": "4.1.0",
+          "System.Resources.ResourceManager": "4.0.1",
+          "System.Runtime": "4.1.0",
+          "System.Runtime.Extensions": "4.1.0",
+          "System.Runtime.Handles": "4.0.1",
+          "System.Runtime.InteropServices": "4.1.0",
+          "System.Text.Encoding": "4.0.11",
+          "System.Threading": "4.0.11"
         },
         "compile": {
           "ref/netstandard1.3/System.Text.Encoding.CodePages.dll": {}
@@ -7008,17 +7009,18 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "System.Text.Encoding.CodePages/4.0.1-rc2-24027": {
-      "sha512": "hoE1NcYMD2fwCotbt/I+B/6p0gyxp82MiKTZ5OKK2O7nMJ8sjF7YtzyVicvxD7e3sBDyCZWdcbMEW09M/C+IAQ==",
+    "System.Text.Encoding.CodePages/4.0.1": {
+      "sha512": "1UnUhDqL1o5uiPk1tmneI0MLhzIK4OeiCUASHWd/earggGCphSG16lzf1yVOtK+UXQ2/6EoeU/hsfFqzqIjl1g==",
       "type": "package",
-      "path": "System.Text.Encoding.CodePages/4.0.1-rc2-24027",
+      "path": "System.Text.Encoding.CodePages/4.0.1",
       "files": [
-        "System.Text.Encoding.CodePages.4.0.1-rc2-24027.nupkg.sha512",
+        "System.Text.Encoding.CodePages.4.0.1.nupkg.sha512",
         "System.Text.Encoding.CodePages.nuspec",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
         "lib/MonoTouch10/_._",
+        "lib/net46/System.Text.Encoding.CodePages.dll",
         "lib/xamarinios10/_._",
         "lib/xamarinmac20/_._",
         "lib/xamarintvos10/_._",
@@ -7821,7 +7823,7 @@
       "Dapper >= 1.50.2",
       "Microsoft.NETCore.App >= 1.0.1",
       "MySql.Data >= 7.0.5-IR21",
-      "System.Text.Encoding.CodePages >= 4.0.1-rc2-24027"
+      "System.Text.Encoding.CodePages >= 4.0.1"
     ],
     ".NETCoreApp,Version=v1.0": []
   },
