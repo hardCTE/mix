@@ -7,3 +7,4 @@
 bin
 obj
 *.user
+/DotNetCoreDemo/Dapper/NetCoreDapper/DemoApp/project.lock.json
