@@ -281,11 +281,41 @@ namespace App.DAL
 
         #region Update
 
+        /// <summary>
+        /// 更新
+        /// </summary>
+        /// <param name="item">实体对象</param>
+        /// <param name="tran">事务</param>
+        /// <returns></returns>
+        public virtual int Update(TbIpBlackList item, IDbTransaction tran = null)
+        {
+            const string sql = "UPDATE tb_ip_blacklist SET ip=@Ip,add_time=@AddTime,end_time=@EndTime,is_enable=@IsEnable,descr=@Descr WHERE id=@Id";
+
+            return DbConn.Execute(sql, param: item, transaction: tran);
+        }
+
+        /// <summary>
+        /// 批量更新
+        /// </summary>
+        /// <param name="items">实体对象集合</param>
+        /// <param name="tran">事务</param>
+        /// <returns></returns>
+        public virtual int Update(IEnumerable<TbIpBlackList> items, IDbTransaction tran = null)
+        {
+            var count = 0;
+            foreach (var item in items)
+            {
+                Update(item, tran);
+                count++;
+            }
+
+            return count;
+        }
 
 
         #endregion
 
-        #region Delete
+        #region Remove
 
         /// <summary>
         /// 按主键删除
@@ -333,6 +363,33 @@ namespace App.DAL
         {
             const string sql = @"DELETE FROM tb_ip_blacklist WHERE ip=@Ip;";
             return DbConn.Execute(sql, param: ips.Select(p => new {Ip = p}), transaction: tran);
+        }
+
+        /// <summary>
+        /// 自定义条件删除
+        /// </summary>
+        /// <param name="where">自定义条件，where子句（不包含关键字Where）</param>
+        /// <param name="param">参数（对象属性自动转为sql中的参数，eg：new {Id=10},则执行sql会转为参数对象 @Id,值为10）</param>
+        /// <param name="tran">事务</param>
+        /// <returns></returns>
+        public virtual int Remove(string where, object param = null, IDbTransaction tran = null)
+        {
+            const string format = @"DELETE FROM tb_ip_blacklist {0};";
+
+            var whereClause = string.Empty;
+            if (!string.IsNullOrWhiteSpace(where))
+            {
+                whereClause = where.Trim();
+
+                if (!whereClause.StartsWith("where", StringComparison.OrdinalIgnoreCase))
+                {
+                    whereClause = "Where " + whereClause;
+                }
+            }
+
+            var sql = string.Format(format, whereClause);
+
+            return DbConn.Execute(sql, param: param, transaction: tran);
         }
 
         #endregion

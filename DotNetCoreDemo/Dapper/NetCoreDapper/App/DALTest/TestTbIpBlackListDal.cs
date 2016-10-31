@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using App.DAL;
 using App.DbModel;
 using MySql.Data.MySqlClient;
@@ -23,6 +24,7 @@ namespace App.DALTest
             TestAdds();
             TestAddThenRemove();
             TestAddThenRemoveByIp();
+            TestAddThenUpdate();
         }
 
         public void TestAdd()
@@ -273,6 +275,87 @@ namespace App.DALTest
             {
                 Console.Error.WriteLine($"Add error,new record count={page5.Item1}");
             }
+        }
+
+        public void TestAddThenUpdate()
+        {
+            var page1 = _dal.GetPageInfo(0);
+            var page2 = _dal.GetPageInfo(5);
+
+            if (page1.Item1 != page2.Item1)
+            {
+                Console.Error.WriteLine($"Error: GetPageInfo,total records {page1.Item1}-{page2.Item1}");
+            }
+
+            Console.WriteLine($"PageInfo1:total={page1.Item1},pages={page1.Item2}");
+            Console.WriteLine($"PageInfo2:total={page2.Item1},pages={page2.Item2}");
+
+            var items = new List<TbIpBlackList>
+            {
+                new TbIpBlackList
+                {
+                    Ip = Guid.NewGuid().ToString("N"),
+                    AddTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddDays(10),
+                    IsEnable = true,
+                    Descr = "1-Test-" + Guid.NewGuid()
+                },
+                new TbIpBlackList
+                {
+                    Ip = Guid.NewGuid().ToString("N"),
+                    AddTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddDays(10),
+                    IsEnable = false,
+                    Descr = "2-Test-" + Guid.NewGuid()
+                },
+                new TbIpBlackList
+                {
+                    Ip = Guid.NewGuid().ToString("N"),
+                    AddTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddDays(10),
+                    IsEnable = true,
+                    Descr = "3-Test-" + Guid.NewGuid()
+                },
+                new TbIpBlackList
+                {
+                    Ip = Guid.NewGuid().ToString("N"),
+                    AddTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddDays(10),
+                    IsEnable = false,
+                    Descr = "4-Test-" + Guid.NewGuid()
+                },
+                new TbIpBlackList
+                {
+                    Ip = Guid.NewGuid().ToString("N"),
+                    AddTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddDays(10),
+                    IsEnable = true,
+                    Descr = "5-Test-" + Guid.NewGuid()
+                },
+            };
+
+            var count = _dal.Add(items);
+
+            items[0].Ip = "update_" + items[0].Ip;
+            items[0].AddTime = items[0].AddTime.AddHours(1);
+            items[0].EndTime = items[0].EndTime?.AddHours(1);
+            items[0].IsEnable = !items[0].IsEnable;
+            items[0].Descr = "update_" + items[0].Descr;
+
+            items[1].Ip = "update_" + items[1].Ip;
+            items[1].AddTime = items[1].AddTime.AddHours(1);
+            items[1].EndTime = items[1].EndTime?.AddHours(1);
+            items[1].IsEnable = !items[1].IsEnable;
+            items[1].Descr = "update_" + items[1].Descr;
+            _dal.Update(items.Where(p => p.Id == items[0].Id || p.Id == items[1].Id));
+
+
+            items[4].Ip = "one update_" + items[4].Ip;
+            items[4].AddTime = items[4].AddTime.AddHours(2);
+            items[4].EndTime = items[4].EndTime?.AddHours(2);
+            items[4].IsEnable = !items[4].IsEnable;
+            items[4].Descr = "one update_" + items[4].Descr;
+            _dal.Update(items[4]);
         }
     }
 }
