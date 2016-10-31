@@ -161,7 +161,10 @@ namespace App.DAL
         /// <param name="pageSize">每页条数</param>
         /// <param name="where">过滤条件</param>
         /// <param name="param">参数（对象属性自动转为sql中的参数，eg：new {Id=10},则执行sql会转为参数对象 @Id,值为10）</param>
-        /// <returns></returns>
+        /// <returns>
+        /// Item1: 总记录数
+        /// Item2: 页数
+        /// </returns>
         public virtual Tuple<Int64, Int64> GetPageInfo(int pageSize, string where = null, object param = null)
         {
             const string format = @"SELECT Count(*) FROM tb_ip_blacklist {0}";
@@ -180,9 +183,13 @@ namespace App.DAL
             var sql = string.Format(format, whereClause);
             var recordCount = DbConn.ExecuteScalar<Int64>(sql, param);
 
-            var lastPageCount = recordCount%pageSize;
-            var pageCount = recordCount/pageSize + (lastPageCount > 0 ? 1 : 0);
-
+            var pageCount = 1L;
+            if (pageSize != 0)
+            {
+                var lastPageCount = recordCount % pageSize;
+                pageCount = recordCount / pageSize + (lastPageCount > 0 ? 1 : 0);
+            }
+            
             return new Tuple<long, long>(recordCount, pageCount);
         }
 

@@ -21,6 +21,7 @@ namespace App.DALTest
         {
             TestAdd();
             TestAdds();
+            TestAddThenRemove();
         }
 
         public void TestAdd()
@@ -102,6 +103,90 @@ namespace App.DALTest
             foreach (var item in items)
             {
                 Console.WriteLine($"{item.Id}~{item.IsEnable}~{item.Ip}~{item.AddTime}~{item.Descr}");
+            }
+        }
+
+        public void TestAddThenRemove()
+        {
+            var page1 = _dal.GetPageInfo(0);
+            var page2 = _dal.GetPageInfo(5);
+
+            if (page1.Item1 != page2.Item1)
+            {
+                Console.Error.WriteLine($"Error: GetPageInfo,total records {page1.Item1}-{page2.Item1}");
+            }
+
+            Console.WriteLine($"PageInfo1:total={page1.Item1},pages={page1.Item2}");
+            Console.WriteLine($"PageInfo2:total={page2.Item1},pages={page2.Item2}");
+
+            var items = new List<TbIpBlackList>
+            {
+                new TbIpBlackList
+                {
+                    Ip = Guid.NewGuid().ToString("N"),
+                    AddTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddDays(10),
+                    IsEnable = true,
+                    Descr = "1-Test-" + Guid.NewGuid()
+                },
+                new TbIpBlackList
+                {
+                    Ip = Guid.NewGuid().ToString("N"),
+                    AddTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddDays(10),
+                    IsEnable = false,
+                    Descr = "2-Test-" + Guid.NewGuid()
+                },
+                new TbIpBlackList
+                {
+                    Ip = Guid.NewGuid().ToString("N"),
+                    AddTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddDays(10),
+                    IsEnable = true,
+                    Descr = "3-Test-" + Guid.NewGuid()
+                },
+                new TbIpBlackList
+                {
+                    Ip = Guid.NewGuid().ToString("N"),
+                    AddTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddDays(10),
+                    IsEnable = false,
+                    Descr = "4-Test-" + Guid.NewGuid()
+                },
+                new TbIpBlackList
+                {
+                    Ip = Guid.NewGuid().ToString("N"),
+                    AddTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddDays(10),
+                    IsEnable = true,
+                    Descr = "5-Test-" + Guid.NewGuid()
+                },
+            };
+
+            var count = _dal.Add(items);
+
+            var page3 = _dal.GetPageInfo(5);
+            if (page3.Item1 != page2.Item1 + 5)
+            {
+                Console.Error.WriteLine($"Add error,new record count={page3.Item1}");
+            }
+
+            var delCount = _dal.RemoveByPk(items[0].Id);
+            Console.WriteLine($"delete 1, delCount={delCount}");
+
+            var page4 = _dal.GetPageInfo(5);
+            if (page4.Item1 != page2.Item1 + 4)
+            {
+                Console.Error.WriteLine($"Add error,new record count={page4.Item1}");
+            }
+
+            var delCounts = _dal.RemoveByPks(new[] {items[1].Id, items[2].Id, items[3].Id});
+            Console.WriteLine($"delete 3, delCount={delCounts}");
+
+            var page5 = _dal.GetPageInfo(5);
+            if (page5.Item1 != page2.Item1 + 1)
+            {
+                Console.Error.WriteLine($"Add error,new record count={page5.Item1}");
             }
         }
     }
