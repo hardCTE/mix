@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Text;
+using App.DALTest;
 using App.DbModel;
 using App.Operate;
 using Dapper;
@@ -24,8 +25,11 @@ namespace App
             //    typeof (ColumnAttributeTypeMapper<>).MakeGenericType(typeof (TbIpBlackList)));
             //SqlMapper.SetTypeMap(typeof (TbIpBlackList), mapper);
 
-            var basic = new BasicUsage(con);
-            basic.Use();
+            //var basic = new BasicUsage(con);
+            //basic.Use();
+
+            var test = new TestTbIpBlackListDal(con);
+            test.ExecAllTest();
 
             Console.ReadKey();
         }

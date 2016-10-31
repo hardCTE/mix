@@ -241,9 +241,9 @@ namespace App.DAL
         /// <param name="item"></param>
         /// <param name="tran"></param>
         /// <returns></returns>
-        public virtual int Add(TbIpBlackList item, IDbTransaction tran)
+        public virtual int Add(TbIpBlackList item, IDbTransaction tran = null)
         {
-            const string sql = @"INSERT into tb_ip_blacklist(ip,add_time,end_time,is_enable,descr) values(@Ip,@AddTime,@EndTime,@IsEnable,@Descr);";
+            const string sql = @"INSERT into tb_ip_blacklist(ip,add_time,end_time,is_enable,descr) values(@Ip,@AddTime,@EndTime,@IsEnable,@Descr);SELECT LAST_INSERT_ID();";
             item.Id = DbConn.ExecuteScalar<Int64>(sql, param: item, transaction: tran);
 
             return 1;
@@ -255,11 +255,19 @@ namespace App.DAL
         /// <param name="items"></param>
         /// <param name="tran"></param>
         /// <returns></returns>
-        public virtual int Add(IEnumerable<TbIpBlackList> items, IDbTransaction tran)
+        public virtual int Add(IEnumerable<TbIpBlackList> items, IDbTransaction tran = null)
         {
             const string sql = @"INSERT into tb_ip_blacklist(ip,add_time,end_time,is_enable,descr) values(@Ip,@AddTime,@EndTime,@IsEnable,@Descr);";
             
-            return DbConn.Execute(sql, param: items, transaction: tran);
+            // return DbConn.Execute(sql, param: items, transaction: tran);
+            var count = 0;
+            foreach (var item in items)
+            {
+                Add(item,tran);
+                count++;
+            }
+
+            return count;
         }
 
         #endregion
