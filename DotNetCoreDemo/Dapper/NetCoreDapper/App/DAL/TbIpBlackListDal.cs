@@ -1,0 +1,257 @@
+﻿using App.DbModel;
+using Dapper;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace App.DAL
+{
+    public abstract class DbBase
+    {
+        public IDbConnection DbConn { get; private set; }
+
+        public DbBase() : this(null)
+        {
+        }
+
+        public DbBase(IDbConnection dbcon)
+        {
+            if (dbcon != null)
+            {
+                DbConn = dbcon;
+            }
+            else
+            {
+                // TODO:根据类型自动构建
+            }
+        }
+    }
+
+    public partial class TbIpBlackListDal: DbBase
+    {
+        #region 定义
+
+        public TbIpBlackListDal(IDbConnection dbCon = null) : base(dbCon)
+        {
+
+        }
+
+        #endregion
+
+        #region 查询
+
+        #region 按键及索引 查询
+
+        /// <summary>
+        /// 根据主键获取EO
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="tran">事务</param>
+        /// <returns></returns>
+        public virtual TbIpBlackList GetByPk(Int64 id, IDbTransaction tran = null)
+        {
+            const string sql = "select * from tb_ip_blacklist where id = @Id";
+            return DbConn.QueryFirst<TbIpBlackList>(
+                sql: sql,
+                param: new { Id = id },
+                transaction: tran);
+        }
+
+        /// <summary>
+        /// 根据索引 idx_ip(ip列)查询列表
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <param name="tran">事务</param>
+        /// <returns></returns>
+        public virtual IEnumerable<TbIpBlackList> GetByIp(string ip, IDbTransaction tran = null)
+        {
+            return GetByIp(ip, 0, null, tran);
+        }
+
+        /// <summary>
+        /// 根据索引 idx_ip(ip列)查询列表
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <param name="top">获取行数</param>
+        /// <param name="sort">排序方式</param>
+        /// <param name="tran">事务</param>
+        /// <returns></returns>
+        public virtual IEnumerable<TbIpBlackList> GetByIp(string ip, int top, string sort, IDbTransaction tran = null)
+        {
+            const string format = "select * from tb_ip_blacklist where ip = @Ip {0} {1}";
+
+            var sortClause = string.Empty;
+            if (!string.IsNullOrWhiteSpace(sort))
+            {
+                sortClause = "Order By " + sort;
+            }
+
+            var limitClause = string.Empty;
+            if (top > 0)
+            {
+                limitClause = "limit " + top;
+            }
+
+            var sql = string.Format(format, sortClause, limitClause);
+            return DbConn.Query<TbIpBlackList>(
+                sql: sql,
+                param: new { Ip = ip },
+                transaction: tran);
+        }
+
+        #endregion
+
+        #region 自定义查询
+
+        /// <summary>
+        /// 自定义条件查询
+        /// </summary>
+        /// <param name="where">自定义条件，where子句（不包含关键字Where）</param>
+        /// <param name="param">参数（对象属性自动转为sql中的参数，eg：new {Id=10},则执行sql会转为参数对象 @Id,值为10）</param>
+        /// <param name="top">获取行数</param>
+        /// <param name="sort">排序方式(不包含关键字Order By)</param>
+        /// <param name="tran">事务</param>
+        /// <returns></returns>
+        public virtual IEnumerable<TbIpBlackList> GetTopSort(string where, object param = null,
+            int top = 0, string sort = null, IDbTransaction tran = null)
+        {
+            const string format = "select * from tb_ip_blacklist {0} {1} {2}";
+
+            var whereClause = string.Empty;
+            if (!string.IsNullOrWhiteSpace(where))
+            {
+                whereClause = where.Trim();
+
+                if (!whereClause.StartsWith("where", StringComparison.OrdinalIgnoreCase))
+                {
+                    whereClause = "Where " + whereClause;
+                }
+            }
+
+            var sortClause = string.Empty;
+            if (!string.IsNullOrWhiteSpace(sort))
+            {
+                sortClause = "Order By " + sort;
+            }
+
+            var limitClause = string.Empty;
+            if (top > 0)
+            {
+                limitClause = "Limit " + top;
+            }
+
+            var sql = string.Format(format, whereClause, sortClause, limitClause);
+            return DbConn.Query<TbIpBlackList>(
+                sql: sql,
+                param: param,
+                transaction: tran);
+        }
+
+        #endregion
+
+        #region 分页
+
+        /// <summary>
+        /// 分页信息
+        /// </summary>
+        /// <param name="pageSize">每页条数</param>
+        /// <param name="where">过滤条件</param>
+        /// <param name="param">参数（对象属性自动转为sql中的参数，eg：new {Id=10},则执行sql会转为参数对象 @Id,值为10）</param>
+        /// <returns></returns>
+        public virtual Tuple<Int64, Int64> GetPageInfo(int pageSize, string where = null, object param = null)
+        {
+            const string format = @"SELECT Count(*) FROM tb_ip_blacklist {0}";
+
+            var whereClause = string.Empty;
+            if (!string.IsNullOrWhiteSpace(where))
+            {
+                whereClause = where.Trim();
+
+                if (!whereClause.StartsWith("where", StringComparison.OrdinalIgnoreCase))
+                {
+                    whereClause = "Where " + whereClause;
+                }
+            }
+
+            var sql = string.Format(format, whereClause);
+            var recordCount = DbConn.ExecuteScalar<Int64>(sql, param);
+
+            var lastPageCount = recordCount%pageSize;
+            var pageCount = recordCount/pageSize + (lastPageCount > 0 ? 1 : 0);
+
+            return new Tuple<long, long>(recordCount, pageCount);
+        }
+
+        /// <summary>
+        /// 获取分页列表
+        /// </summary>
+        /// <param name="pageIndex">页索引（从1开始）</param>
+        /// <param name="pageSize">每页条数</param>
+        /// <param name="where">过滤条件</param>
+        /// <param name="param">参数（对象属性自动转为sql中的参数，eg：new {Id=10},则执行sql会转为参数对象 @Id,值为10）</param>
+        /// <param name="sort">排序方式(不包含关键字Order By)</param>
+        /// <returns></returns>
+        public virtual IEnumerable<TbIpBlackList> GetPageList(Int64 pageIndex, int pageSize,
+            string where = null, object param = null, string sort = null)
+        {
+            const string format = "select * from tb_ip_blacklist {0} {1} {2};";
+
+            var whereClause = string.Empty;
+            if (!string.IsNullOrWhiteSpace(where))
+            {
+                whereClause = where.Trim();
+
+                if (!whereClause.StartsWith("where", StringComparison.OrdinalIgnoreCase))
+                {
+                    whereClause = "Where " + whereClause;
+                }
+            }
+
+            var sortClause = string.Empty;
+            if (!string.IsNullOrWhiteSpace(sort))
+            {
+                sortClause = "Order By " + sort;
+            }
+
+            var limitClause = string.Empty;
+            if (pageIndex > 0 && pageSize > 0)
+            {
+                limitClause = $"Limit {(pageSize - 1L)*pageSize},{pageSize}";
+            }
+
+            var sql = string.Format(format, whereClause, sortClause, limitClause);
+            return DbConn.Query<TbIpBlackList>(
+                sql: sql,
+                param: param);
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Add
+
+
+
+        #endregion
+
+        #region Update
+
+
+
+        #endregion
+
+        #region Delete
+
+
+
+        #endregion
+
+        public partial class _
+        {
+            //public static readonly 
+        }
+    }
+}
