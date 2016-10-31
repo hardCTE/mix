@@ -42,6 +42,8 @@ namespace App.DAL
 
         #region 查询
 
+        // todo:唯一索引（条件查询、是否存在）
+
         #region 按键及索引 查询
 
         /// <summary>
@@ -233,7 +235,32 @@ namespace App.DAL
 
         #region Add
 
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="tran"></param>
+        /// <returns></returns>
+        public virtual int Add(TbIpBlackList item, IDbTransaction tran)
+        {
+            const string sql = @"INSERT into tb_ip_blacklist(ip,add_time,end_time,is_enable,descr) values(@Ip,@AddTime,@EndTime,@IsEnable,@Descr);";
+            item.Id = DbConn.ExecuteScalar<Int64>(sql, param: item, transaction: tran);
 
+            return 1;
+        }
+
+        /// <summary>
+        /// 批量添加
+        /// </summary>
+        /// <param name="items"></param>
+        /// <param name="tran"></param>
+        /// <returns></returns>
+        public virtual int Add(IEnumerable<TbIpBlackList> items, IDbTransaction tran)
+        {
+            const string sql = @"INSERT into tb_ip_blacklist(ip,add_time,end_time,is_enable,descr) values(@Ip,@AddTime,@EndTime,@IsEnable,@Descr);";
+            
+            return DbConn.Execute(sql, param: items, transaction: tran);
+        }
 
         #endregion
 
@@ -245,7 +272,29 @@ namespace App.DAL
 
         #region Delete
 
+        /// <summary>
+        /// 按主键删除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="tran"></param>
+        /// <returns></returns>
+        public virtual int RemoveByPk(Int64 id, IDbTransaction tran = null)
+        {
+            const string sql = @"DELETE FROM tb_ip_blacklist WHERE Id=@Id;";
+            return DbConn.Execute(sql, param: new {Id = id}, transaction: tran);
+        }
 
+        /// <summary>
+        /// 按主键批量删除
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <param name="tran"></param>
+        /// <returns></returns>
+        public virtual int RemoveByPks(IEnumerable<Int64> ids, IDbTransaction tran = null)
+        {
+            const string sql = @"DELETE FROM tb_ip_blacklist WHERE Id=@Id;";
+            return DbConn.Execute(sql, param: ids.Select(p => new {Id = p}), transaction: tran);
+        }
 
         #endregion
 
