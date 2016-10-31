@@ -295,7 +295,7 @@ namespace App.DAL
         /// <returns></returns>
         public virtual int RemoveByPk(Int64 id, IDbTransaction tran = null)
         {
-            const string sql = @"DELETE FROM tb_ip_blacklist WHERE Id=@Id;";
+            const string sql = @"DELETE FROM tb_ip_blacklist WHERE id=@Id;";
             return DbConn.Execute(sql, param: new {Id = id}, transaction: tran);
         }
 
@@ -307,8 +307,32 @@ namespace App.DAL
         /// <returns></returns>
         public virtual int RemoveByPks(IEnumerable<Int64> ids, IDbTransaction tran = null)
         {
-            const string sql = @"DELETE FROM tb_ip_blacklist WHERE Id=@Id;";
+            const string sql = @"DELETE FROM tb_ip_blacklist WHERE id=@Id;";
             return DbConn.Execute(sql, param: ids.Select(p => new {Id = p}), transaction: tran);
+        }
+
+        /// <summary>
+        /// 根据索引删除 idx_ip(ip)
+        /// </summary>
+        /// <param name="ip"></param>
+        /// <param name="tran"></param>
+        /// <returns></returns>
+        public virtual int RemoveByIp(string ip, IDbTransaction tran = null)
+        {
+            const string sql = @"DELETE FROM tb_ip_blacklist WHERE ip=@Ip;";
+            return DbConn.Execute(sql, param: new { Ip = ip }, transaction: tran);
+        }
+
+        /// <summary>
+        /// 根据索引批量删除 idex_ip(ip)
+        /// </summary>
+        /// <param name="ips"></param>
+        /// <param name="tran"></param>
+        /// <returns></returns>
+        public virtual int RemoveByIps(IEnumerable<string> ips, IDbTransaction tran = null)
+        {
+            const string sql = @"DELETE FROM tb_ip_blacklist WHERE ip=@Ip;";
+            return DbConn.Execute(sql, param: ips.Select(p => new {Ip = p}), transaction: tran);
         }
 
         #endregion
