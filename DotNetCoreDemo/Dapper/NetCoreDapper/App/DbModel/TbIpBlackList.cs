@@ -5,7 +5,7 @@ using DapperMapExt;
 
 namespace App.DbModel
 {
-    public partial class TbIpBlackList
+    public partial class TbIpBlackList: ModelBase
     {
         #region 属性
 
@@ -21,6 +21,7 @@ namespace App.DbModel
 
         [Column(Name = "is_enable")]
         public virtual bool IsEnable { get; set; }
+
         public virtual string Descr { get; set; }
 
         #endregion
@@ -32,7 +33,7 @@ namespace App.DbModel
         /// </summary>
         /// <param name="name">字段名</param>
         /// <returns></returns>
-        public virtual Object this[String name]
+        public override Object this[String name]
         {
             get
             {
@@ -237,10 +238,49 @@ namespace App.DbModel
         public int? Scale { get; set; }
     }
 
-    interface IModel
+    /// <summary>
+    /// 索引器接访问口。
+    ///   该接口用于通过名称快速访问对象属性或字段（属性优先）
+    /// </summary>
+    public interface IIndexAccessor
     {
-        Object this[String name] { get; set; }
+        /// <summary>
+        /// 获取/设置 指定名称的属性或字段的值
+        /// </summary>
+        /// <param name="name">名称</param>
+        /// <returns/>
+        object this[string name] { get; set; }
+    }
 
+    public abstract class _Base
+    {
+        public static readonly IList<Field> AllFields;
+    }
 
+    public abstract class __Base
+    {
+        public const string DataBaseTableName = "";
+    }
+
+    public abstract class ModelBase : IIndexAccessor
+    {
+        public class __ : __Base
+        {
+        }
+
+        public class _ : _Base
+        {
+        }
+
+        #region IIndexAccessor
+
+        public virtual object this[string name]
+        {
+            get { throw new NotImplementedException(); }
+
+            set { throw new NotImplementedException(); }
+        }
+
+        #endregion
     }
 }

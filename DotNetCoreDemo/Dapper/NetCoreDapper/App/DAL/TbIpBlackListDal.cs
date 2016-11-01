@@ -53,7 +53,10 @@ namespace App.DAL
         /// <returns></returns>
         public virtual TbIpBlackList GetByPk(Int64 id, IDbTransaction tran = null)
         {
-            const string sql = "select * from tb_ip_blacklist where id = @Id";
+            const string format = "SELECT * FROM {0} WHERE id = @Id";
+
+            var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
+
             return DbConn.QueryFirst<TbIpBlackList>(
                 sql: sql,
                 param: new { Id = id },
@@ -81,21 +84,24 @@ namespace App.DAL
         /// <returns></returns>
         public virtual IEnumerable<TbIpBlackList> GetByIp(string ip, int top, string sort, IDbTransaction tran = null)
         {
-            const string format = "select * from tb_ip_blacklist where ip = @Ip {0} {1}";
+            const string format = "SELECT * FROM {0} WHERE ip = @Ip {1} {2}";
 
             var sortClause = string.Empty;
             if (!string.IsNullOrWhiteSpace(sort))
             {
-                sortClause = "Order By " + sort;
+                sortClause = "ORDER BY " + sort;
             }
 
             var limitClause = string.Empty;
             if (top > 0)
             {
-                limitClause = "limit " + top;
+                limitClause = "LIMIT " + top;
             }
 
-            var sql = string.Format(format, sortClause, limitClause);
+            var sql = string.Format(format,
+                TbIpBlackList.__.DataBaseTableName,
+                sortClause, limitClause);
+
             return DbConn.Query<TbIpBlackList>(
                 sql: sql,
                 param: new { Ip = ip },
@@ -118,7 +124,7 @@ namespace App.DAL
         public virtual IEnumerable<TbIpBlackList> GetTopSort(string where, object param = null,
             int top = 0, string sort = null, IDbTransaction tran = null)
         {
-            const string format = "select * from tb_ip_blacklist {0} {1} {2}";
+            const string format = "SELECT * FROM {0} {1} {2} {3}";
 
             var whereClause = string.Empty;
             if (!string.IsNullOrWhiteSpace(where))
@@ -127,23 +133,26 @@ namespace App.DAL
 
                 if (!whereClause.StartsWith("where", StringComparison.OrdinalIgnoreCase))
                 {
-                    whereClause = "Where " + whereClause;
+                    whereClause = "WHERE " + whereClause;
                 }
             }
 
             var sortClause = string.Empty;
             if (!string.IsNullOrWhiteSpace(sort))
             {
-                sortClause = "Order By " + sort;
+                sortClause = "ORDER BY " + sort;
             }
 
             var limitClause = string.Empty;
             if (top > 0)
             {
-                limitClause = "Limit " + top;
+                limitClause = "LIMIT " + top;
             }
 
-            var sql = string.Format(format, whereClause, sortClause, limitClause);
+            var sql = string.Format(format,
+                TbIpBlackList.__.DataBaseTableName,
+                whereClause, sortClause, limitClause);
+
             return DbConn.Query<TbIpBlackList>(
                 sql: sql,
                 param: param,
@@ -166,7 +175,7 @@ namespace App.DAL
         /// </returns>
         public virtual Tuple<Int64, Int64> GetPageInfo(int pageSize, string where = null, object param = null)
         {
-            const string format = @"SELECT Count(*) FROM tb_ip_blacklist {0}";
+            const string format = @"SELECT COUNT(*) FROM {0} {1}";
 
             var whereClause = string.Empty;
             if (!string.IsNullOrWhiteSpace(where))
@@ -175,11 +184,14 @@ namespace App.DAL
 
                 if (!whereClause.StartsWith("where", StringComparison.OrdinalIgnoreCase))
                 {
-                    whereClause = "Where " + whereClause;
+                    whereClause = "WHERE " + whereClause;
                 }
             }
 
-            var sql = string.Format(format, whereClause);
+            var sql = string.Format(format,
+                TbIpBlackList.__.DataBaseTableName,
+                whereClause);
+
             var recordCount = DbConn.ExecuteScalar<Int64>(sql, param);
 
             var pageCount = 1L;
@@ -204,7 +216,7 @@ namespace App.DAL
         public virtual IEnumerable<TbIpBlackList> GetPageList(Int64 pageIndex, int pageSize,
             string where = null, object param = null, string sort = null)
         {
-            const string format = "select * from tb_ip_blacklist {0} {1} {2};";
+            const string format = "SELECT * FROM {0} {1} {2} {3};";
 
             var whereClause = string.Empty;
             if (!string.IsNullOrWhiteSpace(where))
@@ -213,23 +225,26 @@ namespace App.DAL
 
                 if (!whereClause.StartsWith("where", StringComparison.OrdinalIgnoreCase))
                 {
-                    whereClause = "Where " + whereClause;
+                    whereClause = "WHERE " + whereClause;
                 }
             }
 
             var sortClause = string.Empty;
             if (!string.IsNullOrWhiteSpace(sort))
             {
-                sortClause = "Order By " + sort;
+                sortClause = "ORDER BY " + sort;
             }
 
             var limitClause = string.Empty;
             if (pageIndex > 0 && pageSize > 0)
             {
-                limitClause = $"Limit {(pageSize - 1L)*pageSize},{pageSize}";
+                limitClause = $"LIMIT {(pageSize - 1L)*pageSize},{pageSize}";
             }
 
-            var sql = string.Format(format, whereClause, sortClause, limitClause);
+            var sql = string.Format(format,
+                TbIpBlackList.__.DataBaseTableName,
+                whereClause, sortClause, limitClause);
+
             return DbConn.Query<TbIpBlackList>(
                 sql: sql,
                 param: param);
@@ -249,7 +264,10 @@ namespace App.DAL
         /// <returns></returns>
         public virtual int Add(TbIpBlackList item, IDbTransaction tran = null)
         {
-            const string sql = @"INSERT into tb_ip_blacklist(ip,add_time,end_time,is_enable,descr) values(@Ip,@AddTime,@EndTime,@IsEnable,@Descr);SELECT LAST_INSERT_ID();";
+            const string format = @"INSERT INTO {0}(ip,add_time,end_time,is_enable,descr) VALUES(@Ip,@AddTime,@EndTime,@IsEnable,@Descr);SELECT LAST_INSERT_ID();";
+
+            var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
+
             item.Id = DbConn.ExecuteScalar<Int64>(sql, param: item, transaction: tran);
 
             return 1;
@@ -263,9 +281,10 @@ namespace App.DAL
         /// <returns></returns>
         public virtual int Add(IEnumerable<TbIpBlackList> items, IDbTransaction tran = null)
         {
-            const string sql = @"INSERT into tb_ip_blacklist(ip,add_time,end_time,is_enable,descr) values(@Ip,@AddTime,@EndTime,@IsEnable,@Descr);";
-            
+            // const string format = @"INSERT INTO {0}(ip,add_time,end_time,is_enable,descr) VALUES(@Ip,@AddTime,@EndTime,@IsEnable,@Descr);";
+            // var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
             // return DbConn.Execute(sql, param: items, transaction: tran);
+
             var count = 0;
             foreach (var item in items)
             {
@@ -281,14 +300,16 @@ namespace App.DAL
         #region Update
 
         /// <summary>
-        /// 更新
+        /// 更新（根据原始主键OriginalXXX更新其它字段信息）
         /// </summary>
         /// <param name="item">实体对象</param>
         /// <param name="tran">事务</param>
         /// <returns></returns>
         public virtual int Update(TbIpBlackList item, IDbTransaction tran = null)
         {
-            const string sql = "UPDATE tb_ip_blacklist SET ip=@Ip,add_time=@AddTime,end_time=@EndTime,is_enable=@IsEnable,descr=@Descr WHERE id=@Id";
+            const string format = "UPDATE {0} SET ip=@Ip,add_time=@AddTime,end_time=@EndTime,is_enable=@IsEnable,descr=@Descr WHERE id=@OriginalId";
+
+            var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
 
             return DbConn.Execute(sql, param: item, transaction: tran);
         }
@@ -313,7 +334,7 @@ namespace App.DAL
                 return 0;
             }
 
-            const string format = "UPDATE tb_ip_blacklist SET {0} WHERE {1};";
+            const string format = "UPDATE {0} SET {1} WHERE {2};";
 
             var setClause = curFieldList.Aggregate(string.Empty,
                 (raw, p) => $"{raw},{p.ColumnName}=@{p.Name}",
@@ -324,7 +345,9 @@ namespace App.DAL
                 (raw, p) => $"{raw} and {p.ColumnName}=@{p.Name}",
                 last => last.Trim().Substring(4));
 
-            var sql = string.Format(format, setClause, whereClause);
+            var sql = string.Format(format,
+                TbIpBlackList.__.DataBaseTableName,
+                setClause, whereClause);
 
             return DbConn.Execute(sql, param: item, transaction: tran);
         }
@@ -357,7 +380,7 @@ namespace App.DAL
         /// <returns></returns>
         public virtual int Update(TbIpBlackList item, string strSet, string strWhere, IDbTransaction tran = null)
         {
-            const string format = "UPDATE tb_ip_blacklist SET {0} {1};";
+            const string format = "UPDATE {0} SET {1} {2};";
 
             if (string.IsNullOrWhiteSpace(strSet))
             {
@@ -371,11 +394,13 @@ namespace App.DAL
 
                 if (!whereClause.StartsWith("where", StringComparison.OrdinalIgnoreCase))
                 {
-                    whereClause = "Where " + whereClause;
+                    whereClause = "WHERE " + whereClause;
                 }
             }
 
-            var sql = string.Format(format, strSet, whereClause);
+            var sql = string.Format(format,
+                TbIpBlackList.__.DataBaseTableName,
+                strSet, whereClause);
 
             return DbConn.Execute(sql, param: item, transaction: tran);
         }
@@ -392,7 +417,10 @@ namespace App.DAL
         /// <returns></returns>
         public virtual int RemoveByPk(Int64 id, IDbTransaction tran = null)
         {
-            const string sql = @"DELETE FROM tb_ip_blacklist WHERE id=@Id;";
+            const string format = @"DELETE FROM {0} WHERE id=@Id;";
+
+            var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
+
             return DbConn.Execute(sql, param: new {Id = id}, transaction: tran);
         }
 
@@ -404,7 +432,10 @@ namespace App.DAL
         /// <returns></returns>
         public virtual int RemoveByPks(IEnumerable<Int64> ids, IDbTransaction tran = null)
         {
-            const string sql = @"DELETE FROM tb_ip_blacklist WHERE id=@Id;";
+            const string format = @"DELETE FROM {0} WHERE id=@Id;";
+
+            var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
+
             return DbConn.Execute(sql, param: ids.Select(p => new {Id = p}), transaction: tran);
         }
 
@@ -416,7 +447,10 @@ namespace App.DAL
         /// <returns></returns>
         public virtual int RemoveByIp(string ip, IDbTransaction tran = null)
         {
-            const string sql = @"DELETE FROM tb_ip_blacklist WHERE ip=@Ip;";
+            const string format = @"DELETE FROM {0} WHERE ip=@Ip;";
+
+            var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
+
             return DbConn.Execute(sql, param: new { Ip = ip }, transaction: tran);
         }
 
@@ -428,7 +462,10 @@ namespace App.DAL
         /// <returns></returns>
         public virtual int RemoveByIps(IEnumerable<string> ips, IDbTransaction tran = null)
         {
-            const string sql = @"DELETE FROM tb_ip_blacklist WHERE ip=@Ip;";
+            const string format = @"DELETE FROM {0} WHERE ip=@Ip;";
+
+            var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
+
             return DbConn.Execute(sql, param: ips.Select(p => new {Ip = p}), transaction: tran);
         }
 
@@ -441,7 +478,7 @@ namespace App.DAL
         /// <returns></returns>
         public virtual int Remove(string where, object param = null, IDbTransaction tran = null)
         {
-            const string format = @"DELETE FROM tb_ip_blacklist {0};";
+            const string format = @"DELETE FROM {0} {1};";
 
             var whereClause = string.Empty;
             if (!string.IsNullOrWhiteSpace(where))
@@ -450,11 +487,13 @@ namespace App.DAL
 
                 if (!whereClause.StartsWith("where", StringComparison.OrdinalIgnoreCase))
                 {
-                    whereClause = "Where " + whereClause;
+                    whereClause = "WHERE " + whereClause;
                 }
             }
 
-            var sql = string.Format(format, whereClause);
+            var sql = string.Format(format,
+                TbIpBlackList.__.DataBaseTableName,
+                whereClause);
 
             return DbConn.Execute(sql, param: param, transaction: tran);
         }
