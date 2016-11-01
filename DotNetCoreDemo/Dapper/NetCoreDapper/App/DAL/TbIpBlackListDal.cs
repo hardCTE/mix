@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace App.DAL
 {
@@ -295,6 +294,42 @@ namespace App.DAL
         }
 
         /// <summary>
+        /// 更新（根据原始主键OriginalXXX更新包含的字段列表）
+        /// </summary>
+        /// <param name="item">实体对象</param>
+        /// <param name="nameList">包含的name列表</param>
+        /// <param name="tran">事务</param>
+        /// <returns></returns>
+        public virtual int Update(TbIpBlackList item, IList<string> nameList, IDbTransaction tran = null)
+        {
+            if (nameList == null)
+            {
+                return Update(item, tran);
+            }
+
+            var curFieldList = TbIpBlackList._.AllFields.Where(f => nameList.Contains(f.Name) && !f.IsReadonly);
+            if (!curFieldList.Any())
+            {
+                return 0;
+            }
+
+            const string format = "UPDATE tb_ip_blacklist SET {0} WHERE {1};";
+
+            var setClause = curFieldList.Aggregate(string.Empty,
+                (raw, p) => $"{raw},{p.ColumnName}=@{p.Name}",
+                last => last.Trim(','));
+
+            var originalKeys = TbIpBlackList._.AllFields.Where(p => p.IsPrimaryKey && p.IsReadonly);
+            var whereClause = originalKeys.Aggregate(string.Empty,
+                (raw, p) => $"{raw} and {p.ColumnName}=@{p.Name}",
+                last => last.Trim().Substring(4));
+
+            var sql = string.Format(format, setClause, whereClause);
+
+            return DbConn.Execute(sql, param: item, transaction: tran);
+        }
+
+        /// <summary>
         /// 批量更新
         /// </summary>
         /// <param name="items">实体对象集合</param>
@@ -311,7 +346,6 @@ namespace App.DAL
 
             return count;
         }
-
 
         #endregion
 
@@ -393,10 +427,5 @@ namespace App.DAL
         }
 
         #endregion
-
-        public partial class _
-        {
-            //public static readonly 
-        }
     }
 }

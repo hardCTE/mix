@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using App.DAL;
 using App.DbModel;
 using MySql.Data.MySqlClient;
@@ -20,11 +21,13 @@ namespace App.DALTest
 
         public void ExecAllTest()
         {
-            TestAdd();
-            TestAdds();
-            TestAddThenRemove();
-            TestAddThenRemoveByIp();
-            TestAddThenUpdate();
+            var methods = this.GetType().GetMethods();
+            foreach (var method in methods.Where(p => p.Name.StartsWith("Test")))
+            {
+                Console.WriteLine($"-----begin invoke-----{method.Name}--------");
+                method.Invoke(this, null);
+                Console.WriteLine($"_____end invoke_______{method.Name}_________{DateTime.Now.ToString("HH:mm:ss")}____");
+            }
         }
 
         public void TestAdd()
@@ -356,6 +359,101 @@ namespace App.DALTest
             items[4].IsEnable = !items[4].IsEnable;
             items[4].Descr = "one update_" + items[4].Descr;
             _dal.Update(items[4]);
+        }
+
+        public void TestAddThenUpdate2()
+        {
+            var items = new List<TbIpBlackList>
+            {
+                new TbIpBlackList
+                {
+                    Ip = Guid.NewGuid().ToString("N"),
+                    AddTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddDays(10),
+                    IsEnable = true,
+                    Descr = "1-newAdd-" + Guid.NewGuid()
+                },
+                new TbIpBlackList
+                {
+                    Ip = Guid.NewGuid().ToString("N"),
+                    AddTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddDays(10),
+                    IsEnable = false,
+                    Descr = "2-newAdd-" + Guid.NewGuid()
+                },
+                new TbIpBlackList
+                {
+                    Ip = Guid.NewGuid().ToString("N"),
+                    AddTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddDays(10),
+                    IsEnable = true,
+                    Descr = "3-newAdd-" + Guid.NewGuid()
+                },
+                new TbIpBlackList
+                {
+                    Ip = Guid.NewGuid().ToString("N"),
+                    AddTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddDays(10),
+                    IsEnable = false,
+                    Descr = "4-newAdd-" + Guid.NewGuid()
+                },
+                new TbIpBlackList
+                {
+                    Ip = Guid.NewGuid().ToString("N"),
+                    AddTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddDays(10),
+                    IsEnable = true,
+                    Descr = "5-newAdd-" + Guid.NewGuid()
+                },
+            };
+
+            var count = _dal.Add(items);
+            foreach (var item in items)
+            {
+                Console.WriteLine($"{item.Id}~{item.Ip}~{item.AddTime}");
+            }
+
+            items[0].Ip = "new update_" + items[0].Ip;
+            items[0].AddTime = items[0].AddTime.AddHours(1);
+            items[0].EndTime = items[0].EndTime?.AddHours(1);
+            items[0].IsEnable = !items[0].IsEnable;
+            items[0].Descr = "new update_" + items[0].Descr;
+            items[0].OriginalId = items[0].Id;
+
+            items[1].Ip = "new update_" + items[1].Ip;
+            items[1].AddTime = items[1].AddTime.AddHours(1);
+            items[1].EndTime = items[1].EndTime?.AddHours(1);
+            items[1].IsEnable = !items[1].IsEnable;
+            items[1].Descr = "new update_" + items[1].Descr;
+            items[1].OriginalId = items[1].Id;
+
+            var count0 = _dal.Update(items[0], new List<string>
+            {
+                TbIpBlackList._.Ip.Name
+            });
+            Console.WriteLine($"update0 = {count0},id={items[0].Id}");
+
+            var count1 = _dal.Update(items[1], new List<string>
+            {
+                TbIpBlackList._.Ip.Name,
+                TbIpBlackList._.AddTime.Name,
+                TbIpBlackList._.EndTime.Name,
+                TbIpBlackList._.IsEnable.Name,
+                TbIpBlackList._.Descr.Name
+            });
+            Console.WriteLine($"update1 = {count1},id={items[1].Id}");
+
+            var count2 = _dal.Update(items[2], new List<string>
+            {
+                TbIpBlackList._.Ip.Name,
+                TbIpBlackList._.AddTime.Name,
+                TbIpBlackList._.EndTime.Name,
+                TbIpBlackList._.IsEnable.Name,
+                TbIpBlackList._.Descr.Name
+            });
+
+            Console.WriteLine($"update2 = {count2},id={items[2].Id}");
+
         }
     }
 }
