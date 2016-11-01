@@ -96,6 +96,11 @@ namespace App.DbModel
         /// </summary>
         public partial class __
         {
+            /// <summary>
+            /// 数据库表名
+            /// </summary>
+            public const string DataBaseTableName = "tb_ip_blacklist";
+
             public const string OriginalId = "OriginalId";
             public const string Id = "Id";
             public const string Ip = "Ip";

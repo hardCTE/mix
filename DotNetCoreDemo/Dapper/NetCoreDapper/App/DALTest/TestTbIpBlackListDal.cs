@@ -455,5 +455,88 @@ namespace App.DALTest
             Console.WriteLine($"update2 = {count2},id={items[2].Id}");
 
         }
+
+        public void TestAddThenUpdate3()
+        {
+            var items = new List<TbIpBlackList>
+            {
+                new TbIpBlackList
+                {
+                    Ip = Guid.NewGuid().ToString("N"),
+                    AddTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddDays(10),
+                    IsEnable = true,
+                    Descr = "1-add for custom update-" + Guid.NewGuid()
+                },
+                new TbIpBlackList
+                {
+                    Ip = Guid.NewGuid().ToString("N"),
+                    AddTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddDays(10),
+                    IsEnable = false,
+                    Descr = "2-add for custom update-" + Guid.NewGuid()
+                },
+                new TbIpBlackList
+                {
+                    Ip = Guid.NewGuid().ToString("N"),
+                    AddTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddDays(10),
+                    IsEnable = true,
+                    Descr = "3-add for custom update-" + Guid.NewGuid()
+                },
+                new TbIpBlackList
+                {
+                    Ip = Guid.NewGuid().ToString("N"),
+                    AddTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddDays(10),
+                    IsEnable = false,
+                    Descr = "4-add for custom update-" + Guid.NewGuid()
+                },
+                new TbIpBlackList
+                {
+                    Ip = Guid.NewGuid().ToString("N"),
+                    AddTime = DateTime.Now,
+                    EndTime = DateTime.Now.AddDays(10),
+                    IsEnable = true,
+                    Descr = "5-add for custom update-" + Guid.NewGuid()
+                },
+            };
+
+            var count = _dal.Add(items);
+            foreach (var item in items)
+            {
+                Console.WriteLine($"{item.Id}~{item.Ip}~{item.AddTime}");
+            }
+
+            items[0].Ip = "custom update_" + items[0].Ip;
+            items[0].AddTime = items[0].AddTime.AddHours(1);
+            items[0].EndTime = items[0].EndTime?.AddHours(2);
+            items[0].IsEnable = !items[0].IsEnable;
+            items[0].Descr = "custom update_" + items[0].Descr;
+            items[0].OriginalId = items[0].Id;
+
+            items[1].Ip = "custom update_" + items[1].Ip;
+            items[1].AddTime = items[1].AddTime.AddHours(1);
+            items[1].EndTime = items[1].EndTime?.AddHours(2);
+            items[1].IsEnable = !items[1].IsEnable;
+            items[1].Descr = "custom update_" + items[1].Descr;
+            items[1].OriginalId = items[1].Id;
+
+            var where0 = "id=@OriginalId";
+            var set0 = "ip=@Ip,add_time=@AddTime";
+            var count0 = _dal.Update(items[0], set0, where0);
+            Console.WriteLine($"update0 = {count0},id={items[0].Id}");
+
+            var where1 = "id=@Id";
+            var set1 = "ip=@Ip,add_time=@AddTime,end_time=@EndTime,is_enable=@IsEnable,descr=@Descr";
+            var count1 = _dal.Update(items[1], set1, where1);
+            Console.WriteLine($"update1 = {count1},id={items[1].Id}");
+
+            var count2 = _dal.Update(items[2], set0, where0);
+            Console.WriteLine($"update2 = {count2},id={items[2].Id}");
+
+            var count3 = _dal.Update(items[3], set1, where1);
+            Console.WriteLine($"update2 = {count3},id={items[3].Id}");
+        }
     }
 }

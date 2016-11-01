@@ -296,7 +296,7 @@ namespace App.DAL
         /// <summary>
         /// 更新（根据原始主键OriginalXXX更新包含的字段列表）
         /// </summary>
-        /// <param name="item">实体对象</param>
+        /// <param name="item">仅更新的字段、OriginalXXX字段</param>
         /// <param name="nameList">包含的name列表</param>
         /// <param name="tran">事务</param>
         /// <returns></returns>
@@ -345,6 +345,39 @@ namespace App.DAL
             }
 
             return count;
+        }
+
+        /// <summary>
+        /// 自定义更新
+        /// </summary>
+        /// <param name="item">实体对象（仅更新的字段、Where字段）</param>
+        /// <param name="strSet">set语句（不含set关键字，可以用sql参数，Eg：cloumn_name=@CloumnName）</param>
+        /// <param name="strWhere">where语句（不含where关键字，可以用sql参数，Eg：id=@Id）</param>
+        /// <param name="tran">事务</param>
+        /// <returns></returns>
+        public virtual int Update(TbIpBlackList item, string strSet, string strWhere, IDbTransaction tran = null)
+        {
+            const string format = "UPDATE tb_ip_blacklist SET {0} {1};";
+
+            if (string.IsNullOrWhiteSpace(strSet))
+            {
+                return 0;
+            }
+
+            var whereClause = string.Empty;
+            if (!string.IsNullOrWhiteSpace(strWhere))
+            {
+                whereClause = strWhere.Trim();
+
+                if (!whereClause.StartsWith("where", StringComparison.OrdinalIgnoreCase))
+                {
+                    whereClause = "Where " + whereClause;
+                }
+            }
+
+            var sql = string.Format(format, strSet, whereClause);
+
+            return DbConn.Execute(sql, param: item, transaction: tran);
         }
 
         #endregion
