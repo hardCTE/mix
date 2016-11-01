@@ -429,27 +429,27 @@ namespace App.DALTest
 
             var count0 = _dal.Update(items[0], new List<string>
             {
-                TbIpBlackList._.Ip.Name
+                TbIpBlackList.__.Ip
             });
             Console.WriteLine($"update0 = {count0},id={items[0].Id}");
 
             var count1 = _dal.Update(items[1], new List<string>
             {
-                TbIpBlackList._.Ip.Name,
-                TbIpBlackList._.AddTime.Name,
-                TbIpBlackList._.EndTime.Name,
-                TbIpBlackList._.IsEnable.Name,
-                TbIpBlackList._.Descr.Name
+                TbIpBlackList.__.Ip,
+                TbIpBlackList.__.AddTime,
+                TbIpBlackList.__.EndTime,
+                TbIpBlackList.__.IsEnable,
+                TbIpBlackList.__.Descr
             });
             Console.WriteLine($"update1 = {count1},id={items[1].Id}");
 
             var count2 = _dal.Update(items[2], new List<string>
             {
-                TbIpBlackList._.Ip.Name,
-                TbIpBlackList._.AddTime.Name,
-                TbIpBlackList._.EndTime.Name,
-                TbIpBlackList._.IsEnable.Name,
-                TbIpBlackList._.Descr.Name
+                TbIpBlackList.__.Ip,
+                TbIpBlackList.__.AddTime,
+                TbIpBlackList.__.EndTime,
+                TbIpBlackList.__.IsEnable,
+                TbIpBlackList.__.Descr
             });
 
             Console.WriteLine($"update2 = {count2},id={items[2].Id}");

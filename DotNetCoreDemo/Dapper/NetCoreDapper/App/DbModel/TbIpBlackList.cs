@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using App.DAL;
 using DapperMapExt;
 
 namespace App.DbModel
 {
     public partial class TbIpBlackList
     {
+        #region 属性
+
         public virtual Int64 OriginalId { get; set; }
         public virtual Int64 Id { get; set; }
         public virtual string Ip { get; set; }
@@ -22,11 +23,96 @@ namespace App.DbModel
         public virtual bool IsEnable { get; set; }
         public virtual string Descr { get; set; }
 
+        #endregion
+
+        #region 获取/设置 字段值
+
+        /// <summary>
+        /// 获取/设置 字段值。
+        /// </summary>
+        /// <param name="name">字段名</param>
+        /// <returns></returns>
+        public virtual Object this[String name]
+        {
+            get
+            {
+                switch (name)
+                {
+                    case __.OriginalId:
+                        return OriginalId;
+                    case __.Id:
+                        return Id;
+                    case __.Ip:
+                        return Ip;
+                    case __.AddTime:
+                        return AddTime;
+                    case __.EndTime:
+                        return EndTime;
+                    case __.IsEnable:
+                        return IsEnable;
+                    case __.Descr:
+                        return Descr;
+                    default:
+                        return null;
+                }
+            }
+            set
+            {
+                switch (name)
+                {
+                    case __.OriginalId:
+                        OriginalId = Convert.ToInt64(value);
+                        break;
+                    case __.Id:
+                        Id = Convert.ToInt64(value);
+                        break;
+                    case __.Ip:
+                        Ip = Convert.ToString(value);
+                        break;
+                    case __.AddTime:
+                        AddTime = Convert.ToDateTime(value);
+                        break;
+                    case __.EndTime:
+                        EndTime = value == null ? (DateTime?) null : Convert.ToDateTime(value);
+                        break;
+                    case __.IsEnable:
+                        IsEnable = Convert.ToBoolean(value);
+                        break;
+                    case __.Descr:
+                        Descr = Convert.ToString(value);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        #endregion
+
+        #region 字段信息
+
+        /// <summary>
+        /// 获取属性字段名称快捷方式
+        /// </summary>
+        public partial class __
+        {
+            public const string OriginalId = "OriginalId";
+            public const string Id = "Id";
+            public const string Ip = "Ip";
+            public const string AddTime = "AddTime";
+            public const string EndTime = "EndTime";
+            public const string IsEnable = "IsEnable";
+            public const string Descr = "Descr";
+        }
+
+        /// <summary>
+        /// 获取字段定义快捷方式
+        /// </summary>
         public partial class _
         {
             public static readonly Field OriginalId = new Field
             {
-                Name = "OriginalId",
+                Name = __.OriginalId,
                 ColumnName = "id",
                 DisplayName = "自增Id",
                 Description = "自增Id",
@@ -38,7 +124,7 @@ namespace App.DbModel
 
             public static readonly Field Id = new Field
             {
-                Name = "Id",
+                Name = __.Id,
                 ColumnName = "id",
                 DisplayName = "自增Id",
                 Description = "自增Id",
@@ -50,7 +136,7 @@ namespace App.DbModel
 
             public static readonly Field Ip = new Field
             {
-                Name = "Ip",
+                Name = __.Ip,
                 ColumnName = "ip",
                 DisplayName = "Ip地址",
                 Description = "Ip地址",
@@ -64,7 +150,7 @@ namespace App.DbModel
 
             public static readonly Field AddTime = new Field
             {
-                Name = "AddTime",
+                Name = __.AddTime,
                 ColumnName = "add_time",
                 DisplayName = "添加时间",
                 Description = "添加时间",
@@ -77,7 +163,7 @@ namespace App.DbModel
 
             public static readonly Field EndTime = new Field
             {
-                Name = "EndTime",
+                Name = __.EndTime,
                 ColumnName = "end_time",
                 DisplayName = "修改时间",
                 Description = "修改时间",
@@ -90,7 +176,7 @@ namespace App.DbModel
 
             public static readonly Field IsEnable = new Field
             {
-                Name = "IsEnable",
+                Name = __.IsEnable,
                 ColumnName = "is_enable",
                 DisplayName = "是否启用",
                 Description = "是否启用",
@@ -103,7 +189,7 @@ namespace App.DbModel
 
             public static readonly Field Descr = new Field
             {
-                Name = "Descr",
+                Name = __.Descr,
                 ColumnName = "descr",
                 DisplayName = "描述",
                 Description = "描述",
@@ -126,6 +212,8 @@ namespace App.DbModel
                 Descr
             };
         }
+
+        #endregion
     }
 
     public class Field
@@ -142,5 +230,12 @@ namespace App.DbModel
         public int? Length { get; set; }
         public int? Precision { get; set; }
         public int? Scale { get; set; }
+    }
+
+    interface IModel
+    {
+        Object this[String name] { get; set; }
+
+
     }
 }
