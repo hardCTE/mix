@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head id="Head1">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><title>
+	NuGet Private Repository
+</title>
+    <style>
+        body { font-family: Calibri; }
+    </style>
+</head>
+<body>
+    <div>
+        <h2>You are running NuGet.Server v2.11.2.0</h2>
+        <p>
+            Click <a href="http://myget.lc.com/nuget/Packages">here</a> to view your packages.
+        </p>
+        <fieldset style="width:800px">
+            <legend><strong>Repository URLs</strong></legend>
+            In the package manager settings, add the following URL to the list of 
+            Package Sources:
+            <blockquote>
+                <strong>http://myget.lc.com/nuget</strong>
+            </blockquote>
+            
+            To enable pushing packages to this feed using the <a href="https://www.nuget.org/downloads">NuGet command line tool</a> (nuget.exe), set the api key appSetting in web.config.
+            
+            <blockquote>
+                <strong>nuget.exe push {package file} {apikey} -Source http://myget.lc.com/api/v2/package</strong>
+            </blockquote>            
+        </fieldset>
+
+        
+        <fieldset style="width:800px">
+            <legend><strong>Adding packages</strong></legend>
+
+            To add packages to the feed put package files (.nupkg files) in the folder
+            <code>D:\MyStudy\MyGit\Mix\mix\NugetServer\MyNuGetServer\NuGetWeb\Packages</code><br><br>
+
+            Click <a href="http://myget.lc.com/nugetserver/api/clear-cache">here</a> to clear the package cache.
+        </fieldset>
+        
+    </div>
+
+
+<div id="GWDANG_HAS_BUILT"></div></body></html>
