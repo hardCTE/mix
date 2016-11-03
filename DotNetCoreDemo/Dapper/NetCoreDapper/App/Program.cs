@@ -9,6 +9,7 @@ using Dapper;
 using DapperMapExt;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Abstractions;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 
@@ -20,7 +21,7 @@ namespace App
         public static IServiceCollection Services { get; private set; }
         public static IServiceProvider ServiceProvider { get; private set; }
 
-        public Program(IServiceCollection serviceCollection, IServiceProvider provider)
+        Program(IServiceCollection serviceCollection, IServiceProvider provider)
         {
             Services = serviceCollection;
             ServiceProvider = provider;
@@ -31,7 +32,7 @@ namespace App
             Services.Configure<ConfigSettingModel>(Configuration);
         }
 
-        private IConfigurationRoot GetConfiguration()
+        private static IConfigurationRoot GetConfiguration()
         {
             var builder = new ConfigurationBuilder();
             builder.SetBasePath(Directory.GetCurrentDirectory())
@@ -59,6 +60,12 @@ namespace App
             // test dal
             //var test = new TestTbIpBlackListDal(con);
             //test.ExecAllTest();
+
+            if (Configuration == null)
+            {
+                Configuration = GetConfiguration();
+                Configuration.Bind(new ConfigSettingModel());
+            }
 
             var global = Configuration.GetValue<AppExa>("appExa");
 
