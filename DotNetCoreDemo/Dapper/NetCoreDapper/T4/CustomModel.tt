@@ -123,7 +123,7 @@ foreach(IDataColumn Field in Table.GetAllColumns(Tables, true))
 				ColumnName = "<#=Field.Name#>",
                 DisplayName = "<#=Field.DisplayName#>",
                 Description = "<#=(""+Field.Description).Replace("\\", "\\\\")#>",
-                DataType = <#=Field.DataType.Name#>,
+                DataType = DbType.<#=Field.DataType.Name#>,
                 DefaultValue = <#=Field.Default==null?"null":"\""+Field.Default.Replace("\\", "\\\\")+"\""#>,
                 IsPrimaryKey = <#=Field.PrimaryKey.ToString().ToLower()#>,
                 IsReadonly = false,

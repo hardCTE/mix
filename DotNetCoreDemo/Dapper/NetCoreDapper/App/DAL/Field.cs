@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,7 +12,7 @@ namespace App.DAL
         public string ColumnName { get; set; }
         public string DisplayName { get; set; }
         public string Description { get; set; }
-        public Type DataType { get; set; }
+        public DbType DataType { get; set; }
         public string DefaultValue { get; set; }
         public bool IsPrimaryKey { get; set; }
         public bool IsReadonly { get; set; }

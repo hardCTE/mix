@@ -1,7 +1,7 @@
 ﻿/*
- * XCoder v6.8.6151.34742
+ * XCoder v6.8.6151.35342
  * 作者：Administrator/XUDB
- * 时间：2016-11-03 19:18:11
+ * 时间：2016-11-03 19:38:13
  * 版权：xdb_~2016
 */
 ﻿using System;
@@ -13,6 +13,11 @@ namespace MyNameSpace
 {
     /// <summary>学校信息表包含各种常用字段</summary>
 	/// <remarks>学校信息表（包含各种常用字段）</remarks>
+    //[Description("学校信息表（包含各种常用字段）")]
+    //[BindIndex("PRIMARY", true, "key_id,key_str")]
+    //[BindIndex("idx_mul", false, "idx_code,idx_num")]
+    //[BindIndex("fk_categoryId", false, "ref_category")]
+    //[BindTable("tb_school_info", Description = "学校信息表（包含各种常用字段）", ConnName = "DbConnName", DbType = DatabaseType.MySql)]
     public partial class tb_school_infoDal
     {
         #region 属性
@@ -178,7 +183,7 @@ namespace MyNameSpace
 				ColumnName = "key_id",
                 DisplayName = "班级联合主键1，int、非空",
                 Description = "班级（联合主键1，int、非空）",
-                DataType = Int32,
+                DataType = DbType.Int32,
                 DefaultValue = null,
                 IsPrimaryKey = true,
                 IsReadonly = false,
@@ -195,7 +200,7 @@ namespace MyNameSpace
 				ColumnName = "key_str",
                 DisplayName = "学校联合主键2，字符可空，最大40",
                 Description = "学校（联合主键2，字符可空，最大40）",
-                DataType = String,
+                DataType = DbType.String,
                 DefaultValue = "",
                 IsPrimaryKey = true,
                 IsReadonly = false,
@@ -212,7 +217,7 @@ namespace MyNameSpace
 				ColumnName = "idx_code",
                 DisplayName = "编码索引1",
                 Description = "编码（索引1）",
-                DataType = String,
+                DataType = DbType.String,
                 DefaultValue = null,
                 IsPrimaryKey = false,
                 IsReadonly = false,
@@ -229,7 +234,7 @@ namespace MyNameSpace
 				ColumnName = "idx_num",
                 DisplayName = "数字序号索引2",
                 Description = "数字（序号索引2）",
-                DataType = Int64,
+                DataType = DbType.Int64,
                 DefaultValue = null,
                 IsPrimaryKey = false,
                 IsReadonly = false,
@@ -246,7 +251,7 @@ namespace MyNameSpace
 				ColumnName = "ref_category",
                 DisplayName = "引用的分类Id",
                 Description = "引用的分类Id",
-                DataType = Int64,
+                DataType = DbType.Int64,
                 DefaultValue = null,
                 IsPrimaryKey = false,
                 IsReadonly = false,
@@ -263,7 +268,7 @@ namespace MyNameSpace
 				ColumnName = "txt_char",
                 DisplayName = "标示字符char200",
                 Description = "标示（字符char200)",
-                DataType = String,
+                DataType = DbType.String,
                 DefaultValue = null,
                 IsPrimaryKey = false,
                 IsReadonly = false,
@@ -280,7 +285,7 @@ namespace MyNameSpace
 				ColumnName = "txt_text",
                 DisplayName = "名称text8000",
                 Description = "名称（text8000）",
-                DataType = String,
+                DataType = DbType.String,
                 DefaultValue = null,
                 IsPrimaryKey = false,
                 IsReadonly = false,
@@ -297,7 +302,7 @@ namespace MyNameSpace
 				ColumnName = "bool_enum",
                 DisplayName = "是否启用bool替代值enumyn",
                 Description = "是否启用（bool替代值enumyn）",
-                DataType = Boolean,
+                DataType = DbType.Boolean,
                 DefaultValue = "false",
                 IsPrimaryKey = false,
                 IsReadonly = false,
@@ -314,7 +319,7 @@ namespace MyNameSpace
 				ColumnName = "ext_enum",
                 DisplayName = "扩展枚举可多重选择1,2,3",
                 Description = "扩展枚举（可多重选择1,2,3）",
-                DataType = String,
+                DataType = DbType.String,
                 DefaultValue = null,
                 IsPrimaryKey = false,
                 IsReadonly = false,
@@ -331,7 +336,7 @@ namespace MyNameSpace
 				ColumnName = "num_tinyint",
                 DisplayName = "类型tinyint2",
                 Description = "类型（tinyint2）",
-                DataType = SByte,
+                DataType = DbType.SByte,
                 DefaultValue = null,
                 IsPrimaryKey = false,
                 IsReadonly = false,
@@ -348,7 +353,7 @@ namespace MyNameSpace
 				ColumnName = "num_decimal",
                 DisplayName = "价格decimal10,2",
                 Description = "价格（decimal10,2）",
-                DataType = Decimal,
+                DataType = DbType.Decimal,
                 DefaultValue = null,
                 IsPrimaryKey = false,
                 IsReadonly = false,
@@ -365,7 +370,7 @@ namespace MyNameSpace
 				ColumnName = "dt_date",
                 DisplayName = "注册日期date",
                 Description = "注册日期（date）",
-                DataType = DateTime,
+                DataType = DbType.DateTime,
                 DefaultValue = null,
                 IsPrimaryKey = false,
                 IsReadonly = false,
@@ -382,7 +387,7 @@ namespace MyNameSpace
 				ColumnName = "dt_datetime",
                 DisplayName = "修改时间datetime",
                 Description = "修改时间（datetime）",
-                DataType = DateTime,
+                DataType = DbType.DateTime,
                 DefaultValue = null,
                 IsPrimaryKey = false,
                 IsReadonly = false,
@@ -399,7 +404,7 @@ namespace MyNameSpace
 				ColumnName = "dt_timestamp",
                 DisplayName = "时间戳",
                 Description = "时间戳",
-                DataType = DateTime,
+                DataType = DbType.DateTime,
                 DefaultValue = null,
                 IsPrimaryKey = false,
                 IsReadonly = false,
