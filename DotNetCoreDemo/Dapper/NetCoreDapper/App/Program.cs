@@ -1,17 +1,11 @@
 ﻿using System;
+using System.Data;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using App.DALTest;
-using App.DbModel;
-using App.Operate;
-using Dapper;
-using DapperMapExt;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Abstractions;
 using MySql.Data.MySqlClient;
-using Newtonsoft.Json;
 
 namespace App
 {
@@ -19,18 +13,8 @@ namespace App
     {
         public static IConfiguration Configuration { get; private set; }
         public static IServiceCollection Services { get; private set; }
-        public static IServiceProvider ServiceProvider { get; private set; }
 
-        Program(IServiceCollection serviceCollection, IServiceProvider provider)
-        {
-            Services = serviceCollection;
-            ServiceProvider = provider;
-
-            Configuration = GetConfiguration();
-
-            Services.AddOptions();
-            Services.Configure<ConfigSettingModel>(Configuration);
-        }
+        public static IDbConnection DbConnection { get; private set; }
 
         private static IConfigurationRoot GetConfiguration()
         {
@@ -41,12 +25,24 @@ namespace App
             return builder.Build();
         }
 
-        public static void Main(string[] args)
+        private static void Init()
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            var con = new MySqlConnection("server=172.28.9.175;database=xdb_test;uid=root;pwd=123456;SslMode=None");
 
+            Services =new ServiceCollection();
+            Configuration = GetConfiguration();
+
+            Services.AddOptions();
+            Services.Configure<ConfigSettingModel>(Configuration);
+            
             Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+            DbConnection = new MySqlConnection("server=172.28.9.175;database=xdb_test;uid=root;pwd=123456;SslMode=None");
+        }
+
+        public static void Main(string[] args)
+        {
+            Init();
+
             //var ns = typeof (TbIpBlackList).Namespace;
             //DapperScaffold.Initialize(ns, );
 
@@ -58,19 +54,16 @@ namespace App
             //basic.Use();
 
             // test dal
-            //var test = new TestTbIpBlackListDal(con);
-            //test.ExecAllTest();
+            var test = new TestTbIpBlackListDal(DbConnection);
+            test.ExecAllTest();
 
-            if (Configuration == null)
-            {
-                Configuration = GetConfiguration();
-                Configuration.Bind(new ConfigSettingModel());
-            }
-
+            /*
+            // 获取配置信息
             var global = Configuration.GetValue<AppExa>("appExa");
 
-            var str = JsonConvert.SerializeObject(global, Formatting.Indented);
+            var str = Newtonsoft.Json.JsonConvert.SerializeObject(global, Newtonsoft.Json.Formatting.Indented);
             Console.WriteLine(str);
+            */
 
             Console.ReadKey();
         }
