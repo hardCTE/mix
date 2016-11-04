@@ -5,7 +5,7 @@ using DapperMapExt;
 
 namespace App.DbModel
 {
-    public partial class TbIpBlackList: ModelBase
+    public partial class TbIpBlackList : ModelBase
     {
         #region 属性
 
@@ -26,7 +26,20 @@ namespace App.DbModel
 
         #endregion
 
-        #region 获取/设置 字段值
+        #region 实现抽象类方法
+
+        /// <summary>
+        /// 获取模型所有字段
+        /// </summary>
+        /// <returns></returns>
+        public override IList<Field> GetAllFields()
+        {
+            return _.AllFields;
+        }
+
+        #endregion
+
+        #region 获取/设置 字段值 实现接口
 
         /// <summary>
         /// 获取/设置 字段值。
@@ -220,66 +233,10 @@ namespace App.DbModel
         }
 
         #endregion
-    }
 
-    public class Field
-    {
-        public string Name { get; set; }
-        public string ColumnName { get; set; }
-        public string DisplayName { get; set; }
-        public string Description { get; set; }
-        public DbType DataType { get; set; }
-        public string DefaultValue { get; set; }
-        public bool IsPrimaryKey { get; set; }
-        public bool IsReadonly { get; set; }
-        public bool IsNullable { get; set; }
-        public int? Length { get; set; }
-        public int? Precision { get; set; }
-        public int? Scale { get; set; }
-    }
+        #region 基础操作
 
-    /// <summary>
-    /// 索引器接访问口。
-    ///   该接口用于通过名称快速访问对象属性或字段（属性优先）
-    /// </summary>
-    public interface IIndexAccessor
-    {
-        /// <summary>
-        /// 获取/设置 指定名称的属性或字段的值
-        /// </summary>
-        /// <param name="name">名称</param>
-        /// <returns/>
-        object this[string name] { get; set; }
-    }
-
-    public abstract class _Base
-    {
-        public static readonly IList<Field> AllFields;
-    }
-
-    public abstract class __Base
-    {
-        public const string DataBaseTableName = "";
-    }
-
-    public abstract class ModelBase : IIndexAccessor
-    {
-        public class __ : __Base
-        {
-        }
-
-        public class _ : _Base
-        {
-        }
-
-        #region IIndexAccessor
-
-        public virtual object this[string name]
-        {
-            get { throw new NotImplementedException(); }
-
-            set { throw new NotImplementedException(); }
-        }
+        
 
         #endregion
     }

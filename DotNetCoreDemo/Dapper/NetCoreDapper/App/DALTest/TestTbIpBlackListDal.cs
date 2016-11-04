@@ -538,5 +538,12 @@ namespace App.DALTest
             var count3 = _dal.Update(items[3], set1, where1);
             Console.WriteLine($"update2 = {count3},id={items[3].Id}");
         }
+
+        public void TestMathPow()
+        {
+            var bb = Math.Pow(10, 3);
+            Console.WriteLine(bb);
+            Console.WriteLine((decimal) bb);
+        }
     }
 }

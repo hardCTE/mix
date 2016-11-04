@@ -4,12 +4,13 @@
  * 时间：2016-11-03 19:38:13
  * 版权：xdb_~2016
 */
-﻿using System;
+
+using System;
 using System.Collections.Generic;
 using System.Data;
-﻿using App.DAL;
+using App.DbModel;
 
-namespace MyNameSpace
+namespace App.DAL
 {
     /// <summary>学校信息表包含各种常用字段</summary>
 	/// <remarks>学校信息表（包含各种常用字段）</remarks>
@@ -18,7 +19,7 @@ namespace MyNameSpace
     //[BindIndex("idx_mul", false, "idx_code,idx_num")]
     //[BindIndex("fk_categoryId", false, "ref_category")]
     //[BindTable("tb_school_info", Description = "学校信息表（包含各种常用字段）", ConnName = "DbConnName", DbType = DatabaseType.MySql)]
-    public partial class tb_school_infoDal
+    public partial class tb_school_info
     {
         #region 属性
         /// <summary>班级（联合主键1，int、非空）</summary>
@@ -129,8 +130,14 @@ namespace MyNameSpace
             /// </summary>
             public const string DataBaseTableName = "tb_school_info";
 
+			///<summary>原始主键，班级（联合主键1，int、非空）</summary>
+            public const String Originalkey_id = "key_id";
+
             ///<summary>班级（联合主键1，int、非空）</summary>
             public const String key_id = "key_id";
+
+			///<summary>原始主键，学校（联合主键2，字符可空，最大40）</summary>
+            public const String Originalkey_str = "key_str";
 
             ///<summary>学校（联合主键2，字符可空，最大40）</summary>
             public const String key_str = "key_str";
@@ -176,6 +183,24 @@ namespace MyNameSpace
         /// <summary>取得学校信息表包含各种常用字段字段信息的快捷方式</summary>
         public partial class _
         {
+            ///<summary>原始主键,班级（联合主键1，int、非空）</summary>
+            public static readonly Field Originalkey_id = new Field
+            {
+                Name = __.Originalkey_id,
+				ColumnName = "key_id",
+                DisplayName = "班级联合主键1，int、非空",
+                Description = "班级（联合主键1，int、非空）",
+                DataType = DbType.Int32,
+                DefaultValue = null,
+                IsPrimaryKey = true,
+				Identity = false,
+                IsReadonly = false,
+                IsNullable = false,
+                Length = 10,
+                Precision = 10,
+                Scale = 0
+			};
+
             ///<summary>班级（联合主键1，int、非空）</summary>
             public static readonly Field key_id = new Field
             {
@@ -186,10 +211,29 @@ namespace MyNameSpace
                 DataType = DbType.Int32,
                 DefaultValue = null,
                 IsPrimaryKey = true,
+				Identity = false,
                 IsReadonly = false,
                 IsNullable = false,
                 Length = 10,
                 Precision = 10,
+                Scale = 0
+			};
+
+            ///<summary>原始主键,学校（联合主键2，字符可空，最大40）</summary>
+            public static readonly Field Originalkey_str = new Field
+            {
+                Name = __.Originalkey_str,
+				ColumnName = "key_str",
+                DisplayName = "学校联合主键2，字符可空，最大40",
+                Description = "学校（联合主键2，字符可空，最大40）",
+                DataType = DbType.String,
+                DefaultValue = "",
+                IsPrimaryKey = true,
+				Identity = false,
+                IsReadonly = false,
+                IsNullable = false,
+                Length = 40,
+                Precision = 0,
                 Scale = 0
 			};
 
@@ -203,6 +247,7 @@ namespace MyNameSpace
                 DataType = DbType.String,
                 DefaultValue = "",
                 IsPrimaryKey = true,
+				Identity = false,
                 IsReadonly = false,
                 IsNullable = false,
                 Length = 40,
@@ -218,8 +263,9 @@ namespace MyNameSpace
                 DisplayName = "编码索引1",
                 Description = "编码（索引1）",
                 DataType = DbType.String,
-                DefaultValue = null,
+                DefaultValue = "",
                 IsPrimaryKey = false,
+				Identity = false,
                 IsReadonly = false,
                 IsNullable = true,
                 Length = 50,
@@ -237,6 +283,7 @@ namespace MyNameSpace
                 DataType = DbType.Int64,
                 DefaultValue = null,
                 IsPrimaryKey = false,
+				Identity = false,
                 IsReadonly = false,
                 IsNullable = false,
                 Length = 19,
@@ -254,6 +301,7 @@ namespace MyNameSpace
                 DataType = DbType.Int64,
                 DefaultValue = null,
                 IsPrimaryKey = false,
+				Identity = false,
                 IsReadonly = false,
                 IsNullable = false,
                 Length = 19,
@@ -269,8 +317,9 @@ namespace MyNameSpace
                 DisplayName = "标示字符char200",
                 Description = "标示（字符char200)",
                 DataType = DbType.String,
-                DefaultValue = null,
+                DefaultValue = "",
                 IsPrimaryKey = false,
+				Identity = false,
                 IsReadonly = false,
                 IsNullable = true,
                 Length = 200,
@@ -286,8 +335,9 @@ namespace MyNameSpace
                 DisplayName = "名称text8000",
                 Description = "名称（text8000）",
                 DataType = DbType.String,
-                DefaultValue = null,
+                DefaultValue = "",
                 IsPrimaryKey = false,
+				Identity = false,
                 IsReadonly = false,
                 IsNullable = true,
                 Length = 65535,
@@ -305,6 +355,7 @@ namespace MyNameSpace
                 DataType = DbType.Boolean,
                 DefaultValue = "false",
                 IsPrimaryKey = false,
+				Identity = false,
                 IsReadonly = false,
                 IsNullable = false,
                 Length = 1,
@@ -320,8 +371,9 @@ namespace MyNameSpace
                 DisplayName = "扩展枚举可多重选择1,2,3",
                 Description = "扩展枚举（可多重选择1,2,3）",
                 DataType = DbType.String,
-                DefaultValue = null,
+                DefaultValue = "",
                 IsPrimaryKey = false,
+				Identity = false,
                 IsReadonly = false,
                 IsNullable = true,
                 Length = 5,
@@ -339,6 +391,7 @@ namespace MyNameSpace
                 DataType = DbType.SByte,
                 DefaultValue = null,
                 IsPrimaryKey = false,
+				Identity = false,
                 IsReadonly = false,
                 IsNullable = true,
                 Length = 3,
@@ -356,6 +409,7 @@ namespace MyNameSpace
                 DataType = DbType.Decimal,
                 DefaultValue = null,
                 IsPrimaryKey = false,
+				Identity = false,
                 IsReadonly = false,
                 IsNullable = true,
                 Length = 10,
@@ -373,6 +427,7 @@ namespace MyNameSpace
                 DataType = DbType.DateTime,
                 DefaultValue = null,
                 IsPrimaryKey = false,
+				Identity = false,
                 IsReadonly = false,
                 IsNullable = true,
                 Length = 0,
@@ -390,6 +445,7 @@ namespace MyNameSpace
                 DataType = DbType.DateTime,
                 DefaultValue = null,
                 IsPrimaryKey = false,
+				Identity = false,
                 IsReadonly = false,
                 IsNullable = true,
                 Length = 0,
@@ -407,12 +463,34 @@ namespace MyNameSpace
                 DataType = DbType.DateTime,
                 DefaultValue = null,
                 IsPrimaryKey = false,
+				Identity = false,
                 IsReadonly = false,
                 IsNullable = true,
                 Length = 0,
                 Precision = 0,
                 Scale = 0
 			};
+
+			///<summary>所有字段列表</summary>
+			public static readonly IList<Field> AllFields = new List<Field>
+            {
+				Originalkey_id,			
+				key_id,
+				Originalkey_str,			
+				key_str,			
+				idx_code,			
+				idx_num,			
+				ref_category,			
+				txt_char,			
+				txt_text,			
+				bool_enum,			
+				ext_enum,			
+				num_tinyint,			
+				num_decimal,			
+				dt_date,			
+				dt_datetime,			
+				dt_timestamp,
+            };
 
         }
 
