@@ -5,7 +5,7 @@ using DapperMapExt;
 
 namespace App.DbModel
 {
-    public partial class TbIpBlackList : ModelBase
+    public partial class TbIpBlackList : TableModelBase
     {
         #region 属性
 
@@ -29,17 +29,18 @@ namespace App.DbModel
         #region 实现抽象类方法
 
         /// <summary>
+        /// 数据库表名
+        /// </summary>
+        public override string DataBaseTableName => __.DataBaseTableName;
+
+        /// <summary>
         /// 获取模型所有字段
         /// </summary>
         /// <returns></returns>
-        public override IList<Field> GetAllFields()
+        public virtual IList<Field> GetAllFields()
         {
             return _.AllFields;
         }
-
-        #endregion
-
-        #region 获取/设置 字段值 实现接口
 
         /// <summary>
         /// 获取/设置 字段值。

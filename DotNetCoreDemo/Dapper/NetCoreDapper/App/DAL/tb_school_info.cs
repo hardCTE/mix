@@ -19,7 +19,7 @@ namespace App.DAL
     //[BindIndex("idx_mul", false, "idx_code,idx_num")]
     //[BindIndex("fk_categoryId", false, "ref_category")]
     //[BindTable("tb_school_info", Description = "学校信息表（包含各种常用字段）", ConnName = "DbConnName", DbType = DatabaseType.MySql)]
-    public partial class tb_school_info
+    public partial class tb_school_info : TableModelBase
     {
         #region 属性
         /// <summary>班级（联合主键1，int、非空）</summary>
@@ -65,7 +65,22 @@ namespace App.DAL
 		public virtual DateTime dt_timestamp { get; set; }
         #endregion
 
-        #region 获取/设置 字段值
+        #region 实现抽象类方法
+
+        /// <summary>
+        /// 数据库表名
+        /// </summary>
+        public override string DataBaseTableName => __.DataBaseTableName;
+
+        /// <summary>
+        /// 获取模型所有字段
+        /// </summary>
+        /// <returns></returns>
+        public virtual IList<Field> GetAllFields()
+        {
+            return _.AllFields;
+        }
+
         /// <summary>
         /// 获取/设置 字段值。
         /// 一个索引，基类使用反射实现。
@@ -73,7 +88,7 @@ namespace App.DAL
         /// </summary>
         /// <param name="name">字段名</param>
         /// <returns></returns>
-        public virtual Object this[String name]
+        public override Object this[String name]
         {
             get
             {
@@ -118,6 +133,7 @@ namespace App.DAL
 				}
             }
         }
+
         #endregion
 
         #region 字段信息

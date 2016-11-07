@@ -6,10 +6,17 @@ using System.Linq;
 namespace App.DbModel
 {
     /// <summary>
-    /// ModelBase
+    /// TableModelBase
     /// </summary>
-    public abstract class ModelBase : IIndexAccessor
+    public abstract class TableModelBase : IIndexAccessor
     {
+        #region 抽象属性及方法
+
+        /// <summary>
+        /// 数据库表名
+        /// </summary>
+        public virtual string DataBaseTableName { get; }
+
         /// <summary>
         /// 获取模型所有字段
         /// </summary>
@@ -18,6 +25,8 @@ namespace App.DbModel
         {
             throw new NotImplementedException();
         }
+
+        #endregion
 
         #region IIndexAccessor
 
@@ -242,6 +251,20 @@ namespace App.DbModel
             }
 
             return !errorList.Any();
+        }
+
+        /// <summary>
+        /// 获取原始Keys Where的sql语句
+        /// </summary>
+        /// <returns></returns>
+        public virtual string GetWhereClauseOrginalKeys()
+        {
+            var originalKeys = GetAllFields().Where(p => p.IsPrimaryKey && p.IsReadonly);
+            var whereClause = originalKeys.Aggregate(string.Empty,
+                (raw, p) => $"{raw} and {p.ColumnName}=@{p.Name}",
+                last => last.Trim().Substring(4));
+
+            return whereClause;
         }
     }
 }

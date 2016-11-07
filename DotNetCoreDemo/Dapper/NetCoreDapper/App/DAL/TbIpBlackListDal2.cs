@@ -7,116 +7,13 @@ using System.Linq;
 
 namespace App.DAL
 {
-
-    public abstract class ModelBase : DbBase
-    {
-        public ModelBase(IDbConnection dbCon = null) : base(dbCon)
-        {
-
-        }
-
-        public virtual string DataTableName { get; }
-
-        public virtual IList<Field> GetAllFields()
-        {
-            throw new NotImplementedException();
-        }
-
-        //public virtual T Parse
-
-        /// <summary>
-        /// 验证数据(有不符合条件的立即返回)
-        /// </summary>
-        /// <param name="isNew">是否新添加</param>
-        /// <param name="errorInfo">出错信息（通过验证则返回null）</param>
-        /// <returns></returns>
-        public virtual bool Valid(bool isNew, out string errorInfo)
-        {
-            IList<string> errorList;
-            var isValid = Valid(isNew, false, out errorList);
-
-            if (!isValid && errorList != null && errorList.Any())
-            {
-                errorInfo = errorList.FirstOrDefault();
-            }
-            else
-            {
-                errorInfo = null;
-            }
-
-            return isValid;
-        }
-
-        /// <summary>
-        /// 验证数据
-        /// </summary>
-        /// <param name="isNew">是否新添加</param>
-        /// <param name="validAll">是否需要验证所有字段</param>
-        /// <param name="errorList">出错信息（通过验证则返回null）</param>
-        /// <returns></returns>
-        public virtual bool Valid(bool isNew, bool validAll, out IList<string> errorList)
-        {
-            errorList = null;
-
-            // TODO:
-            var fields = GetAllFields();
-            foreach (var field in fields)
-            {
-                // 非空
-                //field.IsNullable
-
-                // 唯一索引是否重复
-
-                // 数据长度
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// 验证数据
-        /// </summary>
-        /// <param name="isNew">是否新添加</param>
-        /// <param name="validAll">是否需要验证所有字段</param>
-        /// <param name="fields">包含的字段</param>
-        /// <param name="errorList">出错信息（通过验证则返回null）</param>
-        /// <returns></returns>
-        public virtual bool Valid<T>(T item, bool isNew, bool validAll, IList<string> fields, out IList<string> errorList)
-        {
-            errorList = null;
-
-            // TODO:
-            var allFields = GetAllFields();
-            foreach (var field in fields)
-            {
-                // 非空
-                // 唯一索引是否重复
-
-                // 数据长度
-            }
-
-            return true;
-        }
-    }
-
-    public partial class TbIpBlackListDal2 : ModelBase
+    public partial class TbIpBlackListDal2 : DbBase
     {
         #region 定义
 
         public TbIpBlackListDal2(IDbConnection dbCon = null) : base(dbCon)
         {
 
-        }
-
-        #endregion
-
-        #region 完成抽象类 ModelBase
-
-        public override string DataTableName => TbIpBlackList.__.DataBaseTableName;
-
-        public override IList<Field> GetAllFields()
-        {
-            return TbIpBlackList._.AllFields;
         }
 
         #endregion
@@ -348,7 +245,7 @@ namespace App.DAL
         {
             const string format = @"INSERT INTO {0}(ip,add_time,end_time,is_enable,descr) VALUES(@Ip,@AddTime,@EndTime,@IsEnable,@Descr);SELECT LAST_INSERT_ID();";
 
-            var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
+            var sql = string.Format(format, item.DataBaseTableName);
 
             item.Id = DbConn.ExecuteScalar<Int64>(sql, param: item, transaction: tran);
 
@@ -391,7 +288,7 @@ namespace App.DAL
         {
             const string format = "UPDATE {0} SET ip=@Ip,add_time=@AddTime,end_time=@EndTime,is_enable=@IsEnable,descr=@Descr WHERE id=@OriginalId";
 
-            var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
+            var sql = string.Format(format, item.DataBaseTableName);
 
             return DbConn.Execute(sql, param: item, transaction: tran);
         }
@@ -422,13 +319,10 @@ namespace App.DAL
                 (raw, p) => $"{raw},{p.ColumnName}=@{p.Name}",
                 last => last.Trim(','));
 
-            var originalKeys = TbIpBlackList._.AllFields.Where(p => p.IsPrimaryKey && p.IsReadonly);
-            var whereClause = originalKeys.Aggregate(string.Empty,
-                (raw, p) => $"{raw} and {p.ColumnName}=@{p.Name}",
-                last => last.Trim().Substring(4));
+            var whereClause = item.GetWhereClauseOrginalKeys();
 
             var sql = string.Format(format,
-                TbIpBlackList.__.DataBaseTableName,
+                item.DataBaseTableName,
                 setClause, whereClause);
 
             return DbConn.Execute(sql, param: item, transaction: tran);
@@ -481,7 +375,7 @@ namespace App.DAL
             }
 
             var sql = string.Format(format,
-                TbIpBlackList.__.DataBaseTableName,
+                item.DataBaseTableName,
                 strSet, whereClause);
 
             return DbConn.Execute(sql, param: item, transaction: tran);
