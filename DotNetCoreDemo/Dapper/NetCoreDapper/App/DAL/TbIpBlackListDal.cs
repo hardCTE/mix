@@ -4,31 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using App.FrameCore;
 
 namespace App.DAL
 {
-    public abstract class DbBase
-    {
-        public IDbConnection DbConn { get; private set; }
-
-        public DbBase() : this(null)
-        {
-        }
-
-        public DbBase(IDbConnection dbcon)
-        {
-            if (dbcon != null)
-            {
-                DbConn = dbcon;
-            }
-            else
-            {
-                // TODO:根据类型自动构建
-            }
-        }
-    }
-
-    public partial class TbIpBlackListDal: DbBase
+    public partial class TbIpBlackListDal : DbBase
     {
         #region 定义
 
@@ -59,7 +39,7 @@ namespace App.DAL
 
             return DbConn.QueryFirst<TbIpBlackList>(
                 sql: sql,
-                param: new { Id = id },
+                param: new {Id = id},
                 transaction: tran);
         }
 
@@ -104,7 +84,7 @@ namespace App.DAL
 
             return DbConn.Query<TbIpBlackList>(
                 sql: sql,
-                param: new { Ip = ip },
+                param: new {Ip = ip},
                 transaction: tran);
         }
 
@@ -197,10 +177,10 @@ namespace App.DAL
             var pageCount = 1L;
             if (pageSize != 0)
             {
-                var lastPageCount = recordCount % pageSize;
-                pageCount = recordCount / pageSize + (lastPageCount > 0 ? 1 : 0);
+                var lastPageCount = recordCount%pageSize;
+                pageCount = recordCount/pageSize + (lastPageCount > 0 ? 1 : 0);
             }
-            
+
             return new Tuple<long, long>(recordCount, pageCount);
         }
 
@@ -264,7 +244,8 @@ namespace App.DAL
         /// <returns></returns>
         public virtual int Add(TbIpBlackList item, IDbTransaction tran = null)
         {
-            const string format = @"INSERT INTO {0}(ip,add_time,end_time,is_enable,descr) VALUES(@Ip,@AddTime,@EndTime,@IsEnable,@Descr);SELECT LAST_INSERT_ID();";
+            const string format =
+                @"INSERT INTO {0}(ip,add_time,end_time,is_enable,descr) VALUES(@Ip,@AddTime,@EndTime,@IsEnable,@Descr);SELECT LAST_INSERT_ID();";
 
             var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
 
@@ -288,7 +269,7 @@ namespace App.DAL
             var count = 0;
             foreach (var item in items)
             {
-                Add(item,tran);
+                Add(item, tran);
                 count++;
             }
 
@@ -307,7 +288,8 @@ namespace App.DAL
         /// <returns></returns>
         public virtual int Update(TbIpBlackList item, IDbTransaction tran = null)
         {
-            const string format = "UPDATE {0} SET ip=@Ip,add_time=@AddTime,end_time=@EndTime,is_enable=@IsEnable,descr=@Descr WHERE id=@OriginalId";
+            const string format =
+                "UPDATE {0} SET ip=@Ip,add_time=@AddTime,end_time=@EndTime,is_enable=@IsEnable,descr=@Descr WHERE id=@OriginalId";
 
             var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
 
@@ -451,7 +433,7 @@ namespace App.DAL
 
             var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
 
-            return DbConn.Execute(sql, param: new { Ip = ip }, transaction: tran);
+            return DbConn.Execute(sql, param: new {Ip = ip}, transaction: tran);
         }
 
         /// <summary>

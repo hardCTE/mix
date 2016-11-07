@@ -1,4 +1,5 @@
 ﻿using App.DbModel;
+using App.FrameCore;
 using Dapper;
 using System;
 using System.Collections.Generic;

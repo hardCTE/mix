@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace App.DbModel
+namespace App.FrameCore
 {
     public class Field
     {

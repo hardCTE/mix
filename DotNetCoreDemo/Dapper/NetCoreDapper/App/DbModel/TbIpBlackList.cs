@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using App.FrameCore;
 using DapperMapExt;
 
 namespace App.DbModel

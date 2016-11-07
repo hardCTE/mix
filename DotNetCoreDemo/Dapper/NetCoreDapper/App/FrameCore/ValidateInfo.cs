@@ -1,4 +1,4 @@
-﻿namespace App.DbModel
+﻿namespace App.FrameCore
 {
     /// <summary>
     /// 验证信息

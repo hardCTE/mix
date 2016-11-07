@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using App.DbModel;
+using App.FrameCore;
 
 namespace App.DAL
 {

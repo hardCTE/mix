@@ -1,4 +1,4 @@
-﻿namespace App.DbModel
+﻿namespace App.FrameCore
 {
     /// <summary>
     /// 索引器接访问口。
