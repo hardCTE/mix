@@ -202,5 +202,46 @@ namespace App.DbModel
 
             return !errorList.Any();
         }
+
+        /// <summary>
+        /// 检查字段完整性（除fieldNames字段外，是否还有其它必填的字段）
+        /// </summary>
+        /// <param name="fieldNames">字段名称列表</param>
+        /// <param name="isNew">是否新添加</param>
+        /// <param name="errorList">出错信息</param>
+        /// <returns></returns>
+        public virtual bool CheckIntegrity(IList<string> fieldNames, bool isNew,
+            out IList<ValidateInfo> errorList)
+        {
+            errorList = new List<ValidateInfo>();
+            fieldNames = fieldNames ?? new List<string>();
+
+            // 其它字段
+            var fields = GetAllFields().Where(p => !fieldNames.Contains(p.Name));
+            foreach (var field in fields)
+            {
+                if (isNew)
+                {
+                    if (field.IsPrimaryKey && field.IsReadonly || field.Identity)
+                    {
+                        continue;   // 只读主键（原始主键） 或者 标示（自增）
+                    }
+                }
+
+                var error = Valid(field);
+
+                if (!string.IsNullOrWhiteSpace(error))
+                {
+                    errorList.Add(new ValidateInfo
+                    {
+                        Name = field.Name,
+                        Error = error,
+                        DataValue = this[field.Name]
+                    });
+                }
+            }
+
+            return !errorList.Any();
+        }
     }
 }
