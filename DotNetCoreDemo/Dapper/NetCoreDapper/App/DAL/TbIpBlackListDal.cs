@@ -1,72 +1,66 @@
-﻿using App.DbModel;
-using Dapper;
-using System;
+﻿/*
+ * XCoder v6.8.6159.30224
+ * 作者：Administrator/XUDB
+ * 时间：2016-11-11 16:54:38
+ * 版权：hardCTE 2016~2016
+*/
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using App.FrameCore;
+using Dapper;
 
 namespace App.DAL
 {
-    public partial class TbIpBlackListDal : DbBase
+	/// <summary>
+    /// TbIpBlacklist 数据访问层
+    /// </summary>
+    public partial class TbIpBlacklistDal : DbBase
     {
-        #region 定义
+		#region 定义
 
-        public TbIpBlackListDal(IDbConnection dbCon = null) : base(dbCon)
+        public TbIpBlacklistDal(IDbConnection dbCon = null) : base(dbCon)
         {
-
-        }
+		}
 
         #endregion
 
-        #region 查询
-
-        // todo:唯一索引（条件查询、是否存在）
+		#region 查询
 
         #region 按键及索引 查询
 
-        /// <summary>
-        /// 根据主键获取EO
+		/// <summary>
+        /// 根据主键获取实体
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="tran">事务</param>
+		/// <param name="id">自增Id</param>
+		/// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual TbIpBlackList GetByPk(Int64 id, IDbTransaction tran = null)
+        public virtual TbIpBlacklist GetByPk(Int64 id, IDbTransaction tran = null)
         {
-            const string format = "SELECT * FROM {0} WHERE id = @Id";
+            const string format = "SELECT * FROM {0} WHERE id=@Id";
 
-            var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
+            var sql = string.Format(format, TbIpBlacklist._.DataBaseTableName);
 
-            return DbConn.QueryFirst<TbIpBlackList>(
+            return DbConn.QueryFirst<TbIpBlacklist>(
                 sql: sql,
                 param: new {Id = id},
                 transaction: tran);
         }
 
-        /// <summary>
-        /// 根据索引 idx_ip(ip列)查询列表
+		/// <summary>
+        /// 根据索引获取实体列表
         /// </summary>
-        /// <param name="ip"></param>
-        /// <param name="tran">事务</param>
+		/// <param name="ip">ip值(支持正则表达式)</param>
+		/// <param name="top">获取行数(默认为0，即所有)</param>
+        /// <param name="sort">排序方式(不包含关键字Order By)</param>
+		/// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual IEnumerable<TbIpBlackList> GetByIp(string ip, IDbTransaction tran = null)
+        public virtual IEnumerable<TbIpBlacklist> GetByIdxIdxIp(String ip, int top = 0, string sort = null, IDbTransaction tran = null)
         {
-            return GetByIp(ip, 0, null, tran);
-        }
+            const string format = "SELECT * FROM {0} WHERE ip=@Ip {1} {2}";
 
-        /// <summary>
-        /// 根据索引 idx_ip(ip列)查询列表
-        /// </summary>
-        /// <param name="ip"></param>
-        /// <param name="top">获取行数</param>
-        /// <param name="sort">排序方式</param>
-        /// <param name="tran">事务</param>
-        /// <returns></returns>
-        public virtual IEnumerable<TbIpBlackList> GetByIp(string ip, int top, string sort, IDbTransaction tran = null)
-        {
-            const string format = "SELECT * FROM {0} WHERE ip = @Ip {1} {2}";
-
-            var sortClause = string.Empty;
+			var sortClause = string.Empty;
             if (!string.IsNullOrWhiteSpace(sort))
             {
                 sortClause = "ORDER BY " + sort;
@@ -78,11 +72,11 @@ namespace App.DAL
                 limitClause = "LIMIT " + top;
             }
 
-            var sql = string.Format(format,
-                TbIpBlackList.__.DataBaseTableName,
-                sortClause, limitClause);
+            var sql = string.Format(format, 
+				TbIpBlacklist._.DataBaseTableName,
+				sortClause, limitClause);
 
-            return DbConn.Query<TbIpBlackList>(
+            return DbConn.Query<TbIpBlacklist>(
                 sql: sql,
                 param: new {Ip = ip},
                 transaction: tran);
@@ -97,11 +91,11 @@ namespace App.DAL
         /// </summary>
         /// <param name="where">自定义条件，where子句（不包含关键字Where）</param>
         /// <param name="param">参数（对象属性自动转为sql中的参数，eg：new {Id=10},则执行sql会转为参数对象 @Id,值为10）</param>
-        /// <param name="top">获取行数</param>
+        /// <param name="top">获取行数(默认为0，即所有)</param>
         /// <param name="sort">排序方式(不包含关键字Order By)</param>
         /// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual IEnumerable<TbIpBlackList> GetTopSort(string where, object param = null,
+        public virtual IEnumerable<TbIpBlacklist> GetTopSort(string where, object param = null,
             int top = 0, string sort = null, IDbTransaction tran = null)
         {
             const string format = "SELECT * FROM {0} {1} {2} {3}";
@@ -130,10 +124,10 @@ namespace App.DAL
             }
 
             var sql = string.Format(format,
-                TbIpBlackList.__.DataBaseTableName,
+                TbIpBlacklist._.DataBaseTableName,
                 whereClause, sortClause, limitClause);
 
-            return DbConn.Query<TbIpBlackList>(
+            return DbConn.Query<TbIpBlacklist>(
                 sql: sql,
                 param: param,
                 transaction: tran);
@@ -169,7 +163,7 @@ namespace App.DAL
             }
 
             var sql = string.Format(format,
-                TbIpBlackList.__.DataBaseTableName,
+                TbIpBlacklist._.DataBaseTableName,
                 whereClause);
 
             var recordCount = DbConn.ExecuteScalar<Int64>(sql, param);
@@ -193,7 +187,7 @@ namespace App.DAL
         /// <param name="param">参数（对象属性自动转为sql中的参数，eg：new {Id=10},则执行sql会转为参数对象 @Id,值为10）</param>
         /// <param name="sort">排序方式(不包含关键字Order By)</param>
         /// <returns></returns>
-        public virtual IEnumerable<TbIpBlackList> GetPageList(Int64 pageIndex, int pageSize,
+        public virtual IEnumerable<TbIpBlacklist> GetPageList(Int64 pageIndex, int pageSize,
             string where = null, object param = null, string sort = null)
         {
             const string format = "SELECT * FROM {0} {1} {2} {3};";
@@ -222,10 +216,10 @@ namespace App.DAL
             }
 
             var sql = string.Format(format,
-                TbIpBlackList.__.DataBaseTableName,
+                TbIpBlacklist._.DataBaseTableName,
                 whereClause, sortClause, limitClause);
 
-            return DbConn.Query<TbIpBlackList>(
+            return DbConn.Query<TbIpBlacklist>(
                 sql: sql,
                 param: param);
         }
@@ -234,22 +228,24 @@ namespace App.DAL
 
         #endregion
 
-        #region Add
+		#region Add
 
         /// <summary>
         /// 添加
         /// </summary>
-        /// <param name="item"></param>
-        /// <param name="tran"></param>
+        /// <param name="item">实体</param>
+        /// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual int Add(TbIpBlackList item, IDbTransaction tran = null)
+        public virtual int Add(TbIpBlacklist item, IDbTransaction tran = null)
         {
-            const string format =
-                @"INSERT INTO {0}(ip,add_time,end_time,is_enable,descr) VALUES(@Ip,@AddTime,@EndTime,@IsEnable,@Descr);SELECT LAST_INSERT_ID();";
+            const string format = @"INSERT INTO {0}(ip,add_time,end_time,is_enable,descr) 
+				VALUES(@Ip,@AddTime,@EndTime,@IsEnable,@Descr);
+				SELECT LAST_INSERT_ID();";
 
-            var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
+            var sql = string.Format(format, TbIpBlacklist._.DataBaseTableName);
 
-            item.Id = DbConn.ExecuteScalar<Int64>(sql, param: item, transaction: tran);
+			item.Id = DbConn.ExecuteScalar<Int64>(sql, param: item, transaction: tran);
+			item.OriginalId = item.Id;
 
             return 1;
         }
@@ -257,15 +253,11 @@ namespace App.DAL
         /// <summary>
         /// 批量添加
         /// </summary>
-        /// <param name="items"></param>
-        /// <param name="tran"></param>
+        /// <param name="items">实体列表</param>
+        /// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual int Add(IEnumerable<TbIpBlackList> items, IDbTransaction tran = null)
+        public virtual int Add(IEnumerable<TbIpBlacklist> items, IDbTransaction tran = null)
         {
-            // const string format = @"INSERT INTO {0}(ip,add_time,end_time,is_enable,descr) VALUES(@Ip,@AddTime,@EndTime,@IsEnable,@Descr);";
-            // var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
-            // return DbConn.Execute(sql, param: items, transaction: tran);
-
             var count = 0;
             foreach (var item in items)
             {
@@ -286,12 +278,13 @@ namespace App.DAL
         /// <param name="item">实体对象</param>
         /// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual int Update(TbIpBlackList item, IDbTransaction tran = null)
+        public virtual int Update(TbIpBlacklist item, IDbTransaction tran = null)
         {
-            const string format =
-                "UPDATE {0} SET ip=@Ip,add_time=@AddTime,end_time=@EndTime,is_enable=@IsEnable,descr=@Descr WHERE id=@OriginalId";
+            const string format = @"UPDATE {0} 
+					SET ip=@Ip,add_time=@AddTime,end_time=@EndTime,is_enable=@IsEnable,descr=@Descr 
+					WHERE id=@OriginalId;";
 
-            var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
+            var sql = string.Format(format, TbIpBlacklist._.DataBaseTableName);
 
             return DbConn.Execute(sql, param: item, transaction: tran);
         }
@@ -303,14 +296,14 @@ namespace App.DAL
         /// <param name="nameList">包含的name列表</param>
         /// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual int Update(TbIpBlackList item, IList<string> nameList, IDbTransaction tran = null)
+        public virtual int Update(TbIpBlacklist item, IList<string> nameList, IDbTransaction tran = null)
         {
             if (nameList == null)
             {
                 return Update(item, tran);
             }
 
-            var curFieldList = TbIpBlackList._.AllFields.Where(f => nameList.Contains(f.Name) && !f.IsReadonly);
+            var curFieldList = TbIpBlacklist._.AllFields.Where(f => nameList.Contains(f.Name) && !f.IsReadonly);
             if (!curFieldList.Any())
             {
                 return 0;
@@ -322,13 +315,13 @@ namespace App.DAL
                 (raw, p) => $"{raw},{p.ColumnName}=@{p.Name}",
                 last => last.Trim(','));
 
-            var originalKeys = TbIpBlackList._.AllFields.Where(p => p.IsPrimaryKey && p.IsReadonly);
+            var originalKeys = TbIpBlacklist._.AllFields.Where(p => p.IsPrimaryKey && p.IsReadonly);
             var whereClause = originalKeys.Aggregate(string.Empty,
                 (raw, p) => $"{raw} and {p.ColumnName}=@{p.Name}",
                 last => last.Trim().Substring(4));
 
             var sql = string.Format(format,
-                TbIpBlackList.__.DataBaseTableName,
+                TbIpBlacklist._.DataBaseTableName,
                 setClause, whereClause);
 
             return DbConn.Execute(sql, param: item, transaction: tran);
@@ -340,7 +333,7 @@ namespace App.DAL
         /// <param name="items">实体对象集合</param>
         /// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual int Update(IEnumerable<TbIpBlackList> items, IDbTransaction tran = null)
+        public virtual int Update(IEnumerable<TbIpBlacklist> items, IDbTransaction tran = null)
         {
             var count = 0;
             foreach (var item in items)
@@ -360,7 +353,7 @@ namespace App.DAL
         /// <param name="strWhere">where语句（不含where关键字，可以用sql参数，Eg：id=@Id）</param>
         /// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual int Update(TbIpBlackList item, string strSet, string strWhere, IDbTransaction tran = null)
+        public virtual int Update(TbIpBlacklist item, string strSet, string strWhere, IDbTransaction tran = null)
         {
             const string format = "UPDATE {0} SET {1} {2};";
 
@@ -381,7 +374,7 @@ namespace App.DAL
             }
 
             var sql = string.Format(format,
-                TbIpBlackList.__.DataBaseTableName,
+                TbIpBlacklist._.DataBaseTableName,
                 strSet, whereClause);
 
             return DbConn.Execute(sql, param: item, transaction: tran);
@@ -389,69 +382,83 @@ namespace App.DAL
 
         #endregion
 
-        #region Remove
+		#region Remove
 
-        /// <summary>
-        /// 按主键删除
+		/*
+ * XCoder v6.8.6159.30224
+ * 作者：Administrator/XUDB
+ * 时间：2016-11-11 16:54:38
+ * 版权：hardCTE 2016~2016
+*/
+﻿	#region 按键及索引 删除
+
+		/// <summary>
+        /// 根据主键删除
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="tran"></param>
+		
+		/// <param name="id">自增Id</param>
+		/// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual int RemoveByPk(Int64 id, IDbTransaction tran = null)
+		public virtual int RemoveByPk(Int64 id, IDbTransaction tran = null)
         {
-            const string format = @"DELETE FROM {0} WHERE id=@Id;";
+            const string format = @"DELETE FROM {0} WHERE id=@OriginalId;";
 
-            var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
+            var sql = string.Format(format, TbIpBlacklist._.DataBaseTableName);
 
-            return DbConn.Execute(sql, param: new {Id = id}, transaction: tran);
+            return DbConn.Execute(sql, param: new {OriginalId = id}, transaction: tran);
         }
-
-        /// <summary>
-        /// 按主键批量删除
+	
+	
+		/// <summary>
+        /// 根据主键批量删除
         /// </summary>
-        /// <param name="ids"></param>
-        /// <param name="tran"></param>
+        /// <param name="ids">自增Id列表</param>
+        /// <param name="tran">事务</param>
         /// <returns></returns>
         public virtual int RemoveByPks(IEnumerable<Int64> ids, IDbTransaction tran = null)
         {
-            const string format = @"DELETE FROM {0} WHERE id=@Id;";
+            const string format = @"DELETE FROM {0} WHERE id=@OriginalId;";
 
-            var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
+            var sql = string.Format(format, TbIpBlacklist._.DataBaseTableName);
 
-            return DbConn.Execute(sql, param: ids.Select(p => new {Id = p}), transaction: tran);
+            return DbConn.Execute(sql, param: ids.Select(p => new {OriginalId = p}), transaction: tran);
         }
-
-        /// <summary>
-        /// 根据索引删除 idx_ip(ip)
+	
+		/// <summary>
+        /// 根据索引删除
         /// </summary>
-        /// <param name="ip"></param>
-        /// <param name="tran"></param>
+		
+		/// <param name="ip">ip值(支持正则表达式)</param>
+		/// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual int RemoveByIp(string ip, IDbTransaction tran = null)
+		public virtual int RemoveByIdxIdxIp(String ip, IDbTransaction tran = null)
         {
-            const string format = @"DELETE FROM {0} WHERE ip=@Ip;";
+            const string format = @"DELETE FROM {0} WHERE ip=@OriginalIp;";
 
-            var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
+            var sql = string.Format(format, TbIpBlacklist._.DataBaseTableName);
 
-            return DbConn.Execute(sql, param: new {Ip = ip}, transaction: tran);
+            return DbConn.Execute(sql, param: new {OriginalIp = ip}, transaction: tran);
         }
-
-        /// <summary>
-        /// 根据索引批量删除 idex_ip(ip)
+	
+	
+		/// <summary>
+        /// 根据索引批量删除
         /// </summary>
-        /// <param name="ips"></param>
-        /// <param name="tran"></param>
+        /// <param name="ips">ip值(支持正则表达式)列表</param>
+        /// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual int RemoveByIps(IEnumerable<string> ips, IDbTransaction tran = null)
+        public virtual int RemoveByIdxIdxIps(IEnumerable<String> ips, IDbTransaction tran = null)
         {
-            const string format = @"DELETE FROM {0} WHERE ip=@Ip;";
+            const string format = @"DELETE FROM {0} WHERE ip=@OriginalIp;";
 
-            var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
+            var sql = string.Format(format, TbIpBlacklist._.DataBaseTableName);
 
-            return DbConn.Execute(sql, param: ips.Select(p => new {Ip = p}), transaction: tran);
+            return DbConn.Execute(sql, param: ips.Select(p => new {OriginalIp = p}), transaction: tran);
         }
+	
+		#endregion
 
-        /// <summary>
+		/// <summary>
         /// 自定义条件删除
         /// </summary>
         /// <param name="where">自定义条件，where子句（不包含关键字Where）</param>
@@ -474,7 +481,7 @@ namespace App.DAL
             }
 
             var sql = string.Format(format,
-                TbIpBlackList.__.DataBaseTableName,
+                TbIpBlacklist._.DataBaseTableName,
                 whereClause);
 
             return DbConn.Execute(sql, param: param, transaction: tran);

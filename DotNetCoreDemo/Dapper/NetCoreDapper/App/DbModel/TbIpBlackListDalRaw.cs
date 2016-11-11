@@ -1,20 +1,18 @@
-﻿using App.DbModel;
-using App.FrameCore;
-using Dapper;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using App.FrameCore;
+using Dapper;
 
-namespace App.DAL
+namespace App.DbModel
 {
-    public partial class TbIpBlackListDal2 : DbBase
+    public partial class TbIpBlackListDalRaw : DbBase
     {
         #region 定义
 
-        public TbIpBlackListDal2(IDbConnection dbCon = null) : base(dbCon)
+        public TbIpBlackListDalRaw(IDbConnection dbCon = null) : base(dbCon)
         {
-
         }
 
         #endregion
@@ -31,15 +29,15 @@ namespace App.DAL
         /// <param name="id"></param>
         /// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual TbIpBlackList GetByPk(Int64 id, IDbTransaction tran = null)
+        public virtual TbIpBlackListRaw GetByPk(Int64 id, IDbTransaction tran = null)
         {
             const string format = "SELECT * FROM {0} WHERE id = @Id";
 
-            var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
+            var sql = string.Format(format, TbIpBlackListRaw.__.DataBaseTableName);
 
-            return DbConn.QueryFirst<TbIpBlackList>(
+            return DbConn.QueryFirst<TbIpBlackListRaw>(
                 sql: sql,
-                param: new { Id = id },
+                param: new {Id = id},
                 transaction: tran);
         }
 
@@ -49,7 +47,7 @@ namespace App.DAL
         /// <param name="ip"></param>
         /// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual IEnumerable<TbIpBlackList> GetByIp(string ip, IDbTransaction tran = null)
+        public virtual IEnumerable<TbIpBlackListRaw> GetByIp(string ip, IDbTransaction tran = null)
         {
             return GetByIp(ip, 0, null, tran);
         }
@@ -62,7 +60,7 @@ namespace App.DAL
         /// <param name="sort">排序方式</param>
         /// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual IEnumerable<TbIpBlackList> GetByIp(string ip, int top, string sort, IDbTransaction tran = null)
+        public virtual IEnumerable<TbIpBlackListRaw> GetByIp(string ip, int top, string sort, IDbTransaction tran = null)
         {
             const string format = "SELECT * FROM {0} WHERE ip = @Ip {1} {2}";
 
@@ -79,12 +77,12 @@ namespace App.DAL
             }
 
             var sql = string.Format(format,
-                TbIpBlackList.__.DataBaseTableName,
+                TbIpBlackListRaw.__.DataBaseTableName,
                 sortClause, limitClause);
 
-            return DbConn.Query<TbIpBlackList>(
+            return DbConn.Query<TbIpBlackListRaw>(
                 sql: sql,
-                param: new { Ip = ip },
+                param: new {Ip = ip},
                 transaction: tran);
         }
 
@@ -101,7 +99,7 @@ namespace App.DAL
         /// <param name="sort">排序方式(不包含关键字Order By)</param>
         /// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual IEnumerable<TbIpBlackList> GetTopSort(string where, object param = null,
+        public virtual IEnumerable<TbIpBlackListRaw> GetTopSort(string where, object param = null,
             int top = 0, string sort = null, IDbTransaction tran = null)
         {
             const string format = "SELECT * FROM {0} {1} {2} {3}";
@@ -130,10 +128,10 @@ namespace App.DAL
             }
 
             var sql = string.Format(format,
-                TbIpBlackList.__.DataBaseTableName,
+                TbIpBlackListRaw.__.DataBaseTableName,
                 whereClause, sortClause, limitClause);
 
-            return DbConn.Query<TbIpBlackList>(
+            return DbConn.Query<TbIpBlackListRaw>(
                 sql: sql,
                 param: param,
                 transaction: tran);
@@ -169,7 +167,7 @@ namespace App.DAL
             }
 
             var sql = string.Format(format,
-                TbIpBlackList.__.DataBaseTableName,
+                TbIpBlackListRaw.__.DataBaseTableName,
                 whereClause);
 
             var recordCount = DbConn.ExecuteScalar<Int64>(sql, param);
@@ -177,10 +175,10 @@ namespace App.DAL
             var pageCount = 1L;
             if (pageSize != 0)
             {
-                var lastPageCount = recordCount % pageSize;
-                pageCount = recordCount / pageSize + (lastPageCount > 0 ? 1 : 0);
+                var lastPageCount = recordCount%pageSize;
+                pageCount = recordCount/pageSize + (lastPageCount > 0 ? 1 : 0);
             }
-            
+
             return new Tuple<long, long>(recordCount, pageCount);
         }
 
@@ -193,7 +191,7 @@ namespace App.DAL
         /// <param name="param">参数（对象属性自动转为sql中的参数，eg：new {Id=10},则执行sql会转为参数对象 @Id,值为10）</param>
         /// <param name="sort">排序方式(不包含关键字Order By)</param>
         /// <returns></returns>
-        public virtual IEnumerable<TbIpBlackList> GetPageList(Int64 pageIndex, int pageSize,
+        public virtual IEnumerable<TbIpBlackListRaw> GetPageList(Int64 pageIndex, int pageSize,
             string where = null, object param = null, string sort = null)
         {
             const string format = "SELECT * FROM {0} {1} {2} {3};";
@@ -222,10 +220,10 @@ namespace App.DAL
             }
 
             var sql = string.Format(format,
-                TbIpBlackList.__.DataBaseTableName,
+                TbIpBlackListRaw.__.DataBaseTableName,
                 whereClause, sortClause, limitClause);
 
-            return DbConn.Query<TbIpBlackList>(
+            return DbConn.Query<TbIpBlackListRaw>(
                 sql: sql,
                 param: param);
         }
@@ -242,13 +240,15 @@ namespace App.DAL
         /// <param name="item"></param>
         /// <param name="tran"></param>
         /// <returns></returns>
-        public virtual int Add(TbIpBlackList item, IDbTransaction tran = null)
+        public virtual int Add(TbIpBlackListRaw item, IDbTransaction tran = null)
         {
-            const string format = @"INSERT INTO {0}(ip,add_time,end_time,is_enable,descr) VALUES(@Ip,@AddTime,@EndTime,@IsEnable,@Descr);SELECT LAST_INSERT_ID();";
+            const string format =
+                @"INSERT INTO {0}(ip,add_time,end_time,is_enable,descr) VALUES(@Ip,@AddTime,@EndTime,@IsEnable,@Descr);SELECT LAST_INSERT_ID();";
 
-            var sql = string.Format(format, item.DataBaseTableName);
+            var sql = string.Format(format, TbIpBlackListRaw.__.DataBaseTableName);
 
             item.Id = DbConn.ExecuteScalar<Int64>(sql, param: item, transaction: tran);
+            item.OriginalId = item.Id;
 
             return 1;
         }
@@ -259,16 +259,16 @@ namespace App.DAL
         /// <param name="items"></param>
         /// <param name="tran"></param>
         /// <returns></returns>
-        public virtual int Add(IEnumerable<TbIpBlackList> items, IDbTransaction tran = null)
+        public virtual int Add(IEnumerable<TbIpBlackListRaw> items, IDbTransaction tran = null)
         {
             // const string format = @"INSERT INTO {0}(ip,add_time,end_time,is_enable,descr) VALUES(@Ip,@AddTime,@EndTime,@IsEnable,@Descr);";
-            // var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
+            // var sql = string.Format(format, TbIpBlackListRaw.__.DataBaseTableName);
             // return DbConn.Execute(sql, param: items, transaction: tran);
 
             var count = 0;
             foreach (var item in items)
             {
-                Add(item,tran);
+                Add(item, tran);
                 count++;
             }
 
@@ -285,11 +285,12 @@ namespace App.DAL
         /// <param name="item">实体对象</param>
         /// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual int Update(TbIpBlackList item, IDbTransaction tran = null)
+        public virtual int Update(TbIpBlackListRaw item, IDbTransaction tran = null)
         {
-            const string format = "UPDATE {0} SET ip=@Ip,add_time=@AddTime,end_time=@EndTime,is_enable=@IsEnable,descr=@Descr WHERE id=@OriginalId";
+            const string format =
+                "UPDATE {0} SET ip=@Ip,add_time=@AddTime,end_time=@EndTime,is_enable=@IsEnable,descr=@Descr WHERE id=@OriginalId";
 
-            var sql = string.Format(format, item.DataBaseTableName);
+            var sql = string.Format(format, TbIpBlackListRaw.__.DataBaseTableName);
 
             return DbConn.Execute(sql, param: item, transaction: tran);
         }
@@ -301,14 +302,14 @@ namespace App.DAL
         /// <param name="nameList">包含的name列表</param>
         /// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual int Update(TbIpBlackList item, IList<string> nameList, IDbTransaction tran = null)
+        public virtual int Update(TbIpBlackListRaw item, IList<string> nameList, IDbTransaction tran = null)
         {
             if (nameList == null)
             {
                 return Update(item, tran);
             }
 
-            var curFieldList = TbIpBlackList._.AllFields.Where(f => nameList.Contains(f.Name) && !f.IsReadonly);
+            var curFieldList = TbIpBlackListRaw._.AllFields.Where(f => nameList.Contains(f.Name) && !f.IsReadonly);
             if (!curFieldList.Any())
             {
                 return 0;
@@ -320,10 +321,13 @@ namespace App.DAL
                 (raw, p) => $"{raw},{p.ColumnName}=@{p.Name}",
                 last => last.Trim(','));
 
-            var whereClause = item.GetWhereClauseOrginalKeys();
+            var originalKeys = TbIpBlackListRaw._.AllFields.Where(p => p.IsPrimaryKey && p.IsReadonly);
+            var whereClause = originalKeys.Aggregate(string.Empty,
+                (raw, p) => $"{raw} and {p.ColumnName}=@{p.Name}",
+                last => last.Trim().Substring(4));
 
             var sql = string.Format(format,
-                item.DataBaseTableName,
+                TbIpBlackListRaw.__.DataBaseTableName,
                 setClause, whereClause);
 
             return DbConn.Execute(sql, param: item, transaction: tran);
@@ -335,7 +339,7 @@ namespace App.DAL
         /// <param name="items">实体对象集合</param>
         /// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual int Update(IEnumerable<TbIpBlackList> items, IDbTransaction tran = null)
+        public virtual int Update(IEnumerable<TbIpBlackListRaw> items, IDbTransaction tran = null)
         {
             var count = 0;
             foreach (var item in items)
@@ -355,7 +359,7 @@ namespace App.DAL
         /// <param name="strWhere">where语句（不含where关键字，可以用sql参数，Eg：id=@Id）</param>
         /// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual int Update(TbIpBlackList item, string strSet, string strWhere, IDbTransaction tran = null)
+        public virtual int Update(TbIpBlackListRaw item, string strSet, string strWhere, IDbTransaction tran = null)
         {
             const string format = "UPDATE {0} SET {1} {2};";
 
@@ -376,7 +380,7 @@ namespace App.DAL
             }
 
             var sql = string.Format(format,
-                item.DataBaseTableName,
+                TbIpBlackListRaw.__.DataBaseTableName,
                 strSet, whereClause);
 
             return DbConn.Execute(sql, param: item, transaction: tran);
@@ -396,7 +400,7 @@ namespace App.DAL
         {
             const string format = @"DELETE FROM {0} WHERE id=@Id;";
 
-            var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
+            var sql = string.Format(format, TbIpBlackListRaw.__.DataBaseTableName);
 
             return DbConn.Execute(sql, param: new {Id = id}, transaction: tran);
         }
@@ -411,7 +415,7 @@ namespace App.DAL
         {
             const string format = @"DELETE FROM {0} WHERE id=@Id;";
 
-            var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
+            var sql = string.Format(format, TbIpBlackListRaw.__.DataBaseTableName);
 
             return DbConn.Execute(sql, param: ids.Select(p => new {Id = p}), transaction: tran);
         }
@@ -426,9 +430,9 @@ namespace App.DAL
         {
             const string format = @"DELETE FROM {0} WHERE ip=@Ip;";
 
-            var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
+            var sql = string.Format(format, TbIpBlackListRaw.__.DataBaseTableName);
 
-            return DbConn.Execute(sql, param: new { Ip = ip }, transaction: tran);
+            return DbConn.Execute(sql, param: new {Ip = ip}, transaction: tran);
         }
 
         /// <summary>
@@ -441,7 +445,7 @@ namespace App.DAL
         {
             const string format = @"DELETE FROM {0} WHERE ip=@Ip;";
 
-            var sql = string.Format(format, TbIpBlackList.__.DataBaseTableName);
+            var sql = string.Format(format, TbIpBlackListRaw.__.DataBaseTableName);
 
             return DbConn.Execute(sql, param: ips.Select(p => new {Ip = p}), transaction: tran);
         }
@@ -469,7 +473,7 @@ namespace App.DAL
             }
 
             var sql = string.Format(format,
-                TbIpBlackList.__.DataBaseTableName,
+                TbIpBlackListRaw.__.DataBaseTableName,
                 whereClause);
 
             return DbConn.Execute(sql, param: param, transaction: tran);

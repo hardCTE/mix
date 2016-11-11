@@ -38,12 +38,12 @@ namespace App.Operate
             }
 
             Console.WriteLine("~~~~~~~~~~Object Map~~~~~~~~~~~~");
-            var obj = _con.QueryFirst<TbIpBlackList>("select * from tb_ip_blacklist where id = @Id", new { Id = id });
+            var obj = _con.QueryFirst<TbIpBlackListRaw>("select * from tb_ip_blacklist where id = @Id", new { Id = id });
             Console.WriteLine($"{obj.Id}--{obj.Ip}--{obj.AddTime}--{obj.Descr}");
 
             // query multables
             Console.WriteLine("~~~~~~~~~~query multables~~~~~~~~~~~~");
-            var mobj = _con.Query<TbIpBlackList, TbIpDescr, TbIpBlackList>(@"SELECT * from tb_ip_blacklist ip
+            var mobj = _con.Query<TbIpBlackListRaw, TbIpDescr, TbIpBlackListRaw>(@"SELECT * from tb_ip_blacklist ip
                         left join tb_ip_descr d on ip.id = d.id2 ",
                 (list, descr) =>
                 {

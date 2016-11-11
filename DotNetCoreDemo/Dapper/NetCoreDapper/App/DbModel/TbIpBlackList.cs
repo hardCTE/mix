@@ -6,7 +6,7 @@ using DapperMapExt;
 
 namespace App.DbModel
 {
-    public partial class TbIpBlackList : TableModelBase
+    public partial class TbIpBlackListRaw : TableModelBase
     {
         #region 属性
 

@@ -9,14 +9,14 @@ using MySql.Data.MySqlClient;
 
 namespace App.DALTest
 {
-    public class TestTbIpBlackListDal
+    public class TestTbIpBlackListRawDal
     {
-        private TbIpBlackListDal _dal;
+        private TbIpBlackListDalRaw _dal;
 
-        public TestTbIpBlackListDal(IDbConnection dbConn = null)
+        public TestTbIpBlackListRawDal(IDbConnection dbConn = null)
         {
             var conn = dbConn ?? new MySqlConnection("server=172.28.9.175;database=xdb_test;uid=root;pwd=123456;SslMode=None");
-            _dal = new TbIpBlackListDal(conn);
+            _dal = new TbIpBlackListDalRaw(conn);
         }
 
         public void ExecAllTest()
@@ -32,7 +32,7 @@ namespace App.DALTest
 
         public void TestAdd()
         {
-            var item = new TbIpBlackList
+            var item = new TbIpBlackListRaw
             {
                 Ip = Guid.NewGuid().ToString("N"),
                 AddTime = DateTime.Now,
@@ -55,9 +55,9 @@ namespace App.DALTest
 
         public void TestAdds()
         {
-            var items = new List<TbIpBlackList>
+            var items = new List<TbIpBlackListRaw>
             {
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -65,7 +65,7 @@ namespace App.DALTest
                     IsEnable = true,
                     Descr = "1-Test-" + Guid.NewGuid()
                 },
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -73,7 +73,7 @@ namespace App.DALTest
                     IsEnable = false,
                     Descr = "2-Test-" + Guid.NewGuid()
                 },
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -81,7 +81,7 @@ namespace App.DALTest
                     IsEnable = true,
                     Descr = "3-Test-" + Guid.NewGuid()
                 },
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -89,7 +89,7 @@ namespace App.DALTest
                     IsEnable = false,
                     Descr = "4-Test-" + Guid.NewGuid()
                 },
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -125,9 +125,9 @@ namespace App.DALTest
             Console.WriteLine($"PageInfo1:total={page1.Item1},pages={page1.Item2}");
             Console.WriteLine($"PageInfo2:total={page2.Item1},pages={page2.Item2}");
 
-            var items = new List<TbIpBlackList>
+            var items = new List<TbIpBlackListRaw>
             {
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -135,7 +135,7 @@ namespace App.DALTest
                     IsEnable = true,
                     Descr = "1-Test-" + Guid.NewGuid()
                 },
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -143,7 +143,7 @@ namespace App.DALTest
                     IsEnable = false,
                     Descr = "2-Test-" + Guid.NewGuid()
                 },
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -151,7 +151,7 @@ namespace App.DALTest
                     IsEnable = true,
                     Descr = "3-Test-" + Guid.NewGuid()
                 },
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -159,7 +159,7 @@ namespace App.DALTest
                     IsEnable = false,
                     Descr = "4-Test-" + Guid.NewGuid()
                 },
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -209,9 +209,9 @@ namespace App.DALTest
             Console.WriteLine($"PageInfo1:total={page1.Item1},pages={page1.Item2}");
             Console.WriteLine($"PageInfo2:total={page2.Item1},pages={page2.Item2}");
 
-            var items = new List<TbIpBlackList>
+            var items = new List<TbIpBlackListRaw>
             {
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -219,7 +219,7 @@ namespace App.DALTest
                     IsEnable = true,
                     Descr = "1-Test-" + Guid.NewGuid()
                 },
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -227,7 +227,7 @@ namespace App.DALTest
                     IsEnable = false,
                     Descr = "2-Test-" + Guid.NewGuid()
                 },
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -235,7 +235,7 @@ namespace App.DALTest
                     IsEnable = true,
                     Descr = "3-Test-" + Guid.NewGuid()
                 },
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -243,7 +243,7 @@ namespace App.DALTest
                     IsEnable = false,
                     Descr = "4-Test-" + Guid.NewGuid()
                 },
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -293,9 +293,9 @@ namespace App.DALTest
             Console.WriteLine($"PageInfo1:total={page1.Item1},pages={page1.Item2}");
             Console.WriteLine($"PageInfo2:total={page2.Item1},pages={page2.Item2}");
 
-            var items = new List<TbIpBlackList>
+            var items = new List<TbIpBlackListRaw>
             {
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -303,7 +303,7 @@ namespace App.DALTest
                     IsEnable = true,
                     Descr = "1-Test-" + Guid.NewGuid()
                 },
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -311,7 +311,7 @@ namespace App.DALTest
                     IsEnable = false,
                     Descr = "2-Test-" + Guid.NewGuid()
                 },
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -319,7 +319,7 @@ namespace App.DALTest
                     IsEnable = true,
                     Descr = "3-Test-" + Guid.NewGuid()
                 },
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -327,7 +327,7 @@ namespace App.DALTest
                     IsEnable = false,
                     Descr = "4-Test-" + Guid.NewGuid()
                 },
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -363,9 +363,9 @@ namespace App.DALTest
 
         public void TestAddThenUpdate2()
         {
-            var items = new List<TbIpBlackList>
+            var items = new List<TbIpBlackListRaw>
             {
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -373,7 +373,7 @@ namespace App.DALTest
                     IsEnable = true,
                     Descr = "1-newAdd-" + Guid.NewGuid()
                 },
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -381,7 +381,7 @@ namespace App.DALTest
                     IsEnable = false,
                     Descr = "2-newAdd-" + Guid.NewGuid()
                 },
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -389,7 +389,7 @@ namespace App.DALTest
                     IsEnable = true,
                     Descr = "3-newAdd-" + Guid.NewGuid()
                 },
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -397,7 +397,7 @@ namespace App.DALTest
                     IsEnable = false,
                     Descr = "4-newAdd-" + Guid.NewGuid()
                 },
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -429,27 +429,27 @@ namespace App.DALTest
 
             var count0 = _dal.Update(items[0], new List<string>
             {
-                TbIpBlackList.__.Ip
+                TbIpBlackListRaw.__.Ip
             });
             Console.WriteLine($"update0 = {count0},id={items[0].Id}");
 
             var count1 = _dal.Update(items[1], new List<string>
             {
-                TbIpBlackList.__.Ip,
-                TbIpBlackList.__.AddTime,
-                TbIpBlackList.__.EndTime,
-                TbIpBlackList.__.IsEnable,
-                TbIpBlackList.__.Descr
+                TbIpBlackListRaw.__.Ip,
+                TbIpBlackListRaw.__.AddTime,
+                TbIpBlackListRaw.__.EndTime,
+                TbIpBlackListRaw.__.IsEnable,
+                TbIpBlackListRaw.__.Descr
             });
             Console.WriteLine($"update1 = {count1},id={items[1].Id}");
 
             var count2 = _dal.Update(items[2], new List<string>
             {
-                TbIpBlackList.__.Ip,
-                TbIpBlackList.__.AddTime,
-                TbIpBlackList.__.EndTime,
-                TbIpBlackList.__.IsEnable,
-                TbIpBlackList.__.Descr
+                TbIpBlackListRaw.__.Ip,
+                TbIpBlackListRaw.__.AddTime,
+                TbIpBlackListRaw.__.EndTime,
+                TbIpBlackListRaw.__.IsEnable,
+                TbIpBlackListRaw.__.Descr
             });
 
             Console.WriteLine($"update2 = {count2},id={items[2].Id}");
@@ -458,9 +458,9 @@ namespace App.DALTest
 
         public void TestAddThenUpdate3()
         {
-            var items = new List<TbIpBlackList>
+            var items = new List<TbIpBlackListRaw>
             {
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -468,7 +468,7 @@ namespace App.DALTest
                     IsEnable = true,
                     Descr = "1-add for custom update-" + Guid.NewGuid()
                 },
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -476,7 +476,7 @@ namespace App.DALTest
                     IsEnable = false,
                     Descr = "2-add for custom update-" + Guid.NewGuid()
                 },
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -484,7 +484,7 @@ namespace App.DALTest
                     IsEnable = true,
                     Descr = "3-add for custom update-" + Guid.NewGuid()
                 },
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,
@@ -492,7 +492,7 @@ namespace App.DALTest
                     IsEnable = false,
                     Descr = "4-add for custom update-" + Guid.NewGuid()
                 },
-                new TbIpBlackList
+                new TbIpBlackListRaw
                 {
                     Ip = Guid.NewGuid().ToString("N"),
                     AddTime = DateTime.Now,

@@ -54,7 +54,7 @@ namespace App
             //basic.Use();
 
             // test dal
-            var test = new TestTbIpBlackListDal(DbConnection);
+            var test = new TestTbIpBlackListRawDal(DbConnection);
             test.ExecAllTest();
 
             /*
