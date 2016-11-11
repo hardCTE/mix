@@ -1,7 +1,7 @@
 ﻿/*
- * XCoder v6.8.6159.31546
+ * XCoder v6.8.6159.33742
  * 作者：Administrator/XUDB
- * 时间：2016-11-11 17:31:40
+ * 时间：2016-11-11 18:44:49
  * 版权：hardCTE 2016~2016
 */
 ﻿using System;
@@ -439,13 +439,7 @@ namespace App.DAL
 
 		#region Remove
 
-		/*
- * XCoder v6.8.6159.31546
- * 作者：Administrator/XUDB
- * 时间：2016-11-11 17:31:40
- * 版权：hardCTE 2016~2016
-*/
-﻿
+		﻿
 		#region 按键及索引 删除
 
 		/// <summary>
@@ -539,7 +533,7 @@ namespace App.DAL
         /// <param name="refCategorys">引用的分类Id列表</param>
         /// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual int RemoveByIdxFkCategoryIds(IEnumerable<Int64> refCategorys, IDbTransaction tran = null)
+        public virtual int RemoveByFkCategoryIds(IEnumerable<Int64> refCategorys, IDbTransaction tran = null)
         {
             const string format = @"DELETE FROM {0} WHERE ref_category=@OriginalRefCategory;";
 

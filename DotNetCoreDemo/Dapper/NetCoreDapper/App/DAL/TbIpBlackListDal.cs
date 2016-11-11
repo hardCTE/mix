@@ -1,7 +1,7 @@
 ﻿/*
- * XCoder v6.8.6159.31546
+ * XCoder v6.8.6159.33742
  * 作者：Administrator/XUDB
- * 时间：2016-11-11 17:31:43
+ * 时间：2016-11-11 18:45:10
  * 版权：hardCTE 2016~2016
 */
 ﻿using System;
@@ -384,13 +384,7 @@ namespace App.DAL
 
 		#region Remove
 
-		/*
- * XCoder v6.8.6159.31546
- * 作者：Administrator/XUDB
- * 时间：2016-11-11 17:31:43
- * 版权：hardCTE 2016~2016
-*/
-﻿
+		﻿
 		#region 按键及索引 删除
 
 		/// <summary>
