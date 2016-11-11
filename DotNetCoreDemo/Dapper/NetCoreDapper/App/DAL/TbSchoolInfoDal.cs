@@ -13,130 +13,16 @@ using Dapper;
 
 namespace App.DAL
 {
-	/// <summary>
-    /// TbSchoolInfo 数据访问层
-    /// </summary>
-    public partial class TbSchoolInfoDal : DbBase
+    public abstract class DalBase<T> : DbBase where T : TableModelBase
     {
-		#region 定义
-
-        public TbSchoolInfoDal(IDbConnection dbCon = null) : base(dbCon)
+        protected DalBase(IDbConnection dbCon = null) : base(dbCon)
         {
-		}
-
-        #endregion
-
-		#region 查询
-
-        #region 按键及索引 查询
-
-		/// <summary>
-        /// 根据主键获取实体
-        /// </summary>
-		/// <param name="keyId">班级（联合主键1，int、非空）</param>
-		/// <param name="keyStr">学校（联合主键2，字符可空，最大40）</param>
-		/// <param name="tran">事务</param>
-        /// <returns></returns>
-        public virtual TbSchoolInfo GetByPk(Int32 keyId,String keyStr, IDbTransaction tran = null)
-        {
-            const string format = "SELECT * FROM {0} WHERE key_id=@KeyId and key_str=@KeyStr";
-
-            var sql = string.Format(format, TbSchoolInfo._.DataBaseTableName);
-
-            return DbConn.QueryFirst<TbSchoolInfo>(
-                sql: sql,
-                param: new {KeyId = keyId , KeyStr = keyStr},
-                transaction: tran);
         }
 
-		/// <summary>
-        /// 根据唯一索引获取实体
+        /// <summary>
+        /// 数据库表名
         /// </summary>
-		/// <param name="keyId">班级（联合主键1，int、非空）</param>
-		/// <param name="tran">事务</param>
-        /// <returns></returns>
-        public virtual TbSchoolInfo GetByUkIdexu(Int32 keyId, IDbTransaction tran = null)
-        {
-            const string format = "SELECT * FROM {0} WHERE key_id=@KeyId";
-
-            var sql = string.Format(format, TbSchoolInfo._.DataBaseTableName);
-
-            return DbConn.QueryFirst<TbSchoolInfo>(
-                sql: sql,
-                param: new {KeyId = keyId},
-                transaction: tran);
-        }
-
-		/// <summary>
-        /// 根据索引获取实体列表
-        /// </summary>
-		/// <param name="idxCode">编码（索引1）</param>
-		/// <param name="idxNum">数字（序号索引2）</param>
-		/// <param name="top">获取行数(默认为0，即所有)</param>
-        /// <param name="sort">排序方式(不包含关键字Order By)</param>
-		/// <param name="tran">事务</param>
-        /// <returns></returns>
-        public virtual IEnumerable<TbSchoolInfo> GetByIdxMul(String idxCode,Int64 idxNum, int top = 0, string sort = null, IDbTransaction tran = null)
-        {
-            const string format = "SELECT * FROM {0} WHERE idx_code=@IdxCode and idx_num=@IdxNum {1} {2}";
-
-			var sortClause = string.Empty;
-            if (!string.IsNullOrWhiteSpace(sort))
-            {
-                sortClause = "ORDER BY " + sort;
-            }
-
-            var limitClause = string.Empty;
-            if (top > 0)
-            {
-                limitClause = "LIMIT " + top;
-            }
-
-            var sql = string.Format(format, 
-				TbSchoolInfo._.DataBaseTableName,
-				sortClause, limitClause);
-
-            return DbConn.Query<TbSchoolInfo>(
-                sql: sql,
-                param: new {IdxCode = idxCode , IdxNum = idxNum},
-                transaction: tran);
-        }
-
-		/// <summary>
-        /// 根据索引获取实体列表
-        /// </summary>
-		/// <param name="refCategory">引用的分类Id</param>
-		/// <param name="top">获取行数(默认为0，即所有)</param>
-        /// <param name="sort">排序方式(不包含关键字Order By)</param>
-		/// <param name="tran">事务</param>
-        /// <returns></returns>
-        public virtual IEnumerable<TbSchoolInfo> GetByFkCategoryId(Int64 refCategory, int top = 0, string sort = null, IDbTransaction tran = null)
-        {
-            const string format = "SELECT * FROM {0} WHERE ref_category=@RefCategory {1} {2}";
-
-			var sortClause = string.Empty;
-            if (!string.IsNullOrWhiteSpace(sort))
-            {
-                sortClause = "ORDER BY " + sort;
-            }
-
-            var limitClause = string.Empty;
-            if (top > 0)
-            {
-                limitClause = "LIMIT " + top;
-            }
-
-            var sql = string.Format(format, 
-				TbSchoolInfo._.DataBaseTableName,
-				sortClause, limitClause);
-
-            return DbConn.Query<TbSchoolInfo>(
-                sql: sql,
-                param: new {RefCategory = refCategory},
-                transaction: tran);
-        }
-
-        #endregion
+        public virtual string DataBaseTableName { get; }
 
         #region 自定义查询
 
@@ -149,7 +35,7 @@ namespace App.DAL
         /// <param name="sort">排序方式(不包含关键字Order By)</param>
         /// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual IEnumerable<TbSchoolInfo> GetTopSort(string where, object param = null,
+        public virtual IEnumerable<T> GetTopSort(string where, object param = null,
             int top = 0, string sort = null, IDbTransaction tran = null)
         {
             const string format = "SELECT * FROM {0} {1} {2} {3}";
@@ -178,10 +64,10 @@ namespace App.DAL
             }
 
             var sql = string.Format(format,
-                TbSchoolInfo._.DataBaseTableName,
+                DataBaseTableName,
                 whereClause, sortClause, limitClause);
 
-            return DbConn.Query<TbSchoolInfo>(
+            return DbConn.Query<T>(
                 sql: sql,
                 param: param,
                 transaction: tran);
@@ -216,17 +102,15 @@ namespace App.DAL
                 }
             }
 
-            var sql = string.Format(format,
-                TbSchoolInfo._.DataBaseTableName,
-                whereClause);
+            var sql = string.Format(format, DataBaseTableName, whereClause);
 
             var recordCount = DbConn.ExecuteScalar<Int64>(sql, param);
 
             var pageCount = 1L;
             if (pageSize != 0)
             {
-                var lastPageCount = recordCount%pageSize;
-                pageCount = recordCount/pageSize + (lastPageCount > 0 ? 1 : 0);
+                var lastPageCount = recordCount % pageSize;
+                pageCount = recordCount / pageSize + (lastPageCount > 0 ? 1 : 0);
             }
 
             return new Tuple<long, long>(recordCount, pageCount);
@@ -241,7 +125,7 @@ namespace App.DAL
         /// <param name="param">参数（对象属性自动转为sql中的参数，eg：new {Id=10},则执行sql会转为参数对象 @Id,值为10）</param>
         /// <param name="sort">排序方式(不包含关键字Order By)</param>
         /// <returns></returns>
-        public virtual IEnumerable<TbSchoolInfo> GetPageList(Int64 pageIndex, int pageSize,
+        public virtual IEnumerable<T> GetPageList(Int64 pageIndex, int pageSize,
             string where = null, object param = null, string sort = null)
         {
             const string format = "SELECT * FROM {0} {1} {2} {3};";
@@ -266,16 +150,174 @@ namespace App.DAL
             var limitClause = string.Empty;
             if (pageIndex > 0 && pageSize > 0)
             {
-                limitClause = $"LIMIT {(pageSize - 1L)*pageSize},{pageSize}";
+                limitClause = $"LIMIT {(pageSize - 1L) * pageSize},{pageSize}";
             }
 
-            var sql = string.Format(format,
-                TbSchoolInfo._.DataBaseTableName,
+            var sql = string.Format(format, DataBaseTableName,
                 whereClause, sortClause, limitClause);
+
+            return DbConn.Query<T>(
+                sql: sql,
+                param: param);
+        }
+
+        #endregion
+
+        #region 自定义删除
+
+        /// <summary>
+        /// 自定义条件删除
+        /// </summary>
+        /// <param name="where">自定义条件，where子句（不包含关键字Where）</param>
+        /// <param name="param">参数（对象属性自动转为sql中的参数，eg：new {Id=10},则执行sql会转为参数对象 @Id,值为10）</param>
+        /// <param name="tran">事务</param>
+        /// <returns></returns>
+        public virtual int Remove(string where, object param = null, IDbTransaction tran = null)
+        {
+            const string format = @"DELETE FROM {0} {1};";
+
+            var whereClause = string.Empty;
+            if (!string.IsNullOrWhiteSpace(where))
+            {
+                whereClause = where.Trim();
+
+                if (!whereClause.StartsWith("where", StringComparison.OrdinalIgnoreCase))
+                {
+                    whereClause = "WHERE " + whereClause;
+                }
+            }
+
+            var sql = string.Format(format, DataBaseTableName, whereClause);
+
+            return DbConn.Execute(sql, param: param, transaction: tran);
+        }
+
+        #endregion
+    }
+
+
+    /// <summary>
+    /// TbSchoolInfo 数据访问层
+    /// </summary>
+    public partial class TbSchoolInfoDal : DalBase<TbSchoolInfo>
+    {
+		#region 定义
+
+        public TbSchoolInfoDal(IDbConnection dbCon = null) : base(dbCon)
+        {
+		}
+
+        #endregion
+
+        /// <summary>
+        /// 实现抽象基类属性
+        /// </summary>
+        public override string DataBaseTableName => TbSchoolInfo._.DataBaseTableName;
+
+        #region 查询
+
+        #region 按键及索引 查询
+
+        /// <summary>
+        /// 根据主键获取实体
+        /// </summary>
+        /// <param name="keyId">班级（联合主键1，int、非空）</param>
+        /// <param name="keyStr">学校（联合主键2，字符可空，最大40）</param>
+        /// <param name="tran">事务</param>
+        /// <returns></returns>
+        public virtual TbSchoolInfo GetByPk(Int32 keyId,String keyStr, IDbTransaction tran = null)
+        {
+            const string format = "SELECT * FROM {0} WHERE key_id=@KeyId and key_str=@KeyStr";
+
+            var sql = string.Format(format, DataBaseTableName);
+
+            return DbConn.QueryFirst<TbSchoolInfo>(
+                sql: sql,
+                param: new {KeyId = keyId , KeyStr = keyStr},
+                transaction: tran);
+        }
+
+		/// <summary>
+        /// 根据唯一索引获取实体
+        /// </summary>
+		/// <param name="keyId">班级（联合主键1，int、非空）</param>
+		/// <param name="tran">事务</param>
+        /// <returns></returns>
+        public virtual TbSchoolInfo GetByUkIdexu(Int32 keyId, IDbTransaction tran = null)
+        {
+            const string format = "SELECT * FROM {0} WHERE key_id=@KeyId";
+
+            var sql = string.Format(format, DataBaseTableName);
+
+            return DbConn.QueryFirst<TbSchoolInfo>(
+                sql: sql,
+                param: new {KeyId = keyId},
+                transaction: tran);
+        }
+
+		/// <summary>
+        /// 根据索引获取实体列表
+        /// </summary>
+		/// <param name="idxCode">编码（索引1）</param>
+		/// <param name="idxNum">数字（序号索引2）</param>
+		/// <param name="top">获取行数(默认为0，即所有)</param>
+        /// <param name="sort">排序方式(不包含关键字Order By)</param>
+		/// <param name="tran">事务</param>
+        /// <returns></returns>
+        public virtual IEnumerable<TbSchoolInfo> GetByIdxMul(String idxCode,Int64 idxNum, int top = 0, string sort = null, IDbTransaction tran = null)
+        {
+            const string format = "SELECT * FROM {0} WHERE idx_code=@IdxCode and idx_num=@IdxNum {1} {2}";
+
+			var sortClause = string.Empty;
+            if (!string.IsNullOrWhiteSpace(sort))
+            {
+                sortClause = "ORDER BY " + sort;
+            }
+
+            var limitClause = string.Empty;
+            if (top > 0)
+            {
+                limitClause = "LIMIT " + top;
+            }
+
+		    var sql = string.Format(format, DataBaseTableName, sortClause, limitClause);
 
             return DbConn.Query<TbSchoolInfo>(
                 sql: sql,
-                param: param);
+                param: new {IdxCode = idxCode , IdxNum = idxNum},
+                transaction: tran);
+        }
+
+		/// <summary>
+        /// 根据索引获取实体列表
+        /// </summary>
+		/// <param name="refCategory">引用的分类Id</param>
+		/// <param name="top">获取行数(默认为0，即所有)</param>
+        /// <param name="sort">排序方式(不包含关键字Order By)</param>
+		/// <param name="tran">事务</param>
+        /// <returns></returns>
+        public virtual IEnumerable<TbSchoolInfo> GetByFkCategoryId(Int64 refCategory, int top = 0, string sort = null, IDbTransaction tran = null)
+        {
+            const string format = "SELECT * FROM {0} WHERE ref_category=@RefCategory {1} {2}";
+
+			var sortClause = string.Empty;
+            if (!string.IsNullOrWhiteSpace(sort))
+            {
+                sortClause = "ORDER BY " + sort;
+            }
+
+            var limitClause = string.Empty;
+            if (top > 0)
+            {
+                limitClause = "LIMIT " + top;
+            }
+
+            var sql = string.Format(format, DataBaseTableName, sortClause, limitClause);
+
+            return DbConn.Query<TbSchoolInfo>(
+                sql: sql,
+                param: new {RefCategory = refCategory},
+                transaction: tran);
         }
 
         #endregion
@@ -296,7 +338,7 @@ namespace App.DAL
 				VALUES(@KeyId,@KeyStr,@IdxCode,@IdxNum,@RefCategory,@TxtChar,@TxtText,@BoolEnum,@ExtEnum,@NumTinyint,@NumDecimal,@DtDate,@DtDatetime,@DtTimestamp);
 				";
 
-            var sql = string.Format(format, TbSchoolInfo._.DataBaseTableName);
+            var sql = string.Format(format, DataBaseTableName);
 
 			DbConn.ExecuteScalar(sql, param: item, transaction: tran);
 			item.OriginalKeyId = item.KeyId;
@@ -339,7 +381,7 @@ namespace App.DAL
 					SET key_id=@KeyId,key_str=@KeyStr,idx_code=@IdxCode,idx_num=@IdxNum,ref_category=@RefCategory,txt_char=@TxtChar,txt_text=@TxtText,bool_enum=@BoolEnum,ext_enum=@ExtEnum,num_tinyint=@NumTinyint,num_decimal=@NumDecimal,dt_date=@DtDate,dt_datetime=@DtDatetime,dt_timestamp=@DtTimestamp 
 					WHERE key_id=@OriginalKeyId AND key_str=@OriginalKeyStr;";
 
-            var sql = string.Format(format, TbSchoolInfo._.DataBaseTableName);
+            var sql = string.Format(format, DataBaseTableName);
 
             return DbConn.Execute(sql, param: item, transaction: tran);
         }
@@ -375,9 +417,7 @@ namespace App.DAL
                 (raw, p) => $"{raw} and {p.ColumnName}=@{p.Name}",
                 last => last.Trim().Substring(4));
 
-            var sql = string.Format(format,
-                TbSchoolInfo._.DataBaseTableName,
-                setClause, whereClause);
+            var sql = string.Format(format, DataBaseTableName, setClause, whereClause);
 
             return DbConn.Execute(sql, param: item, transaction: tran);
         }
@@ -428,9 +468,7 @@ namespace App.DAL
                 }
             }
 
-            var sql = string.Format(format,
-                TbSchoolInfo._.DataBaseTableName,
-                strSet, whereClause);
+            var sql = string.Format(format, DataBaseTableName, strSet, whereClause);
 
             return DbConn.Execute(sql, param: item, transaction: tran);
         }
@@ -454,7 +492,7 @@ namespace App.DAL
         {
             const string format = @"DELETE FROM {0} WHERE key_id=@OriginalKeyId AND key_str=@OriginalKeyStr;";
 
-            var sql = string.Format(format, TbSchoolInfo._.DataBaseTableName);
+            var sql = string.Format(format, DataBaseTableName);
 
             return DbConn.Execute(sql, param: new {OriginalKeyId = keyId, OriginalKeyStr = keyStr}, transaction: tran);
         }
@@ -471,7 +509,7 @@ namespace App.DAL
         {
             const string format = @"DELETE FROM {0} WHERE key_id=@OriginalKeyId;";
 
-            var sql = string.Format(format, TbSchoolInfo._.DataBaseTableName);
+            var sql = string.Format(format, DataBaseTableName);
 
             return DbConn.Execute(sql, param: new {OriginalKeyId = keyId}, transaction: tran);
         }
@@ -487,7 +525,7 @@ namespace App.DAL
         {
             const string format = @"DELETE FROM {0} WHERE key_id=@OriginalKeyId;";
 
-            var sql = string.Format(format, TbSchoolInfo._.DataBaseTableName);
+            var sql = string.Format(format, DataBaseTableName);
 
             return DbConn.Execute(sql, param: keyIds.Select(p => new {OriginalKeyId = p}), transaction: tran);
         }
@@ -504,7 +542,7 @@ namespace App.DAL
         {
             const string format = @"DELETE FROM {0} WHERE idx_code=@OriginalIdxCode AND idx_num=@OriginalIdxNum;";
 
-            var sql = string.Format(format, TbSchoolInfo._.DataBaseTableName);
+            var sql = string.Format(format, DataBaseTableName);
 
             return DbConn.Execute(sql, param: new {OriginalIdxCode = idxCode, OriginalIdxNum = idxNum}, transaction: tran);
         }
@@ -521,7 +559,7 @@ namespace App.DAL
         {
             const string format = @"DELETE FROM {0} WHERE ref_category=@OriginalRefCategory;";
 
-            var sql = string.Format(format, TbSchoolInfo._.DataBaseTableName);
+            var sql = string.Format(format, DataBaseTableName);
 
             return DbConn.Execute(sql, param: new {OriginalRefCategory = refCategory}, transaction: tran);
         }
@@ -537,42 +575,14 @@ namespace App.DAL
         {
             const string format = @"DELETE FROM {0} WHERE ref_category=@OriginalRefCategory;";
 
-            var sql = string.Format(format, TbSchoolInfo._.DataBaseTableName);
+            var sql = string.Format(format, DataBaseTableName);
 
             return DbConn.Execute(sql, param: refCategorys.Select(p => new {OriginalRefCategory = p}), transaction: tran);
         }
 	
 		#endregion
 
-		/// <summary>
-        /// 自定义条件删除
-        /// </summary>
-        /// <param name="where">自定义条件，where子句（不包含关键字Where）</param>
-        /// <param name="param">参数（对象属性自动转为sql中的参数，eg：new {Id=10},则执行sql会转为参数对象 @Id,值为10）</param>
-        /// <param name="tran">事务</param>
-        /// <returns></returns>
-        public virtual int Remove(string where, object param = null, IDbTransaction tran = null)
-        {
-            const string format = @"DELETE FROM {0} {1};";
-
-            var whereClause = string.Empty;
-            if (!string.IsNullOrWhiteSpace(where))
-            {
-                whereClause = where.Trim();
-
-                if (!whereClause.StartsWith("where", StringComparison.OrdinalIgnoreCase))
-                {
-                    whereClause = "WHERE " + whereClause;
-                }
-            }
-
-            var sql = string.Format(format,
-                TbSchoolInfo._.DataBaseTableName,
-                whereClause);
-
-            return DbConn.Execute(sql, param: param, transaction: tran);
-        }
-
+		
         #endregion
     }
 }
