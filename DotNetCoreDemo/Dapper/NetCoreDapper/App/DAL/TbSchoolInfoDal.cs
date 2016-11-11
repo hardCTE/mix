@@ -1,7 +1,7 @@
 ﻿/*
- * XCoder v6.8.6159.30224
+ * XCoder v6.8.6159.31546
  * 作者：Administrator/XUDB
- * 时间：2016-11-11 16:47:33
+ * 时间：2016-11-11 17:31:40
  * 版权：hardCTE 2016~2016
 */
 ﻿using System;
@@ -76,7 +76,7 @@ namespace App.DAL
         /// <param name="sort">排序方式(不包含关键字Order By)</param>
 		/// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual IEnumerable<TbSchoolInfo> GetByIdxIdxMul(String idxCode,Int64 idxNum, int top = 0, string sort = null, IDbTransaction tran = null)
+        public virtual IEnumerable<TbSchoolInfo> GetByIdxMul(String idxCode,Int64 idxNum, int top = 0, string sort = null, IDbTransaction tran = null)
         {
             const string format = "SELECT * FROM {0} WHERE idx_code=@IdxCode and idx_num=@IdxNum {1} {2}";
 
@@ -110,7 +110,7 @@ namespace App.DAL
         /// <param name="sort">排序方式(不包含关键字Order By)</param>
 		/// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual IEnumerable<TbSchoolInfo> GetByIdxFkCategoryId(Int64 refCategory, int top = 0, string sort = null, IDbTransaction tran = null)
+        public virtual IEnumerable<TbSchoolInfo> GetByFkCategoryId(Int64 refCategory, int top = 0, string sort = null, IDbTransaction tran = null)
         {
             const string format = "SELECT * FROM {0} WHERE ref_category=@RefCategory {1} {2}";
 
@@ -439,7 +439,14 @@ namespace App.DAL
 
 		#region Remove
 
-		﻿	#region 按键及索引 删除
+		/*
+ * XCoder v6.8.6159.31546
+ * 作者：Administrator/XUDB
+ * 时间：2016-11-11 17:31:40
+ * 版权：hardCTE 2016~2016
+*/
+﻿
+		#region 按键及索引 删除
 
 		/// <summary>
         /// 根据主键删除
@@ -466,7 +473,7 @@ namespace App.DAL
 		/// <param name="keyId">班级（联合主键1，int、非空）</param>
 		/// <param name="tran">事务</param>
         /// <returns></returns>
-		public virtual int RemoveByIdxIdexu(Int32 keyId, IDbTransaction tran = null)
+		public virtual int RemoveByIdexu(Int32 keyId, IDbTransaction tran = null)
         {
             const string format = @"DELETE FROM {0} WHERE key_id=@OriginalKeyId;";
 
@@ -482,7 +489,7 @@ namespace App.DAL
         /// <param name="keyIds">班级（联合主键1，int、非空）列表</param>
         /// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual int RemoveByIdxIdexus(IEnumerable<Int32> keyIds, IDbTransaction tran = null)
+        public virtual int RemoveByIdexus(IEnumerable<Int32> keyIds, IDbTransaction tran = null)
         {
             const string format = @"DELETE FROM {0} WHERE key_id=@OriginalKeyId;";
 
@@ -499,7 +506,7 @@ namespace App.DAL
 		/// <param name="idxNum">数字（序号索引2）</param>
 		/// <param name="tran">事务</param>
         /// <returns></returns>
-		public virtual int RemoveByIdxIdxMul(String idxCode, Int64 idxNum, IDbTransaction tran = null)
+		public virtual int RemoveByIdxMul(String idxCode, Int64 idxNum, IDbTransaction tran = null)
         {
             const string format = @"DELETE FROM {0} WHERE idx_code=@OriginalIdxCode AND idx_num=@OriginalIdxNum;";
 
@@ -516,7 +523,7 @@ namespace App.DAL
 		/// <param name="refCategory">引用的分类Id</param>
 		/// <param name="tran">事务</param>
         /// <returns></returns>
-		public virtual int RemoveByIdxFkCategoryId(Int64 refCategory, IDbTransaction tran = null)
+		public virtual int RemoveByFkCategoryId(Int64 refCategory, IDbTransaction tran = null)
         {
             const string format = @"DELETE FROM {0} WHERE ref_category=@OriginalRefCategory;";
 

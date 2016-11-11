@@ -1,7 +1,7 @@
 ﻿/*
- * XCoder v6.8.6159.30224
+ * XCoder v6.8.6159.31546
  * 作者：Administrator/XUDB
- * 时间：2016-11-11 16:54:38
+ * 时间：2016-11-11 17:31:43
  * 版权：hardCTE 2016~2016
 */
 ﻿using System;
@@ -56,7 +56,7 @@ namespace App.DAL
         /// <param name="sort">排序方式(不包含关键字Order By)</param>
 		/// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual IEnumerable<TbIpBlacklist> GetByIdxIdxIp(String ip, int top = 0, string sort = null, IDbTransaction tran = null)
+        public virtual IEnumerable<TbIpBlacklist> GetByIdxIp(String ip, int top = 0, string sort = null, IDbTransaction tran = null)
         {
             const string format = "SELECT * FROM {0} WHERE ip=@Ip {1} {2}";
 
@@ -385,12 +385,13 @@ namespace App.DAL
 		#region Remove
 
 		/*
- * XCoder v6.8.6159.30224
+ * XCoder v6.8.6159.31546
  * 作者：Administrator/XUDB
- * 时间：2016-11-11 16:54:38
+ * 时间：2016-11-11 17:31:43
  * 版权：hardCTE 2016~2016
 */
-﻿	#region 按键及索引 删除
+﻿
+		#region 按键及索引 删除
 
 		/// <summary>
         /// 根据主键删除
@@ -431,7 +432,7 @@ namespace App.DAL
 		/// <param name="ip">ip值(支持正则表达式)</param>
 		/// <param name="tran">事务</param>
         /// <returns></returns>
-		public virtual int RemoveByIdxIdxIp(String ip, IDbTransaction tran = null)
+		public virtual int RemoveByIdxIp(String ip, IDbTransaction tran = null)
         {
             const string format = @"DELETE FROM {0} WHERE ip=@OriginalIp;";
 
@@ -447,7 +448,7 @@ namespace App.DAL
         /// <param name="ips">ip值(支持正则表达式)列表</param>
         /// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual int RemoveByIdxIdxIps(IEnumerable<String> ips, IDbTransaction tran = null)
+        public virtual int RemoveByIdxIps(IEnumerable<String> ips, IDbTransaction tran = null)
         {
             const string format = @"DELETE FROM {0} WHERE ip=@OriginalIp;";
 
