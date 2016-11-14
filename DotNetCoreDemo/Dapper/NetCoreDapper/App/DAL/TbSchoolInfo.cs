@@ -1,7 +1,7 @@
 ﻿/*
- * XCoder v6.8.6159.30224
+ * XCoder v6.8.6162.20400
  * 作者：Administrator/XUDB
- * 时间：2016-11-11 16:47:33
+ * 时间：2016-11-14 11:20:14
  * 版权：hardCTE 2016~2016
 */
 ﻿using System;
@@ -13,12 +13,12 @@ namespace App.DAL
 {
     /// <summary>学校信息表包含各种常用字段</summary>
 	/// <remarks>学校信息表（包含各种常用字段）</remarks>
-    ///[Description("学校信息表（包含各种常用字段）")]
-    ///[BindIndex("PRIMARY", true, "key_id,key_str")]
-    ///[BindIndex("idexu_", true, "key_id")]
-    ///[BindIndex("idx_mul", false, "idx_code,idx_num")]
-    ///[BindIndex("fk_categoryId", false, "ref_category")]
-    ///[BindTable("tb_school_info", Description = "学校信息表（包含各种常用字段）", ConnName = "MyConnName", DbType = DatabaseType.MySql)]
+    /// [Description("学校信息表（包含各种常用字段）")]
+    /// [BindIndex("PRIMARY", true, "key_id,key_str")]
+    /// [BindIndex("idexu_", true, "key_id")]
+    /// [BindIndex("idx_mul", false, "idx_code,idx_num")]
+    /// [BindIndex("fk_categoryId", false, "ref_category")]
+    /// [BindTable("tb_school_info", Description = "学校信息表（包含各种常用字段）", ConnName = "MyConnName", DbType = DatabaseType.MySql)]
     public partial class TbSchoolInfo : TableModelBase
     {
         #region 属性

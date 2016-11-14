@@ -1,7 +1,7 @@
 ﻿/*
- * XCoder v6.8.6159.30224
+ * XCoder v6.8.6162.20400
  * 作者：Administrator/XUDB
- * 时间：2016-11-11 16:54:38
+ * 时间：2016-11-14 11:20:12
  * 版权：hardCTE 2016~2016
 */
 ﻿using System;
@@ -13,10 +13,10 @@ namespace App.DAL
 {
     /// <summary>tb_ip_blacklist</summary>
 	/// <remarks></remarks>
-    ///[Description("")]
-    ///[BindIndex("PRIMARY", true, "id")]
-    ///[BindIndex("idx_ip", false, "ip")]
-    ///[BindTable("tb_ip_blacklist", Description = "", ConnName = "MyConnName", DbType = DatabaseType.MySql)]
+    /// [Description("")]
+    /// [BindIndex("PRIMARY", true, "id")]
+    /// [BindIndex("idx_ip", false, "ip")]
+    /// [BindTable("tb_ip_blacklist", Description = "", ConnName = "MyConnName", DbType = DatabaseType.MySql)]
     public partial class TbIpBlacklist : TableModelBase
     {
         #region 属性

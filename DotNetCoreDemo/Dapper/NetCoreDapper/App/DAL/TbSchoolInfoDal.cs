@@ -1,10 +1,10 @@
 ﻿/*
- * XCoder v6.8.6159.33742
+ * XCoder v6.8.6162.20400
  * 作者：Administrator/XUDB
- * 时间：2016-11-11 18:44:49
+ * 时间：2016-11-14 11:20:14
  * 版权：hardCTE 2016~2016
 */
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -13,34 +13,34 @@ using Dapper;
 
 namespace App.DAL
 {
-    /// <summary>
+	/// <summary>
     /// TbSchoolInfo 数据访问层
     /// </summary>
     public partial class TbSchoolInfoDal : TableDalBase<TbSchoolInfo>
     {
-        #region 定义
+		#region 定义
 
         public TbSchoolInfoDal(IDbConnection dbCon = null) : base(dbCon)
         {
-        }
+		}
 
         #endregion
 
-        /// <summary>
+		/// <summary>
         /// 实现抽象基类属性
         /// </summary>
         public override string DataBaseTableName => TbSchoolInfo._.DataBaseTableName;
 
-        #region 查询
+		#region 查询
+		﻿
+		#region 按键及索引 查询
 
-        #region 按键及索引 查询
-
-        /// <summary>
+		/// <summary>
         /// 根据主键获取实体
         /// </summary>
-        /// <param name="keyId">班级（联合主键1，int、非空）</param>
-        /// <param name="keyStr">学校（联合主键2，字符可空，最大40）</param>
-        /// <param name="tran">事务</param>
+		/// <param name="keyId">班级（联合主键1，int、非空）</param>
+		/// <param name="keyStr">学校（联合主键2，字符可空，最大40）</param>
+		/// <param name="tran">事务</param>
         /// <returns></returns>
         public virtual TbSchoolInfo GetByPk(Int32 keyId, String keyStr, IDbTransaction tran = null)
         {
@@ -50,15 +50,15 @@ namespace App.DAL
 
             return DbConn.QueryFirst<TbSchoolInfo>(
                 sql: sql,
-                param: new { KeyId = keyId, KeyStr = keyStr },
+                param: new {KeyId = keyId, KeyStr = keyStr},
                 transaction: tran);
         }
 
-        /// <summary>
+		/// <summary>
         /// 根据唯一索引获取实体
         /// </summary>
-        /// <param name="keyId">班级（联合主键1，int、非空）</param>
-        /// <param name="tran">事务</param>
+		/// <param name="keyId">班级（联合主键1，int、非空）</param>
+		/// <param name="tran">事务</param>
         /// <returns></returns>
         public virtual TbSchoolInfo GetByUkIdexu(Int32 keyId, IDbTransaction tran = null)
         {
@@ -68,24 +68,24 @@ namespace App.DAL
 
             return DbConn.QueryFirst<TbSchoolInfo>(
                 sql: sql,
-                param: new { KeyId = keyId },
+                param: new {KeyId = keyId},
                 transaction: tran);
         }
 
-        /// <summary>
+		/// <summary>
         /// 根据索引获取实体列表
         /// </summary>
-        /// <param name="idxCode">编码（索引1）</param>
-        /// <param name="idxNum">数字（序号索引2）</param>
-        /// <param name="top">获取行数(默认为0，即所有)</param>
+		/// <param name="idxCode">编码（索引1）</param>
+		/// <param name="idxNum">数字（序号索引2）</param>
+		/// <param name="top">获取行数(默认为0，即所有)</param>
         /// <param name="sort">排序方式(不包含关键字Order By)</param>
-        /// <param name="tran">事务</param>
+		/// <param name="tran">事务</param>
         /// <returns></returns>
         public virtual IEnumerable<TbSchoolInfo> GetByIdxMul(String idxCode, Int64 idxNum, int top = 0, string sort = null, IDbTransaction tran = null)
         {
             const string format = "SELECT * FROM {0} WHERE idx_code=@IdxCode and idx_num=@IdxNum {1} {2}";
 
-            var sortClause = string.Empty;
+			var sortClause = string.Empty;
             if (!string.IsNullOrWhiteSpace(sort))
             {
                 sortClause = "ORDER BY " + sort;
@@ -101,23 +101,23 @@ namespace App.DAL
 
             return DbConn.Query<TbSchoolInfo>(
                 sql: sql,
-                param: new { IdxCode = idxCode, IdxNum = idxNum },
+                param: new {IdxCode = idxCode, IdxNum = idxNum},
                 transaction: tran);
         }
 
-        /// <summary>
+		/// <summary>
         /// 根据索引获取实体列表
         /// </summary>
-        /// <param name="refCategory">引用的分类Id</param>
-        /// <param name="top">获取行数(默认为0，即所有)</param>
+		/// <param name="refCategory">引用的分类Id</param>
+		/// <param name="top">获取行数(默认为0，即所有)</param>
         /// <param name="sort">排序方式(不包含关键字Order By)</param>
-        /// <param name="tran">事务</param>
+		/// <param name="tran">事务</param>
         /// <returns></returns>
         public virtual IEnumerable<TbSchoolInfo> GetByFkCategoryId(Int64 refCategory, int top = 0, string sort = null, IDbTransaction tran = null)
         {
             const string format = "SELECT * FROM {0} WHERE ref_category=@RefCategory {1} {2}";
 
-            var sortClause = string.Empty;
+			var sortClause = string.Empty;
             if (!string.IsNullOrWhiteSpace(sort))
             {
                 sortClause = "ORDER BY " + sort;
@@ -133,7 +133,7 @@ namespace App.DAL
 
             return DbConn.Query<TbSchoolInfo>(
                 sql: sql,
-                param: new { RefCategory = refCategory },
+                param: new {RefCategory = refCategory},
                 transaction: tran);
         }
 
@@ -141,7 +141,8 @@ namespace App.DAL
 
         #endregion
 
-        #region Add
+
+		#region Add
 
         /// <summary>
         /// 添加
@@ -157,9 +158,9 @@ namespace App.DAL
 
             var sql = string.Format(format, DataBaseTableName);
 
-            DbConn.ExecuteScalar(sql, param: item, transaction: tran);
-            item.OriginalKeyId = item.KeyId;
-            item.OriginalKeyStr = item.KeyStr;
+			DbConn.ExecuteScalar(sql, param: item, transaction: tran);
+			item.OriginalKeyId = item.KeyId;
+			item.OriginalKeyStr = item.KeyStr;
 
             return 1;
         }
@@ -259,47 +260,46 @@ namespace App.DAL
 
         #endregion
 
-        #region Remove
+		#region Remove
+		﻿
+		#region 按键及索引 删除
 
-
-        #region 按键及索引 删除
-
-        /// <summary>
+		/// <summary>
         /// 根据主键删除
         /// </summary>
-
-        /// <param name="keyId">班级（联合主键1，int、非空）</param>	
-        /// <param name="keyStr">学校（联合主键2，字符可空，最大40）</param>
-        /// <param name="tran">事务</param>
+		
+		/// <param name="keyId">班级（联合主键1，int、非空）</param>	
+		/// <param name="keyStr">学校（联合主键2，字符可空，最大40）</param>
+		/// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual int RemoveByPk(Int32 keyId, String keyStr, IDbTransaction tran = null)
+		public virtual int RemoveByPk(Int32 keyId, String keyStr, IDbTransaction tran = null)
         {
             const string format = @"DELETE FROM {0} WHERE key_id=@OriginalKeyId AND key_str=@OriginalKeyStr;";
 
             var sql = string.Format(format, DataBaseTableName);
 
-            return DbConn.Execute(sql, param: new { OriginalKeyId = keyId, OriginalKeyStr = keyStr }, transaction: tran);
+            return DbConn.Execute(sql, param: new {OriginalKeyId = keyId, OriginalKeyStr = keyStr}, transaction: tran);
         }
-
-
-        /// <summary>
+	
+	
+		/// <summary>
         /// 根据索引删除
         /// </summary>
-
-        /// <param name="keyId">班级（联合主键1，int、非空）</param>
-        /// <param name="tran">事务</param>
+		
+		/// <param name="keyId">班级（联合主键1，int、非空）</param>
+		/// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual int RemoveByIdexu(Int32 keyId, IDbTransaction tran = null)
+		public virtual int RemoveByIdexu(Int32 keyId, IDbTransaction tran = null)
         {
             const string format = @"DELETE FROM {0} WHERE key_id=@OriginalKeyId;";
 
             var sql = string.Format(format, DataBaseTableName);
 
-            return DbConn.Execute(sql, param: new { OriginalKeyId = keyId }, transaction: tran);
+            return DbConn.Execute(sql, param: new {OriginalKeyId = keyId}, transaction: tran);
         }
-
-
-        /// <summary>
+	
+	
+		/// <summary>
         /// 根据索引批量删除
         /// </summary>
         /// <param name="keyIds">班级（联合主键1，int、非空）列表</param>
@@ -311,45 +311,45 @@ namespace App.DAL
 
             var sql = string.Format(format, DataBaseTableName);
 
-            return DbConn.Execute(sql, param: keyIds.Select(p => new { OriginalKeyId = p }), transaction: tran);
+            return DbConn.Execute(sql, param: keyIds.Select(p => new {OriginalKeyId = p}), transaction: tran);
         }
-
-        /// <summary>
+	
+		/// <summary>
         /// 根据索引删除
         /// </summary>
-
-        /// <param name="idxCode">编码（索引1）</param>	
-        /// <param name="idxNum">数字（序号索引2）</param>
-        /// <param name="tran">事务</param>
+		
+		/// <param name="idxCode">编码（索引1）</param>	
+		/// <param name="idxNum">数字（序号索引2）</param>
+		/// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual int RemoveByIdxMul(String idxCode, Int64 idxNum, IDbTransaction tran = null)
+		public virtual int RemoveByIdxMul(String idxCode, Int64 idxNum, IDbTransaction tran = null)
         {
             const string format = @"DELETE FROM {0} WHERE idx_code=@OriginalIdxCode AND idx_num=@OriginalIdxNum;";
 
             var sql = string.Format(format, DataBaseTableName);
 
-            return DbConn.Execute(sql, param: new { OriginalIdxCode = idxCode, OriginalIdxNum = idxNum }, transaction: tran);
+            return DbConn.Execute(sql, param: new {OriginalIdxCode = idxCode, OriginalIdxNum = idxNum}, transaction: tran);
         }
-
-
-        /// <summary>
+	
+	
+		/// <summary>
         /// 根据索引删除
         /// </summary>
-
-        /// <param name="refCategory">引用的分类Id</param>
-        /// <param name="tran">事务</param>
+		
+		/// <param name="refCategory">引用的分类Id</param>
+		/// <param name="tran">事务</param>
         /// <returns></returns>
-        public virtual int RemoveByFkCategoryId(Int64 refCategory, IDbTransaction tran = null)
+		public virtual int RemoveByFkCategoryId(Int64 refCategory, IDbTransaction tran = null)
         {
             const string format = @"DELETE FROM {0} WHERE ref_category=@OriginalRefCategory;";
 
             var sql = string.Format(format, DataBaseTableName);
 
-            return DbConn.Execute(sql, param: new { OriginalRefCategory = refCategory }, transaction: tran);
+            return DbConn.Execute(sql, param: new {OriginalRefCategory = refCategory}, transaction: tran);
         }
-
-
-        /// <summary>
+	
+	
+		/// <summary>
         /// 根据索引批量删除
         /// </summary>
         /// <param name="refCategorys">引用的分类Id列表</param>
@@ -361,11 +361,10 @@ namespace App.DAL
 
             var sql = string.Format(format, DataBaseTableName);
 
-            return DbConn.Execute(sql, param: refCategorys.Select(p => new { OriginalRefCategory = p }), transaction: tran);
+            return DbConn.Execute(sql, param: refCategorys.Select(p => new {OriginalRefCategory = p}), transaction: tran);
         }
-
-        #endregion
-
+	
+		#endregion
 
         #endregion
     }
