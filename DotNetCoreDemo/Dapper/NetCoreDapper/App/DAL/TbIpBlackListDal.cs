@@ -4,7 +4,7 @@
  * 时间：2016-11-14 11:20:12
  * 版权：hardCTE 2016~2016
 */
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -13,33 +13,33 @@ using Dapper;
 
 namespace App.DAL
 {
-	/// <summary>
+    /// <summary>
     /// TbIpBlacklist 数据访问层
     /// </summary>
     public partial class TbIpBlacklistDal : TableDalBase<TbIpBlacklist>
     {
-		#region 定义
+        #region 定义
 
         public TbIpBlacklistDal(IDbConnection dbCon = null) : base(dbCon)
         {
-		}
+        }
 
         #endregion
 
-		/// <summary>
+        /// <summary>
         /// 实现抽象基类属性
         /// </summary>
         public override string DataBaseTableName => TbIpBlacklist._.DataBaseTableName;
 
-		#region 查询
-		﻿
-		#region 按键及索引 查询
+        #region 查询
 
-		/// <summary>
+        #region 按键及索引 查询
+
+        /// <summary>
         /// 根据主键获取实体
         /// </summary>
-		/// <param name="id">自增Id</param>
-		/// <param name="tran">事务</param>
+        /// <param name="id">自增Id</param>
+        /// <param name="tran">事务</param>
         /// <returns></returns>
         public virtual TbIpBlacklist GetByPk(Int64 id, IDbTransaction tran = null)
         {
@@ -49,23 +49,23 @@ namespace App.DAL
 
             return DbConn.QueryFirst<TbIpBlacklist>(
                 sql: sql,
-                param: new {Id = id},
+                param: new { Id = id },
                 transaction: tran);
         }
 
-		/// <summary>
+        /// <summary>
         /// 根据索引获取实体列表
         /// </summary>
-		/// <param name="ip">ip值(支持正则表达式)</param>
-		/// <param name="top">获取行数(默认为0，即所有)</param>
+        /// <param name="ip">ip值(支持正则表达式)</param>
+        /// <param name="top">获取行数(默认为0，即所有)</param>
         /// <param name="sort">排序方式(不包含关键字Order By)</param>
-		/// <param name="tran">事务</param>
+        /// <param name="tran">事务</param>
         /// <returns></returns>
         public virtual IEnumerable<TbIpBlacklist> GetByIdxIp(String ip, int top = 0, string sort = null, IDbTransaction tran = null)
         {
             const string format = "SELECT * FROM {0} WHERE ip=@Ip {1} {2}";
 
-			var sortClause = string.Empty;
+            var sortClause = string.Empty;
             if (!string.IsNullOrWhiteSpace(sort))
             {
                 sortClause = "ORDER BY " + sort;
@@ -81,7 +81,7 @@ namespace App.DAL
 
             return DbConn.Query<TbIpBlacklist>(
                 sql: sql,
-                param: new {Ip = ip},
+                param: new { Ip = ip },
                 transaction: tran);
         }
 
@@ -90,7 +90,7 @@ namespace App.DAL
         #endregion
 
 
-		#region Add
+        #region Add
 
         /// <summary>
         /// 添加
@@ -106,8 +106,8 @@ namespace App.DAL
 
             var sql = string.Format(format, DataBaseTableName);
 
-			item.Id = DbConn.ExecuteScalar<Int64>(sql, param: item, transaction: tran);
-			item.OriginalId = item.Id;
+            item.Id = DbConn.ExecuteScalar<Int64>(sql, param: item, transaction: tran);
+            item.OriginalId = item.Id;
 
             return 1;
         }
@@ -207,28 +207,28 @@ namespace App.DAL
 
         #endregion
 
-		#region Remove
-		﻿
-		#region 按键及索引 删除
+        #region Remove
 
-		/// <summary>
+        #region 按键及索引 删除
+
+        /// <summary>
         /// 根据主键删除
         /// </summary>
-		
-		/// <param name="id">自增Id</param>
-		/// <param name="tran">事务</param>
+
+        /// <param name="id">自增Id</param>
+        /// <param name="tran">事务</param>
         /// <returns></returns>
-		public virtual int RemoveByPk(Int64 id, IDbTransaction tran = null)
+        public virtual int RemoveByPk(Int64 id, IDbTransaction tran = null)
         {
             const string format = @"DELETE FROM {0} WHERE id=@OriginalId;";
 
             var sql = string.Format(format, DataBaseTableName);
 
-            return DbConn.Execute(sql, param: new {OriginalId = id}, transaction: tran);
+            return DbConn.Execute(sql, param: new { OriginalId = id }, transaction: tran);
         }
-	
-	
-		/// <summary>
+
+
+        /// <summary>
         /// 根据主键批量删除
         /// </summary>
         /// <param name="ids">自增Id列表</param>
@@ -240,27 +240,27 @@ namespace App.DAL
 
             var sql = string.Format(format, DataBaseTableName);
 
-            return DbConn.Execute(sql, param: ids.Select(p => new {OriginalId = p}), transaction: tran);
+            return DbConn.Execute(sql, param: ids.Select(p => new { OriginalId = p }), transaction: tran);
         }
-	
-		/// <summary>
+
+        /// <summary>
         /// 根据索引删除
         /// </summary>
-		
-		/// <param name="ip">ip值(支持正则表达式)</param>
-		/// <param name="tran">事务</param>
+
+        /// <param name="ip">ip值(支持正则表达式)</param>
+        /// <param name="tran">事务</param>
         /// <returns></returns>
-		public virtual int RemoveByIdxIp(String ip, IDbTransaction tran = null)
+        public virtual int RemoveByIdxIp(String ip, IDbTransaction tran = null)
         {
             const string format = @"DELETE FROM {0} WHERE ip=@OriginalIp;";
 
             var sql = string.Format(format, DataBaseTableName);
 
-            return DbConn.Execute(sql, param: new {OriginalIp = ip}, transaction: tran);
+            return DbConn.Execute(sql, param: new { OriginalIp = ip }, transaction: tran);
         }
-	
-	
-		/// <summary>
+
+
+        /// <summary>
         /// 根据索引批量删除
         /// </summary>
         /// <param name="ips">ip值(支持正则表达式)列表</param>
@@ -272,10 +272,10 @@ namespace App.DAL
 
             var sql = string.Format(format, DataBaseTableName);
 
-            return DbConn.Execute(sql, param: ips.Select(p => new {OriginalIp = p}), transaction: tran);
+            return DbConn.Execute(sql, param: ips.Select(p => new { OriginalIp = p }), transaction: tran);
         }
-	
-		#endregion
+
+        #endregion
 
         #endregion
     }
