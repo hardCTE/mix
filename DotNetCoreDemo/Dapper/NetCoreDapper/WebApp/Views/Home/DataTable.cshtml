@@ -7,3 +7,76 @@
 <h2>@ViewData["Title"].</h2>
 <h3>@ViewData["Message"]</h3>
 @{}
+<table id="dvTable" class="display">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Office</th>
+            <th>Extn.</th>
+            <th>Start date</th>
+            <th>Salary</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>Name</th>
+            <th>Position</th>
+            <th>Office</th>
+            <th>Extn.</th>
+            <th>Start date</th>
+            <th>Salary</th>
+        </tr>
+    </tfoot>
+</table>
+
+@section scripts {
+<environment names="Development">
+    <script src="~/lib/DataTables-1.10.12/js/jquery.dataTables.js"></script>
+    <script src="~/lib/DataTables-1.10.12/js/dataTables.bootstrap.js"></script>
+</environment>
+<environment names="Staging,Production">
+    <script src="~/lib/DataTables-1.10.12/js/jquery.dataTables.js"></script>
+    <script src="~/lib/DataTables-1.10.12/js/dataTables.bootstrap.js"></script>
+</environment>
+
+<script>
+
+    // https://datatables.net/plug-ins/api/
+
+    $.extend(true, $.fn.dataTable.defaults, {
+        "language": { // https://datatables.net/reference/option/language
+            "url": "/js/datatableLanguage.json"
+        },
+    });
+
+    $(document).ready(function () {
+        $('#dvTable').DataTable({
+            "aoColumns": [
+                null,
+                null,
+                { "orderSequence": ["asc"] },
+                { "orderSequence": ["desc", "asc", "asc"] },
+                { "orderSequence": ["desc"] },
+                null
+            ]
+        });
+
+        // https://datatables.net/examples/advanced_init/events_live.html
+        $('#dvTable tbody').on('click', 'tr', function () {
+            var data = table.row(this).data();
+            alert('You clicked on ' + data[0] + '\'s row');
+        });
+    });
+
+    // 列自定义处理
+    //https://datatables.net/examples/advanced_init/column_render.html
+
+    // // https://datatables.net/examples/advanced_init/html5-data-options.html table options 
+    // data-sort or data-order - for ordering data、data-filter or data-search - for search data
+    // https://datatables.net/examples/advanced_init/html5-data-attributes.html
+    
+</script>
+}
+
+
