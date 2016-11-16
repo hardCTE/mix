@@ -31,5 +31,11 @@ namespace WebApp.Controllers
         {
             return View();
         }
+
+        public IActionResult DataTable()
+        {
+            ViewData["Message"] = "DataTable View";
+            return View();
+        }
     }
 }
