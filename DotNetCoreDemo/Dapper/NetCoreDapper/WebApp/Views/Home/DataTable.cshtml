@@ -6,7 +6,12 @@
 }
 <h2>@ViewData["Title"].</h2>
 <h3>@ViewData["Message"]</h3>
-@{}
+
+@section styles {
+<link href="~/lib/DataTables-1.10.12/css/jquery.dataTables.css" rel="stylesheet" />
+<link href="~/lib/DataTables-1.10.12/css/dataTables.bootstrap.css" rel="stylesheet" />
+}
+
 <table id="dvTable" class="display">
     <thead>
         <tr>
@@ -18,6 +23,48 @@
             <th>Salary</th>
         </tr>
     </thead>
+    <tbody>
+        <tr>
+            <th>Lucy1</th>
+            <th>U.S</th>
+            <th></th>
+            <th>MainStreetNo.1</th>
+            <th>2014-11-17</th>
+            <th>$546798</th>
+        </tr>
+        <tr>
+            <th>Lucy0</th>
+            <th>U.S</th>
+            <th></th>
+            <th>MainStreetNo.1</th>
+            <th>2014-11-17</th>
+            <th>$546798</th>
+        </tr>
+        <tr>
+            <th>Lucy65</th>
+            <th>U.S</th>
+            <th></th>
+            <th>MainStreetNo.1</th>
+            <th>2014-11-17</th>
+            <th>$546798</th>
+        </tr>
+        <tr>
+            <th>Lucy24234</th>
+            <th>U.S</th>
+            <th></th>
+            <th>MainStreetNo.1</th>
+            <th>2014-11-17</th>
+            <th>$546798</th>
+        </tr>
+        <tr>
+            <th>Lucy234234</th>
+            <th>U.S</th>
+            <th></th>
+            <th>MainStreetNo.1</th>
+            <th>2014-11-17</th>
+            <th>$546798</th>
+        </tr>
+    </tbody>
     <tfoot>
         <tr>
             <th>Name</th>
@@ -51,7 +98,7 @@
     });
 
     $(document).ready(function () {
-        $('#dvTable').DataTable({
+        var table = $('#dvTable').DataTable({
             "aoColumns": [
                 null,
                 null,
@@ -75,8 +122,10 @@
     // // https://datatables.net/examples/advanced_init/html5-data-options.html table options 
     // data-sort or data-order - for ordering data、data-filter or data-search - for search data
     // https://datatables.net/examples/advanced_init/html5-data-attributes.html
+
+    // 
     
-</script>
+</script>`
 }
 
 
