@@ -11,84 +11,85 @@
 <link href="~/lib/DataTables-1.10.12/css/jquery.dataTables.css" rel="stylesheet" />
 <link href="~/lib/DataTables-1.10.12/css/dataTables.bootstrap.css" rel="stylesheet" />
 }
-
-<table id="dvTable" class="display">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Position</th>
-            <th>Office</th>
-            <th>Extn.</th>
-            <th>Start date</th>
-            <th>Salary</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th>Lucy1</th>
-            <th>U.S</th>
-            <th></th>
-            <th>MainStreetNo.1</th>
-            <th>2014-11-17</th>
-            <th>$546798</th>
-        </tr>
-        <tr>
-            <th>Lucy0</th>
-            <th>U.S</th>
-            <th></th>
-            <th>MainStreetNo.1</th>
-            <th>2014-11-17</th>
-            <th>$546798</th>
-        </tr>
-        <tr>
-            <th>Lucy65</th>
-            <th>U.S</th>
-            <th></th>
-            <th>MainStreetNo.1</th>
-            <th>2014-11-17</th>
-            <th>$546798</th>
-        </tr>
-        <tr>
-            <th>Lucy24234</th>
-            <th>U.S</th>
-            <th></th>
-            <th>MainStreetNo.1</th>
-            <th>2014-11-17</th>
-            <th>$546798</th>
-        </tr>
-        <tr>
-            <th>Lucy234234</th>
-            <th>U.S</th>
-            <th></th>
-            <th>MainStreetNo.1</th>
-            <th>2014-11-17</th>
-            <th>$546798</th>
-        </tr>
-    </tbody>
-    <tfoot>
-        <tr>
-            <th>Name</th>
-            <th>Position</th>
-            <th>Office</th>
-            <th>Extn.</th>
-            <th>Start date</th>
-            <th>Salary</th>
-        </tr>
-    </tfoot>
-</table>
-
+<div class="wrapper">
+    <table id="dvTable" class="display">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Extn.</th>
+                <th>Start date</th>
+                <th>Salary</th>
+            </tr>
+        </thead>
+        @*<tbody>
+                <tr>
+                    <th>Lucy1</th>
+                    <th>U.S</th>
+                    <th></th>
+                    <th>MainStreetNo.1</th>
+                    <th>2014-11-17</th>
+                    <th>$546798</th>
+                </tr>
+                <tr>
+                    <th>Lucy0</th>
+                    <th>U.S</th>
+                    <th></th>
+                    <th>MainStreetNo.1</th>
+                    <th>2014-11-17</th>
+                    <th>$546798</th>
+                </tr>
+                <tr>
+                    <th>Lucy65</th>
+                    <th>U.S</th>
+                    <th></th>
+                    <th>MainStreetNo.1</th>
+                    <th>2014-11-17</th>
+                    <th>$546798</th>
+                </tr>
+                <tr>
+                    <th>Lucy24234</th>
+                    <th>U.S</th>
+                    <th></th>
+                    <th>MainStreetNo.1</th>
+                    <th>2014-11-17</th>
+                    <th>$546798</th>
+                </tr>
+                <tr>
+                    <th>Lucy234234</th>
+                    <th>U.S</th>
+                    <th></th>
+                    <th>MainStreetNo.1</th>
+                    <th>2014-11-17</th>
+                    <th>$546798</th>
+                </tr>
+            </tbody>*@
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Extn.</th>
+                <th>Start date</th>
+                <th>Salary</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
 @section scripts {
 <environment names="Development">
-    <script src="~/lib/DataTables-1.10.12/js/jquery.dataTables.js"></script>
-    <script src="~/lib/DataTables-1.10.12/js/dataTables.bootstrap.js"></script>
+    <script type="text/javascript" charset="utf8" src="~/lib/DataTables-1.10.12/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="~/lib/DataTables-1.10.12/js/dataTables.bootstrap.js"></script>
 </environment>
 <environment names="Staging,Production">
-    <script src="~/lib/DataTables-1.10.12/js/jquery.dataTables.js"></script>
-    <script src="~/lib/DataTables-1.10.12/js/dataTables.bootstrap.js"></script>
+    <script type="text/javascript" src="~/lib/DataTables-1.10.12/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="~/lib/DataTables-1.10.12/js/dataTables.bootstrap.js"></script>
 </environment>
 
 <script>
-
+    // https://datatables.net/manual/
+    // https://datatables.net/extensions/index
     // https://datatables.net/plug-ins/api/
 
     $.extend(true, $.fn.dataTable.defaults, {
@@ -99,20 +100,50 @@
 
     $(document).ready(function () {
         var table = $('#dvTable').DataTable({
-            "aoColumns": [
-                null,
-                null,
-                { "orderSequence": ["asc"] },
-                { "orderSequence": ["desc", "asc", "asc"] },
-                { "orderSequence": ["desc"] },
-                null
-            ]
+            serverSide: true,
+            // https://datatables.net/manual/ajax
+            ajax: {
+                url: '/api/data/getlist',
+                dataSrc: 'data'
+            },
+            columns: [
+                { data: 'name' },
+                { data: 'position' },
+                { data: 'office', "orderSequence": ["asc"] },
+                { data: 'extn', "orderSequence": ["desc", "asc", "asc"], sort: "extn" },
+                { data: 'startDate', "orderSequence": ["desc"] },
+                { data: 'salary' },
+            ],
+            // https://datatables.net/examples/ajax/null_data_source.html
+            // 注意：columns对应的列定义 必须为null（data:null），否则不起作用
+            columnDefs: [{
+                "targets": -1,  // 最后一列
+                "data": null,
+                "defaultContent": "<button>Click!</button>"
+            }],
+            // https://datatables.net/examples/advanced_init/sort_direction_control.html
+            // https://datatables.net/reference/option/columns.orderSequence
+            // https://datatables.net/examples/ajax/orthogonal-data.html
+            //aoColumns: [
+            //    null,
+            //    null,
+            //    { "orderSequence": ["asc"] },
+            //    { "orderSequence": ["desc", "asc", "asc"] },
+            //    { "orderSequence": ["desc"] },
+            //    null
+            //]
+        });
+
+        // https://datatables.net/examples/ajax/null_data_source.html
+        $('#dvTable tbody').on('click', 'button', function () {
+            var data = table.row($(this).parents('tr')).data();
+            alert('You clicked button on ' + data['name'] + '\'s row'); //data[0]
         });
 
         // https://datatables.net/examples/advanced_init/events_live.html
         $('#dvTable tbody').on('click', 'tr', function () {
             var data = table.row(this).data();
-            alert('You clicked on ' + data[0] + '\'s row');
+            alert('You clicked on ' + data['name'] + '\'s row'); //data[0]
         });
     });
 
