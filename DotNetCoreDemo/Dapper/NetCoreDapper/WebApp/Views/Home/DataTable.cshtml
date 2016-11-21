@@ -98,11 +98,14 @@
         },
     });
 
+    var selected = [];
+
     $(document).ready(function () {
         var table = $('#dvTable').DataTable({
             serverSide: true,
             // https://datatables.net/manual/ajax
             ajax: {
+                type: "POST",
                 url: '/api/data/getlist',
                 dataSrc: 'data'
             },
@@ -131,7 +134,13 @@
             //    { "orderSequence": ["desc", "asc", "asc"] },
             //    { "orderSequence": ["desc"] },
             //    null
-            //]
+            //],
+            // https://datatables.net/examples/server_side/select_rows.html
+            "rowCallback": function (row, data) {
+                if ($.inArray(data.DT_RowId, selected) !== -1) {
+                    $(row).addClass('selected');
+                }
+            },
         });
 
         // https://datatables.net/examples/ajax/null_data_source.html
@@ -142,8 +151,16 @@
 
         // https://datatables.net/examples/advanced_init/events_live.html
         $('#dvTable tbody').on('click', 'tr', function () {
-            var data = table.row(this).data();
-            alert('You clicked on ' + data['name'] + '\'s row'); //data[0]
+            var id = this.id;
+            var index = $.inArray(id, selected);
+
+            if (index === -1) {
+                selected.push(id);
+            } else {
+                selected.splice(index, 1);
+            }
+
+            $(this).toggleClass('selected');
         });
     });
 
@@ -156,7 +173,7 @@
 
     // 
     
-</script>`
+</script>
 }
 
 
