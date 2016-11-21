@@ -311,27 +311,86 @@ namespace WebApp.Controllers
 
             #region 排序、过滤
 
+            //var order = param.GetOrderColumnName();
+
+            //if (!string.IsNullOrWhiteSpace(order))
+            //{
+            //    if (param.IsAsc().HasValue && !param.IsAsc().Value)
+            //    {
+            //        data = list.OrderBy(p =>
+            //        {
+            //            if (string.Equals(order, "name", StringComparison.OrdinalIgnoreCase))
+            //            {
+            //                return p.Name;
+            //            }
+            //            else if (string.Equals(order, "Position", StringComparison.OrdinalIgnoreCase))
+            //            {
+            //                return p.Position;
+            //            }
+            //            else if (string.Equals(order, "Office", StringComparison.OrdinalIgnoreCase))
+            //            {
+            //                return p.Office;
+            //            }
+            //            else if (string.Equals(order, "Extn", StringComparison.OrdinalIgnoreCase))
+            //            {
+            //                return p.Extn;
+            //            }
+            //            else if (string.Equals(order, "Salary", StringComparison.OrdinalIgnoreCase))
+            //            {
+            //                return p.Salary;
+            //            }
+
+            //            return null;
+            //        });
+            //    }
+            //    else
+            //    {
+            //        data = list.OrderByDescending(p =>
+            //        {
+            //            if (string.Equals(order, "name", StringComparison.OrdinalIgnoreCase))
+            //            {
+            //                return p.Name;
+            //            }
+            //            else if (string.Equals(order, "Position", StringComparison.OrdinalIgnoreCase))
+            //            {
+            //                return p.Position;
+            //            }
+            //            else if (string.Equals(order, "Office", StringComparison.OrdinalIgnoreCase))
+            //            {
+            //                return p.Office;
+            //            }
+            //            else if (string.Equals(order, "Extn", StringComparison.OrdinalIgnoreCase))
+            //            {
+            //                return p.Extn;
+            //            }
+            //            else if (string.Equals(order, "Salary", StringComparison.OrdinalIgnoreCase))
+            //            {
+            //                return p.Salary;
+            //            }
+
+            //            return null;
+            //        });
+            //    }
+            //}
+
             var order = param.GetOrderColumnName();
 
-            if (!string.IsNullOrWhiteSpace(order))
+            if (param.IsAsc().HasValue && !param.IsAsc().Value)
             {
-                if (param.IsAsc().HasValue && !param.IsAsc().Value)
-                {
-                    data = list.OrderBy(p => order);
-                }
-                else
-                {
-                    data = list.OrderByDescending(p => order);
-                }
+                data = list.OrderByDescending(p => p.Name);
+            }
+            else
+            {
+                data = list.OrderBy(p => p.Name);
             }
 
             #endregion
 
             #region 范围
-                        
+
             if (param.start > 0)
             {
-                data = list.Skip(param.start);
+                data = data.Skip(param.start);
             }
 
             if (param.length >= 0)

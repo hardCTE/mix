@@ -1,0 +1,179 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Bootstrap datatable";
+}
+<h2>@ViewData["Title"].</h2>
+<h3>@ViewData["Message"]</h3>
+
+@section styles {
+    <link href="~/lib/DataTables-1.10.12/css/jquery.dataTables.css" rel="stylesheet" />
+    <link href="~/lib/DataTables-1.10.12/css/dataTables.bootstrap.css" rel="stylesheet" />
+}
+<div class="wrapper">
+    <table id="dvTable" class="display">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Extn.</th>
+                <th>Start date</th>
+                <th>Salary</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Lucy1</th>
+                <th>U.S</th>
+                <th>of1</th>
+                <th>MainStreetNo.15</th>
+                <th>2014-11-17</th>
+                <th>$546798</th>
+            </tr>
+            <tr>
+                <th>Lucy0</th>
+                <th>U.S</th>
+                <th>of11</th>
+                <th>MainStreetNo.13</th>
+                <th>2014-11-17</th>
+                <th>$546798</th>
+            </tr>
+            <tr>
+                <th>Lucy65</th>
+                <th>U.S</th>
+                <th>of2</th>
+                <th>MainStreetNo.2</th>
+                <th>2014-11-17</th>
+                <th>$546798</th>
+            </tr>
+            <tr>
+                <th>Lucy24234</th>
+                <th>U.S</th>
+                <th>of3</th>
+                <th>MainStreetNo.11</th>
+                <th>2014-11-17</th>
+                <th>$546798</th>
+            </tr>
+            <tr>
+                <th>Lucy234234</th>
+                <th>U.S</th>
+                <th>of4</th>
+                <th>MainStreetNo.1</th>
+                <th>2014-11-17</th>
+                <th>$546798</th>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Extn.</th>
+                <th>Start date</th>
+                <th>Salary</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+@section scripts {
+    <environment names="Development">
+        <script type="text/javascript" charset="utf8" src="~/lib/DataTables-1.10.12/js/jquery.dataTables.js"></script>
+        <script type="text/javascript" src="~/lib/DataTables-1.10.12/js/dataTables.bootstrap.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script type="text/javascript" src="~/lib/DataTables-1.10.12/js/jquery.dataTables.js"></script>
+        <script type="text/javascript" src="~/lib/DataTables-1.10.12/js/dataTables.bootstrap.js"></script>
+    </environment>
+
+    <script>
+        // https://datatables.net/manual/
+        // https://datatables.net/extensions/index
+        // https://datatables.net/plug-ins/api/
+
+        $.extend(true, $.fn.dataTable.defaults, {
+            "language": { // https://datatables.net/reference/option/language
+                "url": "/js/datatableLanguage.json"
+            },
+        });
+
+        var selected = [];
+
+        $(document).ready(function () {
+            var table = $('#dvTable').DataTable({
+                //serverSide: true,
+                // https://datatables.net/manual/ajax
+                //ajax: {
+                //    type: "POST",
+                //    url: '/api/data/getlist',
+                //    dataSrc: 'data'
+                //},
+                columns: [
+                    { data: 'name' },
+                    { data: 'position' },
+                    { data: 'office', "orderSequence": ["asc", "desc"] },
+                    { data: 'extn', "orderSequence": ["desc", "asc", "asc"], sort: "office" },
+                    { data: 'startDate', "orderSequence": ["desc"] },
+                    { data: 'salary' },
+                ],
+                // https://datatables.net/examples/ajax/null_data_source.html
+                // 注意：columns对应的列定义 必须为null（data:null），否则不起作用
+                columnDefs: [{
+                    "targets": -1,  // 最后一列
+                    "data": null,
+                    "defaultContent": "<button>Click!</button>"
+                }],
+                // https://datatables.net/examples/advanced_init/sort_direction_control.html
+                // https://datatables.net/reference/option/columns.orderSequence
+                // https://datatables.net/examples/ajax/orthogonal-data.html
+                //aoColumns: [
+                //    null,
+                //    null,
+                //    { "orderSequence": ["asc"] },
+                //    { "orderSequence": ["desc", "asc", "asc"] },
+                //    { "orderSequence": ["desc"] },
+                //    null
+                //],
+                // https://datatables.net/examples/server_side/select_rows.html
+                "rowCallback": function (row, data) {
+                    if ($.inArray(data.DT_RowId, selected) !== -1) {
+                        $(row).addClass('selected');
+                    }
+                },
+            });
+
+            // https://datatables.net/examples/ajax/null_data_source.html
+            $('#dvTable tbody').on('click', 'button', function () {
+                var data = table.row($(this).parents('tr')).data();
+                alert('You clicked button on ' + data['name'] + '\'s row'); //data[0]
+            });
+
+            // https://datatables.net/examples/advanced_init/events_live.html
+            $('#dvTable tbody').on('click', 'tr', function () {
+                var id = this.id;
+                var index = $.inArray(id, selected);
+
+                if (index === -1) {
+                    selected.push(id);
+                } else {
+                    selected.splice(index, 1);
+                }
+
+                $(this).toggleClass('selected');
+            });
+        });
+
+        // 列自定义处理
+        //https://datatables.net/examples/advanced_init/column_render.html
+
+        // // https://datatables.net/examples/advanced_init/html5-data-options.html table options
+        // data-sort or data-order - for ordering data、data-filter or data-search - for search data
+        // https://datatables.net/examples/advanced_init/html5-data-attributes.html
+
+        //
+
+    </script>
+}
+
+
