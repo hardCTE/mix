@@ -67,12 +67,12 @@
             </tbody>*@
         <tfoot>
             <tr>
-                <th>Name</th>
-                <th>Position</th>
-                <th>Office</th>
-                <th>Extn.</th>
-                <th>Start date</th>
-                <th>Salary</th>
+                <th><input type="text" placeholder="Search Name" /></th>
+                <th><input type="text" placeholder="Search Position" /></th>
+                <th><input type="text" placeholder="Search Office" /></th>
+                <th><input type="text" placeholder="Search Extn." /></th>
+                <th><input type="text" placeholder="Search Start date" /></th>
+                <th><input type="text" placeholder="Search Salary" /></th>
             </tr>
         </tfoot>
     </table>
@@ -92,6 +92,8 @@
     // https://datatables.net/extensions/index
     // https://datatables.net/plug-ins/api/
 
+    // 自定义搜索： https://datatables.net/examples/api/regex.html
+
     $.extend(true, $.fn.dataTable.defaults, {
         "language": { // https://datatables.net/reference/option/language
             "url": "/js/datatableLanguage.json"
@@ -101,7 +103,7 @@
     var selected = [];
 
     $(document).ready(function () {
-        var table = $('#dvTable').DataTable({
+        var dvTable = $('#dvTable').DataTable({
             serverSide: true,
             // https://datatables.net/manual/ajax
             ajax: {
@@ -112,7 +114,7 @@
             columns: [
                 { data: 'name' },
                 { data: 'position' },
-                { data: 'office', "orderSequence": ["asc"] },
+                { data: 'office', "orderSequence": ["asc", "desc"] },
                 { data: 'extn', "orderSequence": ["desc", "asc", "asc"], sort: "office" },
                 { data: 'startDate', "orderSequence": ["desc"] },
                 { data: 'salary' },
@@ -145,7 +147,7 @@
 
         // https://datatables.net/examples/ajax/null_data_source.html
         $('#dvTable tbody').on('click', 'button', function () {
-            var data = table.row($(this).parents('tr')).data();
+            var data = dvTable.row($(this).parents('tr')).data();
             alert('You clicked button on ' + data['name'] + '\'s row'); //data[0]
         });
 
@@ -161,6 +163,29 @@
             }
 
             $(this).toggleClass('selected');
+        });
+
+        // https://datatables.net/examples/api/multi_filter.html
+        // apply search
+        //dvTable.columns().every(function () {
+        //    var that = this;
+
+        //    $('input', this.footer()).on('keyup change', function () {
+        //        if (that.search() !== this.value) {
+        //            that.search(this.value)
+        //                .draw();
+        //        }
+        //    });
+        //});
+        // dvTable.columns().every(function(o,i){console.log(o);console.log(this);})
+        var tabColumn = dvTable.column();
+        $('input', tabColumn.footer()).each(function (idx) {
+            $(this).on('keyup change', function () {
+                if (tabColumn.search() !== this.value) {
+                    tabColumn.search(this.value)
+                             .draw();
+                }
+            }); 
         });
     });
 
