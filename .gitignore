@@ -1,4 +1,4 @@
-﻿################################################################################
+################################################################################
 # 此 .gitignore 文件已由 Microsoft(R) Visual Studio 自动创建。
 ################################################################################
 
@@ -8,3 +8,5 @@ bin
 obj
 *.user
 /DotNetCoreDemo/Dapper/NetCoreDapper/DemoApp/project.lock.json
+DotNetCoreDemo/Dapper/NetCoreDapper/App/Properties/PublishProfiles/locl.pubxml
+DotNetCoreDemo/DotNetCoreWeb/project.lock.json
