@@ -1,0 +1,13 @@
+img,price,url,logindex,title,subwaytag,taxfree,haskey,hstype,houseid,tag,id
+
+
+img,price,url,logindex,title,subwaytag,taxfree,haskey,hstype,houseid,tag,id
+
+
+mongoexport.exe -d ljd210_1100 -c lj -f img,price,url,logindex,title,subwaytag,taxfree,haskey,hstype,houseid,tag,id --csv -o D:\tmp\monogo\lj1100.csv
+
+
+mongoexport.exe -d  lj300 -c lj -f img,price,url,logindex,title,subwaytag,taxfree,haskey,hstype,houseid,tag,id --csv -o D:\tmp\monogo\lj300.csv
+
+
+燕郊

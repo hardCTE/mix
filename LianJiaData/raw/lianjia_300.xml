@@ -1,0 +1,37 @@
+<root>
+  <Doc Name="" Description="" Version="0" SavePath="E:\Content\Win10\MyDownload\Hawk-master\projects\lianjia_xdb.xml">
+    <DBConnections>
+      <Children DBName="lj300" Name="lj210" TypeName="MongoDBConnector" ConnectString="mongodb://127.0.0.1" AutoConnect="False" />
+      <Children DBName="lj02101100" Name="ljdb" TypeName="MongoDBConnector" ConnectString="mongodb://127.0.0.1" AutoConnect="False" />
+    </DBConnections>
+    <Children Name="lianjia-网页采集器" Type="SmartCrawler" URL="http://bj.lianjia.com/ershoufang/" RootXPath="" IsMultiData="List" IsSuperMode="False" ShareCookie="" Description="任务描述" ScriptPath="">
+      <HttpSet URL="" Allowautoredirect="True" Postdata="" Encoding="Unknown" Method="GET" Parameters="User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.89 Safari/537.36&#xA;Cookie:lianjia_ssid=fc65ac28-95db-47cb-a7de-107185d5d0d0;expires=Fri, 10-Feb-17 05:23:36 GMT;Max-Age=1800;domain=.lianjia.com;path=/;lianjia_uuid=83caa0d4-74af-43d8-a82f-04a832abd966;all-lj=80b391239fd880f59f779618fca39507;cityCode=sh;gr_user_id=1ed1ff54-3293-41bb-9aca-0904a9ca0c28;ubt_load_interval_b=1483948184511;ubta=2299869246.1703858533.1483948185514.1483948185514.1483948185514.1;ubtc=2299869246.1703858533.1483948185517.2D4E80BF7F483E99024A71216C65FE93;ubtd=1;Hm_lvt_efa595b768cc9dc7d7f9823368e795f1=1486203318;Hm_lpvt_efa595b768cc9dc7d7f9823368e795f1=1486203654;lianjia_token=2.0060f3f44019dfde85715edd718e2e1cfb;select_city=110000;_smt_uid=58292268.12f4ba57;CNZZDATA1253477573=1692947091-1479085532-%7C1486701144;CNZZDATA1254525948=1979742572-1479086346-%7C1486701147;CNZZDATA1255633284=866010470-1479085993-%7C1486700695;CNZZDATA1255604082=2047829252-1479085703-%7C1486700415;_ga=GA1.2.2010914840.1479090792&#xA;" />
+      <Children Name="img" XPath="/html[1]/body[1]/div[4]/div[1]/div[5]/div[12]/a[1]/img[1]/@data-original[1]" IsHtml="False" />
+      <Children Name="hid" XPath="/html[1]/body[1]/div[4]/div[1]/div[5]/div[2]/a[1]/div[1]/@data-hid[1]" IsHtml="False" />
+      <Children Name="price" XPath="/html[1]/body[1]/div[4]/div[1]/div[5]/div[4]/a[1]/div[4]/span[1]" IsHtml="False" />
+      <Children Name="url" XPath="/html[1]/body[1]/div[4]/div[1]/div[5]/div[8]/a[1]/@href[1]" IsHtml="False" />
+      <Children Name="logindex" XPath="/html[1]/body[1]/div[4]/div[1]/div[5]/div[8]/a[1]/@data-log_index[1]" IsHtml="False" />
+      <Children Name="title" XPath="/html[1]/body[1]/div[4]/div[1]/div[5]/div[16]/a[2]" IsHtml="False" />
+      <Children Name="subwaytag" XPath="/html[1]/body[1]/div[4]/div[1]/div[5]/div[8]/div[2]/span[1]" IsHtml="False" />
+      <Children Name="taxfree" XPath="/html[1]/body[1]/div[4]/div[1]/div[5]/div[17]/div[2]/span[2]" IsHtml="False" />
+      <Children Name="houseid" XPath="/html[1]/body[1]/div[4]/div[1]/div[5]/div[10]/@data-houseid[1]" IsHtml="False" />
+      <Children Name="tag" XPath="/html[1]/body[1]/div[4]/div[1]/div[5]/div[1]/div[1]" IsHtml="False" />
+    </Children>
+    <Children Name="lianjia-数据清洗" Type="SmartETLTool" MaxThreadCount="4" GenerateMode="串行模式" SampleMount="20" Description="任务描述" ScriptPath="">
+      <Children Enabled="True" MinValue="1" MaxValue="20" Interval="1" Column="id" MergeType="Append" Type="RangeGE" Group="Generator" />
+      <Children Enabled="True" MergeWith="" Format="http://bj.lianjia.com/ershoufang/pg{0}/" Column="id" NewColumn="url" OneOutput="True" IsMultiYield="False" Type="MergeTF" Group="Transformer" />
+      <Children Enabled="True" MaxTryCount="1" ErrorDelay="3000" CrawlerSelector="lianjia-网页采集器" Column="url" NewColumn="" OneOutput="False" IsMultiYield="True" Type="CrawlerTF" Group="Transformer" />
+      <Children Group="Executor" Enabled="True" Table="lj" Column="img" Type="TableEX" />
+      <Children Group="Executor" Enabled="True" Table="lj" Column="hid" Type="TableEX" />
+      <Children Group="Executor" Enabled="True" Table="lj" Column="price" Type="TableEX" />
+      <Children Group="Executor" Enabled="True" Table="lj" Column="logindex" Type="TableEX" />
+      <Children Group="Executor" Enabled="True" Table="lj" Column="title" Type="TableEX" />
+      <Children Group="Executor" Enabled="True" Table="lj" Column="subwaytag" Type="TableEX" />
+      <Children Group="Executor" Enabled="True" Table="lj" Column="taxfree" Type="TableEX" />
+      <Children Group="Executor" Enabled="True" Table="lj" Column="houseid" Type="TableEX" />
+      <Children Group="Executor" Enabled="True" Table="lj" Column="tag" Type="TableEX" />
+      <Children ExecuteType="OnlyInsert" TableName="lj" Group="Executor" Enabled="True" Type="DbEX" Connector="lj210" />
+      <Children Group="Executor" Enabled="True" Table="lj" Column="url" Type="TableEX" />
+    </Children>
+  </Doc>
+</root>
