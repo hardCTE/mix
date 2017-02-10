@@ -156,3 +156,77 @@ and houseid not in(101100885270,101100810892,101101036394,101091828255,101100375
 )
 
 
+
+SELECT * from lj300
+where price < 160
+and price/mianji<40000
+and mianji >40
+and (subwaytag is null or subwaytag<>'不限购') and (taxfree is null or taxfree<>'不限购') and (haskey is null or haskey<>'不限购') and (hstype is null or (hstype<>'不限购' and hstype<>' 不限购'))
+and quyu <> '燕郊' and quyu<>'燕郊城区'
+and INSTR(title,'车位')=0
+and INSTR(title,'车库')=0
+and INSTR(title,'不限购')=0
+and INSTR(title,'地下一层')=0
+and INSTR(title,'地下室')=0
+and INSTR(title,'商住两用')=0
+and INSTR(title,'底商')=0
+and INSTR(title,'熙旺中心')=0
+and INSTR(title,'旭辉E天地')=0
+and INSTR(title,'国融国际')=0
+and INSTR(title,'东亚五环国际')=0
+and INSTR(title,'东亚首航国际')=0
+and INSTR(title,'i立方')=0
+and INSTR(title,'绿地启航社')=0
+and INSTR(title,'琥珀郡')=0
+and INSTR(title,'锋创科技园')=0
+and INSTR(title,'当代商城鼎城')=0
+and INSTR(title,'东方郁金香')=0
+and INSTR(title,'合生世界村')=0
+and INSTR(title,'波普公社')=0
+and INSTR(title,'炫立方')=0
+and INSTR(title,'江山赋')=0
+and INSTR(title,'明天生活馆')=0
+and INSTR(title,'炫立方')=0
+
+and houseid not in(101100885270,101100810892,101101036394,101091828255,101100375153,101100375166,101100989630,101101115313,101100995134,101100933635,101091062879,101100809836,
+101100809836,101101129456
+)
+
+
+
+SELECT * from lj300
+where price <= 200 and price >=180
+and mianji >60
+and (subwaytag is null or subwaytag<>'不限购') and (taxfree is null or taxfree<>'不限购') and (haskey is null or haskey<>'不限购') and (hstype is null or (hstype<>'不限购' and hstype<>' 不限购'))
+and quyu <> '燕郊' and quyu<>'燕郊城区'
+and INSTR(title,'车位')=0
+and INSTR(title,'车库')=0
+and INSTR(title,'不限购')=0
+and INSTR(title,'地下一层')=0
+and INSTR(title,'地下室')=0
+and INSTR(title,'商住两用')=0
+and INSTR(title,'底商')=0
+and INSTR(title,'熙旺中心')=0
+and INSTR(title,'旭辉E天地')=0
+and INSTR(title,'国融国际')=0
+and INSTR(title,'东亚五环国际')=0
+and INSTR(title,'东亚首航国际')=0
+and INSTR(title,'i立方')=0
+and INSTR(title,'绿地启航社')=0
+and INSTR(title,'琥珀郡')=0
+and INSTR(title,'锋创科技园')=0
+and INSTR(title,'当代商城鼎城')=0
+and INSTR(title,'东方郁金香')=0
+and INSTR(title,'合生世界村')=0
+and INSTR(title,'波普公社')=0
+and INSTR(title,'炫立方')=0
+and INSTR(title,'江山赋')=0
+and INSTR(title,'明天生活馆')=0
+and INSTR(title,'熙公馆')=0
+and INSTR(title,'首开智慧社')=0
+and INSTR(title,'龙山跃')=0
+and INSTR(title,'熙公馆')=0
+
+and houseid not in(101100885270,101100810892,101101036394,101091828255,101100375153,101100375166,101100989630,101101115313,101100995134,101100933635,101091062879,101100809836,
+101100809836,101101129456,101100924675,101100779042,101101040771,101100660379
+)
