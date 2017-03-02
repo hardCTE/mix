@@ -30,6 +30,17 @@ namespace App.DALTest
             }
         }
 
+        public void TestGet()
+        {
+            var items = _dal.GetTopSort(null);
+            Console.WriteLine($"Info: get items");
+            foreach (var item in items)
+            {
+                Console.WriteLine($"{item.Id}~{item.IsEnable}~{item.Ip}~{item.AddTime}~{item.Descr}");
+            }
+
+        }
+
         public void TestAdd()
         {
             var item = new TbIpBlacklist

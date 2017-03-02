@@ -1,0 +1,9 @@
+{
+    "navigationBarTitleText": "小程序官方组件展示~~~~",
+    "navigationBarTextStyle": "black",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F0F0F0",
+    "enablePullDownRefresh": true,
+    
+    "backgroundTextStyle": "dark"
+}
