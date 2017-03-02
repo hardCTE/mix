@@ -126,7 +126,8 @@ var Main = (function (_super) {
      * Create scene interface
      */
     p.startCreateScene = function () {
-        this.addChild(new SceneBegin());
+        //this.addChild(new SceneBegin());
+        this.addChild(new SceneLevels());
         return;
         var sky = this.createBitmapByName("bg_jpg");
         this.addChild(sky);
@@ -240,3 +241,4 @@ var Main = (function (_super) {
     return Main;
 }(eui.UILayer));
 egret.registerClass(Main,'Main');
+//# sourceMappingURL=Main.js.map

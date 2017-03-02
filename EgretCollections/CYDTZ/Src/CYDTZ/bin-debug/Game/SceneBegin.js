@@ -17,3 +17,4 @@ var SceneBegin = (function (_super) {
     return SceneBegin;
 }(eui.Component));
 egret.registerClass(SceneBegin,'SceneBegin');
+//# sourceMappingURL=SceneBegin.js.map

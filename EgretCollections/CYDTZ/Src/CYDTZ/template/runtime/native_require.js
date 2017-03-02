@@ -8,10 +8,12 @@ var game_file_list = [
 	"libs/modules/res/res.js",
 	"libs/modules/tween/tween.js",
 	"bin-debug/AssetAdapter.js",
+	"bin-debug/Game/LevelIcon.js",
+	"bin-debug/Game/SceneBegin.js",
+	"bin-debug/Game/SceneLevels.js",
 	"bin-debug/LoadingUI.js",
 	"bin-debug/Main.js",
 	"bin-debug/ThemeAdapter.js",
-	"bin-debug/Game/SceneBegin.js",
 	//----auto game_file_list end----
 ];
 
