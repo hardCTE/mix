@@ -7,6 +7,8 @@ var SceneLevels = (function (_super) {
     __extends(SceneLevels, _super);
     function SceneLevels() {
         _super.call(this);
+        this.SelLevel = 0;
+        this.LevelIcons = [];
         this.skinName = "src/Game/SceneLevelsSkin.exml";
         this.btn_back.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onclick_back, this);
         // 地图选项
@@ -27,6 +29,7 @@ var SceneLevels = (function (_super) {
             this.group_levels.addChildAt(img, 0);
         }
         // 正弦方式绘制关卡图标
+        var milestone = LevelDataManager.Shared().Milestone;
         for (var i = 0; i < count; i++) {
             var icon = new LevelIcon();
             icon.Level = i + 1;
@@ -39,6 +42,8 @@ var SceneLevels = (function (_super) {
             console.log("icon:level=" + icon.Level + ",x=" + icon.x + ",y=" + icon.y);
             groupBk.addChild(icon);
             icon.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onclick_level, this);
+            icon.enabled = i < milestone;
+            this.LevelIcons.push(icon);
         }
         console.log("groupbk:width=" + groupBk.width + ",height=" + groupBk.height);
         // var c=0;
@@ -87,11 +92,16 @@ var SceneLevels = (function (_super) {
     p.onclick_level = function (e) {
         var icon = e.currentTarget;
         console.log(icon.Level);
-        this.img_arrow.x = icon.x;
-        this.img_arrow.y = icon.y;
-        this.tlb.text = icon.Level.toString();
-        this.tlb.x = icon.x;
-        this.tlb.y = icon.y;
+        if (this.SelLevel != icon.Level) {
+            this.img_arrow.x = icon.x;
+            this.img_arrow.y = icon.y;
+            this.tlb.text = icon.Level.toString();
+            this.tlb.x = icon.x;
+            this.tlb.y = icon.y;
+            this.SelLevel = icon.Level;
+        }
+        else {
+        }
     };
     return SceneLevels;
 }(eui.Component));

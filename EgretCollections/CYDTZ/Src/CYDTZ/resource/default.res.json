@@ -1,6 +1,6 @@
 {
 	"groups":[{
-			"keys":"description_json,YesBtn1_jpg,YesBtn_jpg,WordFrame_png,StartBtn1_png,StartBtn_png,ResultBtn1_png,ResultBtn_png,Result_png,PageUpBtn_png,PageDownBtn_png,MoneyPic_png,MoneyBG_png,gs_select_dis_png,gs_select_1_png,GameBG3_jpg,GameBG2_jpg,GameBG1_jpg,Dialog_png,btn_sound_down_png,btn_sound_png,btn_music_down_png,btn_music_png,btn_disable_png,BackBtn1_png,BackBtn_png",
+			"keys":"description_json,YesBtn1_jpg,YesBtn_jpg,WordFrame_png,StartBtn1_png,StartBtn_png,ResultBtn1_png,ResultBtn_png,Result_png,PageUpBtn_png,PageDownBtn_png,MoneyPic_png,MoneyBG_png,gs_select_dis_png,gs_select_1_png,GameBG3_jpg,GameBG2_jpg,GameBG1_jpg,Dialog_png,btn_sound_down_png,btn_sound_png,btn_music_down_png,btn_music_png,btn_disable_png,BackBtn1_png,BackBtn_png,questions_json",
 			"name":"preload"
 		}],
 	"resources":[
@@ -133,6 +133,11 @@
 			"name":"BackBtn_png",
 			"type":"image",
 			"url":"assets/res/BackBtn.png"
+		},
+		{
+			"name":"questions_json",
+			"type":"json",
+			"url":"assets/questions.json"
 		}
 	]
 }

@@ -19,6 +19,9 @@ class SceneLevels extends eui.Component {
 	private group_levels: eui.Group;
 	private img_arrow: eui.Image;
 	private tlb: eui.Label;
+	private SelLevel: number = 0;
+	private LevelIcons: LevelIcon[] = [];
+
 	public constructor() {
 		super();
 
@@ -46,6 +49,7 @@ class SceneLevels extends eui.Component {
 		}
 
 		// 正弦方式绘制关卡图标
+		var milestone: number = LevelDataManager.Shared().Milestone;
 		for (var i = 0; i < count; i++) {
 			var icon = new LevelIcon();
 			icon.Level = i + 1;
@@ -61,6 +65,9 @@ class SceneLevels extends eui.Component {
 			console.log("icon:level=" + icon.Level + ",x=" + icon.x + ",y=" + icon.y);
 			groupBk.addChild(icon);
 			icon.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onclick_level, this);
+
+			icon.enabled = i < milestone;
+			this.LevelIcons.push(icon);
 		}
 
 		console.log("groupbk:width=" + groupBk.width + ",height=" + groupBk.height);
@@ -115,11 +122,30 @@ class SceneLevels extends eui.Component {
 		var icon = <LevelIcon>e.currentTarget;
 		console.log(icon.Level);
 
-		this.img_arrow.x = icon.x;
-		this.img_arrow.y = icon.y;
+		if (this.SelLevel != icon.Level) {
+			this.img_arrow.x = icon.x;
+			this.img_arrow.y = icon.y;
 
-		this.tlb.text = icon.Level.toString();
-		this.tlb.x = icon.x;
-		this.tlb.y = icon.y;
+			this.tlb.text = icon.Level.toString();
+			this.tlb.x = icon.x;
+			this.tlb.y = icon.y;
+
+			this.SelLevel = icon.Level;
+		} else {
+			//TODO:开始游戏
+		}
+	}
+
+	public OpenLevel(level:number) {
+		var icon = this.LevelIcons[level-1];
+		icon.enabled = true;
+		if (level>LevelDataManager.Shared().Milestone) {
+			LevelDataManager.Shared().Milestone = level;
+
+			// 选定标记
+			this.img_arrow.x = icon.x;
+			this.img_arrow.y = icon.y;
+			this.SelLevel = icon.Level;
+		}
 	}
 }

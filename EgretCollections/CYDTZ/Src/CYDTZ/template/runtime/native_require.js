@@ -8,6 +8,7 @@ var game_file_list = [
 	"libs/modules/res/res.js",
 	"libs/modules/tween/tween.js",
 	"bin-debug/AssetAdapter.js",
+	"bin-debug/Game/LevelDataManager.js",
 	"bin-debug/Game/LevelIcon.js",
 	"bin-debug/Game/SceneBegin.js",
 	"bin-debug/Game/SceneLevels.js",
