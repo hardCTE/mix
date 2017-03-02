@@ -57,7 +57,7 @@ var SceneLevels = (function (_super) {
         groupBk.cacheAsBitmap = true;
         this.group_levels.addChild(groupBk);
         // 卷动到最底层
-        //this.group_levels.scrollV = groupBk.height - 1100;
+        this.group_levels.scrollV = groupBk.height - 1100;
         // 随动鼠标图标
         this.img_arrow = new eui.Image();
         this.img_arrow.source = RES.getRes("PageDownBtn_png");
@@ -71,9 +71,17 @@ var SceneLevels = (function (_super) {
         //调试使用： groupBk.addChild(this.tlb);
     }
     var d = __define,c=SceneLevels,p=c.prototype;
+    SceneLevels.Shared = function () {
+        if (SceneLevels.shared == null) {
+            SceneLevels.shared = new SceneLevels();
+        }
+        return SceneLevels.shared;
+    };
     // back button
     p.onclick_back = function () {
         console.log("return start page ....");
+        this.parent.addChild(SceneBegin.Shared());
+        this.parent.removeChild(this);
     };
     // 选关
     p.onclick_level = function (e) {

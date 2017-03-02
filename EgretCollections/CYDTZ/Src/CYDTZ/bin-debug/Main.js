@@ -127,7 +127,8 @@ var Main = (function (_super) {
      */
     p.startCreateScene = function () {
         //this.addChild(new SceneBegin());
-        this.addChild(new SceneLevels());
+        //this.addChild(new SceneLevels());
+        this.addChild(SceneBegin.Shared());
         return;
         var sky = this.createBitmapByName("bg_jpg");
         this.addChild(sky);

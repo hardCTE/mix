@@ -5,10 +5,20 @@
  */
 class SceneLevels extends eui.Component {
 
+	// 单例
+	private static shared: SceneLevels;
+	public static Shared() {
+		if (SceneLevels.shared == null) {
+			SceneLevels.shared = new SceneLevels();
+		}
+
+		return SceneLevels.shared;
+	}
+
 	private btn_back: eui.Button;
 	private group_levels: eui.Group;
 	private img_arrow: eui.Image;
-	private tlb : eui.Label;
+	private tlb: eui.Label;
 	public constructor() {
 		super();
 
@@ -75,7 +85,7 @@ class SceneLevels extends eui.Component {
 		this.group_levels.addChild(groupBk);
 
 		// 卷动到最底层
-		//this.group_levels.scrollV = groupBk.height - 1100;
+		this.group_levels.scrollV = groupBk.height - 1100;
 
 		// 随动鼠标图标
 		this.img_arrow = new eui.Image();
@@ -85,8 +95,8 @@ class SceneLevels extends eui.Component {
 		this.img_arrow.touchEnabled = false;
 		this.img_arrow.x = groupBk.getChildAt(0).x;
 		this.img_arrow.y = groupBk.getChildAt(0).y;
-		
-        groupBk.addChild(this.img_arrow);
+
+		groupBk.addChild(this.img_arrow);
 
 		this.tlb = new eui.Label();
 		//调试使用： groupBk.addChild(this.tlb);
@@ -95,6 +105,9 @@ class SceneLevels extends eui.Component {
 	// back button
 	private onclick_back() {
 		console.log("return start page ....");
+
+		this.parent.addChild(SceneBegin.Shared());
+		this.parent.removeChild(this);
 	}
 
 	// 选关
@@ -104,7 +117,7 @@ class SceneLevels extends eui.Component {
 
 		this.img_arrow.x = icon.x;
 		this.img_arrow.y = icon.y;
-		
+
 		this.tlb.text = icon.Level.toString();
 		this.tlb.x = icon.x;
 		this.tlb.y = icon.y;

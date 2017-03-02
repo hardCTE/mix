@@ -5,6 +5,16 @@
  */
 class SceneBegin  extends eui.Component {
     
+	// 单例
+	private static shared:SceneBegin;
+	public static Shared() {
+		if(SceneBegin.shared == null) {
+			SceneBegin.shared = new SceneBegin();
+		}
+
+		return SceneBegin.shared;
+	}
+
     private btn_begin:eui.Button;
     
 	public constructor() {
@@ -16,5 +26,7 @@ class SceneBegin  extends eui.Component {
 	
 	private onclick_begin() {
 	    console.log("touch begin...... game begin!")
+		this.parent.addChild(SceneLevels.Shared());
+		this.parent.removeChild(this);
 	}
 }
