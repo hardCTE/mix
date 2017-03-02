@@ -129,6 +129,12 @@ class Main extends eui.UILayer {
      * Create scene interface
      */
     protected startCreateScene(): void {
+        
+        this.addChild(new SceneBegin());
+        
+        
+        return;
+        
         let sky:egret.Bitmap = this.createBitmapByName("bg_jpg");
         this.addChild(sky);
         let stageW:number = this.stage.stageWidth;

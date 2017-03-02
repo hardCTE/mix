@@ -126,6 +126,8 @@ var Main = (function (_super) {
      * Create scene interface
      */
     p.startCreateScene = function () {
+        this.addChild(new SceneBegin());
+        return;
         var sky = this.createBitmapByName("bg_jpg");
         this.addChild(sky);
         var stageW = this.stage.stageWidth;

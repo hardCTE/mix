@@ -1,0 +1,3 @@
+<?xml version='1.0' encoding='utf-8'?>
+<e:Skin class="LevelIconSkin" states="up,down,disabled" width="77" height="77"
+        xmlns:e="http://ns.egret.com/eui"></e:Skin>
