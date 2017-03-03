@@ -8,7 +8,9 @@ var LevelDataItem = (function () {
 egret.registerClass(LevelDataItem,'LevelDataItem');
 var LevelDataManager = (function () {
     function LevelDataManager() {
+        console.log("data manager: start" + new Date().getTime);
         this.items = RES.getRes("questions_json");
+        console.log("data manager: end" + new Date().getTime);
     }
     var d = __define,c=LevelDataManager,p=c.prototype;
     LevelDataManager.Shared = function () {

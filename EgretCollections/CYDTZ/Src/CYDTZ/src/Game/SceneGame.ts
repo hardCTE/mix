@@ -9,6 +9,7 @@ class SceneGame extends eui.Component {
 		return SceneGame.shared;
 	}
 
+	private lb_btn: eui.Label;
 	private btn_back: eui.Button;
 	private group_answer: eui.Group;
 	private group_words: eui.Group;
@@ -20,12 +21,15 @@ class SceneGame extends eui.Component {
 
 		this.skinName = "src/Game/SceneGameSkin.exml";
 		this.btn_back.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onclick_back, this);
+		this.lb_btn.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onclick_back, this);
 	}
 
 	public InitLevel(level: number) {
+		console.log(",init level=" + level);
 		this.levelIndex = level;
 		var levelData = LevelDataManager.Shared().GetLeve(level);
-
+		console.log("leve data loaded");
+		console.log(levelData);
 		// 拼接答案和备用字
 		var words = levelData.answer + levelData.word;
 
@@ -47,18 +51,37 @@ class SceneGame extends eui.Component {
 		wordsArr = this.randomArr(wordsArr);
 
 		//赋值
-		for (var i = 0; i < this.group_words.numChildren; i++) {
-			var wordrect = <Word>this.group_words.getChildAt(i);
-			wordrect.setWordText(wordsArr[i]);
-			wordrect.visible = true;
+		// for (var i = 0; i < this.group_words.numChildren; i++) {
+		// 	var wordrect = <Word>this.group_words.getChildAt(i);
+		// 	wordrect.setWordText(wordsArr[i]);
+		// 	wordrect.visible = true;
+		// }
+
+		for (var i = 0; i < wordsArr.length; i++) {
+			var word = new Word();
+			this.group_words.addChild(word);
+			word.setWordText(wordsArr[i])
+			word.visible = true;
 		}
 
 		// 状态
-		for (var i = 0; i < this.group_answer.numChildren; i++) {
-			var answerrect = <AnswerWord>this.group_answer.getChildAt(i);
-			answerrect.SetSelectWord(null)
-			answerrect.visible = true;
-			answerrect.SelectWord = null;
+		// for (var i = 0; i < this.group_answer.numChildren; i++) {
+		// 	var answerrect = <AnswerWord>this.group_answer.getChildAt(i);
+
+		// 	answerrect.visible = true;
+		// 	answerrect.SelectWord = null;
+		// 	//TODO: answerrect.SetSelectWord(null);
+		// 	answerrect.setWordText("");
+		// }
+
+		for(var i = 0; i < 4; i++){
+			var answerWord = new AnswerWord();
+			this.group_answer.addChild(answerWord);
+
+			answerWord.visible = true;
+			answerWord.SelectWord = null;
+			//TODO: answerWord.SetSelectWord(null);			
+			answerWord.setWordText("");
 		}
 
 		// 问题图片
@@ -71,7 +94,7 @@ class SceneGame extends eui.Component {
 		while (arr.length > 0) {
 			var tmp = Math.floor(Math.random() * arr.length);
 			rArr.push(arr[tmp]);
-			arr.slice(tmp, 1);
+			arr.splice(tmp, 1);
 		}
 
 		return rArr;
@@ -98,7 +121,10 @@ class SceneGame extends eui.Component {
 		}
 
 		if (sel != null) {
-			sel.SetSelectWord(word);
+			//TODO: sel.SetSelectWord(word);
+			sel.SelectWord = word;
+			sel.SelectWord.visible = false;
+			sel.setWordText(word.getWordText());
 
 			//判断是否胜利
 			var check_str: string = "";

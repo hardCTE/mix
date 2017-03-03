@@ -14,7 +14,7 @@ class AnswerWord extends Word {
 			this.setWordText("");
 		}
 
-		console.log("answer word ..");
+		console.log("click answer word ..");
 	}
 
 	// 当一个问题字被选择添加到回答时，设置不可见，并保存到本对象中以后使用

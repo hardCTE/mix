@@ -134,6 +134,7 @@ class SceneLevels extends eui.Component {
 		} else {
 			//开始游戏
 			this.parent.addChild(SceneGame.Shared());
+			SceneGame.Shared().InitLevel(this.SelLevel);
 			this.parent.removeChild(this);
 		}
 	}

@@ -9,6 +9,8 @@ class Word extends eui.Component {
 	public constructor() {
 		super();
 
+		//TODO:不指定skinName，否则会导致多册构建eui，浪费内存
+		this.skinName="src/Game/WordSkin.exml";
 		this.lb_text.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onclick_tap, this);
 	}
 
