@@ -12,6 +12,7 @@ var game_file_list = [
 	"bin-debug/Game/LevelIcon.js",
 	"bin-debug/Game/SceneBegin.js",
 	"bin-debug/Game/SceneLevels.js",
+	"bin-debug/Game/Word.js",
 	"bin-debug/LoadingUI.js",
 	"bin-debug/Main.js",
 	"bin-debug/ThemeAdapter.js",
