@@ -22,14 +22,29 @@
 			<e:TileLayout horizontalGap="16"/>
 		</e:layout>
 	</e:Group>
-	<e:Group width="474.67" height="80" x="115" y="636.33" anchorOffsetX="0" anchorOffsetY="0">
+	<e:Group width="482.67" height="366" x="120.17" y="636.33" anchorOffsetX="0" anchorOffsetY="0">
+		<ns1:Word skinName="WordSkin"/>
+		<ns1:Word skinName="WordSkin"/>
+		<ns1:Word skinName="WordSkin"/>
+		<ns1:Word skinName="WordSkin"/>
+		<ns1:Word skinName="WordSkin"/>
+		<ns1:Word skinName="WordSkin"/>
+		<ns1:Word skinName="WordSkin"/>
+		<ns1:Word skinName="WordSkin"/>
+		<ns1:Word skinName="WordSkin"/>
+		<ns1:Word skinName="WordSkin"/>
+		<ns1:Word skinName="WordSkin"/>
+		<ns1:Word skinName="WordSkin"/>
+		<ns1:Word skinName="WordSkin"/>
+		<ns1:Word skinName="WordSkin"/>
+		<ns1:Word skinName="WordSkin"/>
 		<ns1:Word skinName="WordSkin"/>
 		<ns1:Word skinName="WordSkin"/>
 		<ns1:Word skinName="WordSkin"/>
 		<ns1:Word skinName="WordSkin"/>
 		<ns1:Word skinName="WordSkin"/>
 		<e:layout>
-			<e:TileLayout horizontalGap="16"/>
+			<e:TileLayout horizontalGap="18"/>
 		</e:layout>		
 	</e:Group>
 </e:Skin>
