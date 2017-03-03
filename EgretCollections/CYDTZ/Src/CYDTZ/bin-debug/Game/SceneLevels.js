@@ -103,6 +103,17 @@ var SceneLevels = (function (_super) {
         else {
         }
     };
+    p.OpenLevel = function (level) {
+        var icon = this.LevelIcons[level - 1];
+        icon.enabled = true;
+        if (level > LevelDataManager.Shared().Milestone) {
+            LevelDataManager.Shared().Milestone = level;
+            // 选定标记
+            this.img_arrow.x = icon.x;
+            this.img_arrow.y = icon.y;
+            this.SelLevel = icon.Level;
+        }
+    };
     return SceneLevels;
 }(eui.Component));
 egret.registerClass(SceneLevels,'SceneLevels');
