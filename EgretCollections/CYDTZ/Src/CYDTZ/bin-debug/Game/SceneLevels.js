@@ -101,6 +101,9 @@ var SceneLevels = (function (_super) {
             this.SelLevel = icon.Level;
         }
         else {
+            //开始游戏
+            this.parent.addChild(SceneGame.Shared());
+            this.parent.removeChild(this);
         }
     };
     p.OpenLevel = function (level) {

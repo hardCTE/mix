@@ -1,6 +1,6 @@
 // 问题数据结构
 class LevelDataItem {
-    public anser:string;
+    public answer:string;
     public img:string;
     public word:string;
     public tip:string;

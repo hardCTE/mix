@@ -12,6 +12,7 @@ var Word = (function (_super) {
     var d = __define,c=Word,p=c.prototype;
     p.onclick_tap = function () {
         console.log("click word: " + this.lb_text.text);
+        SceneGame.Shared().onclick_word(this);
     };
     // 未做成属性：当引用到eui的时候，Skin还未指定，运行时会报错。如果指定了SkinName，就会产生两次eui的构建 浪费内存
     p.setWordText = function (value) {

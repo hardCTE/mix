@@ -9,7 +9,8 @@
 			</e:Skin>
 		</e:skinName>
 	</e:Button>
-	<e:Image id="img_question" source="WordFrame_png" x="39" y="110"/>
+	<e:Image source="WordFrame_png" x="39" y="110"/>
+	<e:Image id="img_question" horizontalCenter="0" width="390" height="260" y="179" />
 		
 	<e:Group id="group_answer" height="80" width="372" x="175" y="458" anchorOffsetX="0">
 		<ns1:Word skinName="WordSkin"/>

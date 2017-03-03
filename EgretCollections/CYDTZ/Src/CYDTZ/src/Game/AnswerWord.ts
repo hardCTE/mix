@@ -19,8 +19,13 @@ class AnswerWord extends Word {
 
 	// 当一个问题字被选择添加到回答时，设置不可见，并保存到本对象中以后使用
 	public SetSelectWord(word: Word) {
-		word.visible = false;
-		this.setWordText(word.getWordText());
+		if (word == null) {
+			this.setWordText("");
+		} else {
+			word.visible = false;
+			this.setWordText(word.getWordText());
+		}
+
 		this.SelectWord = word;
 	}
 }
